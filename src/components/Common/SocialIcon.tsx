@@ -12,12 +12,13 @@ type SocialIconSize = "sm" | "md" | "lg";
 export interface SocialIconProps {
     brand: SocialBrand,
     size: SocialIconSize,
+    withLink?: boolean,
     gradient?: boolean,
     containerClassName?: string,
     iconClassName?: string
 };
 
-function SocialIcon({ brand, size, gradient, containerClassName, iconClassName }: SocialIconProps) {
+function SocialIcon({ brand, withLink=true, size, gradient, containerClassName, iconClassName }: SocialIconProps) {
 
     const brandLinks: Record<SocialBrand, string> = {
         "Instagram": SOCIAL_LINKS.INSTAGRAM.url,
@@ -38,28 +39,28 @@ function SocialIcon({ brand, size, gradient, containerClassName, iconClassName }
     };
 
     const Icon = brandIcon[brand];
-    const backgroundClassName = gradient ? "bg-gradient-to-bl from-primary to-secondary text-white" : "bg-secondary text-card"
+    const backgroundClassName = gradient ? "bg-gradient-to-bl from-primary to-secondary text-white" : "bg-secondary text-card";
 
-    return(
-        <a href={brandLinks[brand]} target="_blank" rel="noopener noreferrer">
-            <motion.div
-                whileHover={{
-                    y: "-.5vh"
-                }}
+    const renderIcon = () => (
+        <motion.div
+            whileHover={{
+                y: "-.5vh"
+            }}
+        >
+            <Flex 
+                className={`
+                    ${backgroundClassName} 
+                    rounded-full items-center justify-center 
+                    ${sizeClasses[size]} 
+                    ${containerClassName}
+                `}
             >
-                <Flex 
-                    className={`
-                        ${backgroundClassName} 
-                        rounded-full items-center justify-center 
-                        ${sizeClasses[size]} 
-                        ${containerClassName}
-                    `}
-                >
-                    <Icon className={`absolute ${iconClassName}`} />
-                </Flex>
-            </motion.div>
-        </a>
+                <Icon className={`absolute ${iconClassName}`} />
+            </Flex>
+        </motion.div>
     );
+
+    return withLink ? <a href={brandLinks[brand]} target="_blank" rel="noopener noreferrer">{renderIcon()}</a> : renderIcon();
 };
 
 export default SocialIcon;

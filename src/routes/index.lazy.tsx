@@ -42,13 +42,13 @@ function Index() {
                         }}
                     >
                         <Card>
-                            <Flex className="items-center gap-4">
+                            <Flex className="flex flex-col md:flex-row items-center gap-2 md:gap-4">
                                 <Box>
-                                    <SocialIcon gradient brand={brand} size="lg" />
+                                    <SocialIcon gradient withLink={false} brand={brand} size="lg" />
                                 </Box>
-                                <Box className="flex items-center gap-2">
-                                    <p className="font-bold text-background text-2xl">{brand}</p>
-                                    <p className="font-semibold text-background text-xl mt-[.15rem]">{socialInfo[brand].handle}</p>
+                                <Box className="flex flex-col md:flex-row items-center md:gap-2">
+                                    <p className="font-bold text-background text-xl md:text-2xl">{brand}</p>
+                                    <p className="font-semibold text-background text-lg md:text-xl mt-[.15rem]">{socialInfo[brand].handle}</p>
                                 </Box>
                             </Flex>
                         </Card>
@@ -59,7 +59,7 @@ function Index() {
     };
 
     return(
-        <Layout main className="bg-gradient-to-br from-background to-card lg:px-96 !pt-4 justify-center">
+        <Layout main className="bg-gradient-to-br from-background to-card lg:px-96 !pt-4 justify-center pb-10 md:pb-0">
             <div className="w-[100vw] h-[100vh] fixed">
                 <Sparkle
                     color={theme.colors.cardLight}
@@ -71,7 +71,7 @@ function Index() {
             </div>
             <Box className="z-10">
                 <Card className="flex items-center justify-center bg-card-light">
-                    <img src={IMAGE_RESOURCES.LOGO_CIRCLE} className="w-full md:w-4/6 lg:w-2/6 self-center pb-10" alt="logo" />
+                    <img src={IMAGE_RESOURCES.LOGO_CIRCLE} className="w-4/6 md:w-4/6 lg:w-2/6 self-center pb-10" alt="logo" />
                     {renderSocialCards()}
                 </Card>
             </Box>
