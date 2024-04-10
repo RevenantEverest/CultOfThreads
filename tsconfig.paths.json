@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        /* Path Aliasing */
+        "baseUrl":"./src",
+        "paths": {
+            "@@root/*": ["./*"],
+            "@@assets/*": ["./assets/*"],
+            "@@components/*": ["./components/*"],
+            "@@containers/*": ["./containers/*"],
+            "@@navigation/*": ["./navigation/*"],
+            "@@pages/*": ["./pages/*"],
+            "@@store/*": ["./store/*"],
+            "@@types/*": ["./types/*"],
+            
+            /* Index specific aliases */
+            "@@constants":["./constants/index.ts"],
+            "@@hooks": ["./hooks/index.tsx"],
+            "@@services": ["./services/index.ts"],
+            "@@theme": ["./theme/index.ts"],
+            "@@utils": ["./utils/index.ts"]
+        }
+    }
+}
