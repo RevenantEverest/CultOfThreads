@@ -1,10 +1,11 @@
 import { Config } from "tailwindcss";
+import Flowbite from 'flowbite-react/tailwind';
 
 const tailwindConfig: Config = {
     content: [
         "./index.html",
         "./src/**/*.{js,ts,jsx,tsx}",
-        "node_modules/flowbite-react/lib/esm/**/*.js"
+        Flowbite.content()
     ],
     theme: {
         extend: {
@@ -21,7 +22,7 @@ const tailwindConfig: Config = {
             }
         },
     },
-    plugins: [require('flowbite/plugin')],
+    plugins: [Flowbite.plugin()],
 };
 
 export default tailwindConfig;

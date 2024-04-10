@@ -20,7 +20,7 @@ export default defineConfig({
             /* Index specific aliases */
             '@@constants': path.resolve(__dirname, './src/constants'),
             '@@hooks': path.resolve(__dirname, './src/hooks'),
-            '@@theme': path.resolve(__dirname, './src/theme'),
+            '@@themes': path.resolve(__dirname, './src/themes'),
             '@@services': path.resolve(__dirname, './src/services'),
             '@@utils': path.resolve(__dirname, './src/utils'),
         }

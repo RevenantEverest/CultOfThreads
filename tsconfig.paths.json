@@ -16,7 +16,7 @@
             "@@constants":["./constants/index.ts"],
             "@@hooks": ["./hooks/index.tsx"],
             "@@services": ["./services/index.ts"],
-            "@@theme": ["./theme/index.ts"],
+            "@@themes": ["./themes/index.ts"],
             "@@utils": ["./utils/index.ts"]
         }
     }
