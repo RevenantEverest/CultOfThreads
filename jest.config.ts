@@ -24,7 +24,7 @@ const jestConfig: Config = {
         "^@@constants": "<rootDir>/src/constants/index.ts",
         "^@@hooks": "<rootDir>/src/hooks/index.tsx",
         "^@@services": "<rootDir>/src/services/index.ts",
-        "^@@theme": "<rootDir>/src/theme/index.ts",
+        "^@@themes": "<rootDir>/src/themes/index.ts",
         "^@@utils": "<rootDir>/src/utils/index.ts",
     },
     setupFiles: ["jest-canvas-mock"]
