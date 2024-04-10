@@ -20,7 +20,7 @@ function Card({ className="", horizontal, href, imgAlt, imgSrc, children }: Prop
             imgSrc={imgSrc}
             theme={{ 
                 root: { 
-                    base: "bg-card-light h-full rounded-2xl shadow-xl"
+                    base: "bg-card h-full rounded-2xl shadow-xl"
                 } 
             }}
         >
