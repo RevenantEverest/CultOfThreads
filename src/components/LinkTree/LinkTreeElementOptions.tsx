@@ -10,11 +10,11 @@ export interface LinkTreeElementOptionsProps {
 
 function LinkTreeElementOptions({ copyContent }: LinkTreeElementOptionsProps) {
 
-    const [_, copyToClipboard] = useCopyToClipboard();
+    const copyToClipboard = useCopyToClipboard();
 
     const handleCopy = () => {
         if(copyContent) {
-            copyToClipboard(copyContent);
+            copyToClipboard.copy(copyContent);
         }
     };
 

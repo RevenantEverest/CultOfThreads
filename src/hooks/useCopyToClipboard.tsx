@@ -3,7 +3,7 @@ import { toast } from 'react-hot-toast';
 
 import { ToastSuccess } from '@@components/Common';
 
-function useCopyToClipboard(): [boolean, (value: string) => void] {
+function useCopyToClipboard(): { isCopied: boolean, copy: (value: string) => void } {
     const [copied, setCopied] = useState(false);
 
     useEffect(() => {
@@ -33,7 +33,10 @@ function useCopyToClipboard(): [boolean, (value: string) => void] {
         }
     };
 
-    return [copied, copyToClipboard]
+    return {
+        isCopied: copied,
+        copy: copyToClipboard 
+    }
 };
 
 export default useCopyToClipboard;
