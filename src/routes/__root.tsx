@@ -4,6 +4,7 @@ import React, { useEffect, useCallback } from 'react';
 import { createRootRoute, Outlet } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/router-devtools';
 import { useSelector } from 'react-redux';
+import { Toaster } from 'react-hot-toast';
 
 import { ENV } from '@@constants';
 import { theme as themeUtils } from '@@utils';
@@ -27,6 +28,17 @@ function Root() {
     return(
         <React.Fragment>
             <Outlet />
+            <Toaster 
+                position="top-right"
+                toastOptions={{
+                    style: {
+                        border: "none",
+                        background: "transparent",
+                        boxShadow: "none",
+                        maxWidth: "98%"
+                    }
+                }}    
+            />
             {
                 ENV.NODE_ENV !== "production" && 
                 <TanStackRouterDevtools />

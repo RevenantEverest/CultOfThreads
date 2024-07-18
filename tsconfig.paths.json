@@ -14,7 +14,7 @@
             
             /* Index specific aliases */
             "@@constants":["./constants/index.ts"],
-            "@@hooks": ["./hooks/index.tsx"],
+            "@@hooks": ["./hooks/index.ts"],
             "@@services": ["./services/index.ts"],
             "@@themes": ["./themes/index.ts"],
             "@@utils": ["./utils/index.ts"]

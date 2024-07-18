@@ -4,14 +4,16 @@ import type { SocialLink } from '@@types/socialLinks';
 
 import { createLazyFileRoute } from '@tanstack/react-router';
 
-import { Flex, Box } from 'reflexbox';
+import { Box } from 'reflexbox';
 import { useSelector } from 'react-redux';
-import { motion } from 'framer-motion';
 import Sparkle from 'react-sparkle';
 
-import { Layout, Card, SocialIcon } from '@@components/Common';
+import { FaEnvelope } from 'react-icons/fa6';
 
-import { IMAGE_RESOURCES, SOCIAL_LINKS } from '@@constants';
+import { Layout, Card, SocialIcon, RoundedIcon } from '@@components/Common';
+import { LinkTreeElement } from '@@components/LinkTree';
+
+import { IMAGE_RESOURCES, SOCIAL_LINKS, URLS } from '@@constants';
 
 export const Route = createLazyFileRoute('/')({
     component: Index
@@ -31,29 +33,26 @@ function Index() {
         return Object.keys(socialInfo).map((key, index) => {
             
             const brand = key as SocialBrand;
+            const handle = socialInfo[brand].handle;
+            const url = socialInfo[brand].url;
+            const icon = (
+                <SocialIcon 
+                    containerClassName="md:!p-7 md:!text-3xl"
+                    gradient 
+                    withLink={false} 
+                    brand={brand} 
+                    size="md"
+                />);
 
             return(
-                <a href={socialInfo[brand].url} target="_blank" rel="noopener noreferrer" key={`${index}-social-card-${key}`}>
-                    <motion.div
-                        key={`${index}-social-card-${key}-motion`}
-                        className="hover:cursor-pointer"
-                        whileHover={{
-                            y: "-0.5vh"
-                        }}
-                    >
-                        <Card>
-                            <Flex className="flex flex-col md:flex-row items-center gap-2 md:gap-4">
-                                <Box>
-                                    <SocialIcon gradient withLink={false} brand={brand} size="lg" />
-                                </Box>
-                                <Box className="flex flex-col md:flex-row items-center md:gap-2">
-                                    <p className="font-bold text-background text-xl md:text-2xl">{brand}</p>
-                                    <p className="font-semibold text-background text-lg md:text-xl mt-[.15rem]">{socialInfo[brand].handle}</p>
-                                </Box>
-                            </Flex>
-                        </Card>
-                    </motion.div>
-                </a>
+                <LinkTreeElement
+                    key={`${index}-social-card-${key}`}
+                    index={index}
+                    title={brand}
+                    subtitle={handle}
+                    url={url}
+                    icon={icon}
+                />
             );
         });
     };
@@ -73,6 +72,19 @@ function Index() {
                 <Card className="flex items-center justify-center bg-card-light">
                     <img src={IMAGE_RESOURCES.LOGO_CIRCLE} className="w-4/6 md:w-4/6 lg:w-2/6 self-center pb-10" alt="logo" />
                     {renderSocialCards()}
+                    <LinkTreeElement
+                        title="Email" 
+                        subtitle={URLS.BUSINESS_EMAIL}
+                        copyContent={URLS.BUSINESS_EMAIL}
+                        icon={(
+                            <RoundedIcon 
+                                gradient
+                                containerClassName="md:!p-7 md:!text-3xl"
+                                icon={FaEnvelope} 
+                                size="md"
+                            />
+                        )}
+                    />
                 </Card>
             </Box>
         </Layout>
