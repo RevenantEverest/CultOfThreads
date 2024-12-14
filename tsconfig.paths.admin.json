@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        /* Path Aliasing */
+        "baseUrl":"./packages/admin/src",
+        "paths": {
+            "@@admin/root/*": ["./*"],
+            "@@admin/assets/*": ["./assets/*"],
+            "@@admin/components/*": ["./components/*"],
+            "@@admin/containers/*": ["./containers/*"],
+            "@@admin/navigation/*": ["./navigation/*"],
+            "@@admin/pages/*": ["./pages/*"],
+            "@@admin/store/*": ["./store/*"],
+            "@@admin/types/*": ["./types/*"],
+            
+            /* Index specific aliases */
+            "@@admin/constants":["./constants/index.ts"],
+            "@@admin/hooks": ["./hooks/index.ts"],
+            "@@admin/services": ["./services/index.ts"],
+            "@@admin/themes": ["./themes/index.ts"],
+            "@@admin/utils": ["./utils/index.ts"]
+        }
+    }
+}

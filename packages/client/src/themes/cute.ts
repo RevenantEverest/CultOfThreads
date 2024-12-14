@@ -1,4 +1,4 @@
-import type { Theme, ThemeColors } from '@@types/theme.js';
+import type { Theme, ThemeColors } from '@@client/types/theme.js';
 
 const colors: ThemeColors = {
     primary: "#591C2C",

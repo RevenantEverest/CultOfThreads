@@ -1,4 +1,4 @@
-import type { RootState } from '@@store/index';
+import type { RootState } from '@@client/store/index';
 
 import React, { useEffect, useCallback } from 'react';
 import { createRootRoute, Outlet } from '@tanstack/react-router';
@@ -6,8 +6,8 @@ import { TanStackRouterDevtools } from '@tanstack/router-devtools';
 import { useSelector } from 'react-redux';
 import { Toaster } from 'react-hot-toast';
 
-import { ENV } from '@@constants';
-import { theme as themeUtils } from '@@utils';
+import { ENV } from '@@client/constants';
+import { theme as themeUtils } from '@@client/utils';
 
 export const Route = createRootRoute({
     component: Root

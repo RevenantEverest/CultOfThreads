@@ -4,7 +4,7 @@ import { Flex } from 'reflexbox';
 import { motion } from 'framer-motion';
 import { FaEtsy, FaTiktok, FaInstagram } from 'react-icons/fa';
 
-import { SOCIAL_LINKS } from '@@constants';
+import { SOCIAL_LINKS } from '@@client/constants';
 
 export type SocialBrand =  "Instagram" | "Etsy" | "TikTok";
 type SocialIconSize = "sm" | "md" | "lg";

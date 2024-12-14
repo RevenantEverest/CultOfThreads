@@ -22,7 +22,10 @@
         "noFallthroughCasesInSwitch": true,
         "types": ["jest", "node"]
     },
-    "include": ["src"],
+    "include": ["packages/**/*"],
     "references": [{ "path": "./tsconfig.node.json" }],
-    "extends": "./tsconfig.paths.json"
+    "extends": [
+        "./tsconfig.paths.admin.json",
+        "./tsconfig.paths.client.json"
+    ]
 }

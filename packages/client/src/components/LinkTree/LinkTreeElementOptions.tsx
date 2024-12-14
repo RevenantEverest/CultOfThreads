@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion';
 import { FaEllipsisVertical } from 'react-icons/fa6';
 
-import { useCopyToClipboard } from '@@hooks';
-import { Dropdown, DropdownItem } from '@@components/Common';
+import { useCopyToClipboard } from '@@client/hooks';
+import { Dropdown, DropdownItem } from '@@client/components/Common';
 
 export interface LinkTreeElementOptionsProps {
     copyContent?: string

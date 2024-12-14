@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 
-import { motion } from 'framer-motion';
-import { Card } from '@@components/Common';
+import { motion } from 'motion/react';
+import { Card } from '@@client/components/Common';
 import { GiBowTieRibbon } from 'react-icons/gi';
 
 import LinkTreeElementOptions from './LinkTreeElementOptions';

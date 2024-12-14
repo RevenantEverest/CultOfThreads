@@ -3,7 +3,7 @@ import type {
     MappedTheme, 
     MappedThemeKeys, 
     ThemeColors
-} from '@@types/theme';
+} from '@@client/types/theme';
 
 export function applyTheme(theme: Theme) {
     const mappedTheme: MappedTheme = mapTheme(theme.colors);

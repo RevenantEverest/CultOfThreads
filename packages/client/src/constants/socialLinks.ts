@@ -1,4 +1,4 @@
-import type { SocialLink } from '@@types/socialLinks';
+import type { SocialLink } from '@@client/types/socialLinks';
 
 export const INSTAGRAM: SocialLink = {
     url: "https://www.instagram.com/cultofthreads_",

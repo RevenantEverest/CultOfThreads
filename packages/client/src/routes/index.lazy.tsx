@@ -1,6 +1,6 @@
-import type { RootState } from '@@store/index';
-import type { SocialBrand } from '@@components/Common/SocialIcon';
-import type { SocialLink } from '@@types/socialLinks';
+import type { RootState } from '@@client/store/index';
+import type { SocialBrand } from '@@client/components/Common/SocialIcon';
+import type { SocialLink } from '@@client/types/socialLinks';
 
 import { createLazyFileRoute } from '@tanstack/react-router';
 
@@ -10,10 +10,10 @@ import Sparkle from 'react-sparkle';
 
 import { FaEnvelope } from 'react-icons/fa6';
 
-import { Layout, Card, SocialIcon, RoundedIcon } from '@@components/Common';
-import { LinkTreeElement } from '@@components/LinkTree';
+import { Layout, Card, SocialIcon, RoundedIcon } from '@@client/components/Common';
+import { LinkTreeElement } from '@@client/components/LinkTree';
 
-import { IMAGE_RESOURCES, SOCIAL_LINKS, URLS } from '@@constants';
+import { IMAGE_RESOURCES, SOCIAL_LINKS, URLS } from '@@client/constants';
 
 export const Route = createLazyFileRoute('/')({
     component: Index
