@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "noEmit": true,
+        "baseUrl": "./src",
+        "paths": {
+            /* Client Path Aliases */
+            "@@client/root/*": ["./*"],
+            "@@client/assets/*": ["./assets/*"],
+            "@@client/components/*": ["./components/*"],
+            "@@client/containers/*": ["./containers/*"],
+            "@@client/navigation/*": ["./navigation/*"],
+            "@@client/pages/*": ["./pages/*"],
+            "@@client/store/*": ["./store/*"],
+            "@@client/types/*": ["./types/*"],
+            
+            "@@client/constants":["./constants/index.ts"],
+            "@@client/hooks": ["./hooks/index.ts"],
+            "@@client/services": ["./services/index.ts"],
+            "@@client/themes": ["./themes/index.ts"],
+            "@@client/utils": ["./utils/index.ts"]
+        }
+    },
+    "include": ["src/**/*"]
+}

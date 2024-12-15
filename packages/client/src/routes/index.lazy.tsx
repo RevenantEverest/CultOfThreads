@@ -1,14 +1,13 @@
-import type { RootState } from '@@client/store/index';
 import type { SocialBrand } from '@@client/components/Common/SocialIcon';
 import type { SocialLink } from '@@client/types/socialLinks';
 
 import { createLazyFileRoute } from '@tanstack/react-router';
 
 import { Box } from 'reflexbox';
-import { useSelector } from 'react-redux';
 import Sparkle from 'react-sparkle';
 
 import { FaEnvelope } from 'react-icons/fa6';
+import { useThemeStore } from '@@client/store/theme';
 
 import { Layout, Card, SocialIcon, RoundedIcon } from '@@client/components/Common';
 import { LinkTreeElement } from '@@client/components/LinkTree';
@@ -21,7 +20,7 @@ export const Route = createLazyFileRoute('/')({
 
 function Index() {
 
-    const theme = useSelector((state: RootState) => state.theme);
+    const theme = useThemeStore((state) => state.theme);
 
     const socialInfo: Record<SocialBrand, SocialLink> = {
         "Instagram": SOCIAL_LINKS.INSTAGRAM,

@@ -1,10 +1,9 @@
-import type { RootState } from '@@client/store/index';
-
 import React, { useEffect, useCallback } from 'react';
 import { createRootRoute, Outlet } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/router-devtools';
-import { useSelector } from 'react-redux';
 import { Toaster } from 'react-hot-toast';
+
+import { useThemeStore } from '@@client/store/theme';
 
 import { ENV } from '@@client/constants';
 import { theme as themeUtils } from '@@client/utils';
@@ -15,7 +14,7 @@ export const Route = createRootRoute({
 
 function Root() {
 
-    const theme = useSelector((state: RootState) => state.theme);
+    const theme = useThemeStore((state) => state.theme);
 
     const validateTheme = useCallback(() => {
         themeUtils.applyTheme(theme);
