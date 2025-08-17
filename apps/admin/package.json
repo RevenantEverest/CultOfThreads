@@ -1,0 +1,26 @@
+{
+  "name": "admin",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@repo/ui": "workspace:*",
+    "@tanstack/react-router": "^1.120.15",
+    "slate": "^0.117.2",
+    "slate-react": "^0.117.3"
+  },
+  "devDependencies": {
+    "@repo/tailwind-config": "workspace:*",
+    "@tanstack/react-router-devtools": "^1.120.15",
+    "@tanstack/router-vite-plugin": "^1.120.15"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
+}
