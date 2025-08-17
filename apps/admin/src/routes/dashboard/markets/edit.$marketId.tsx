@@ -6,7 +6,7 @@ import { ToastSuccess, ToastError } from '@repo/ui';
 import { Layout, Breadcrumb } from '@@admin/components/Common';
 import MarketForm, { MarketFormValues } from '@@admin/components/Forms/MarketForm';
 
-import * as marketApi from '@@admin/api/markets';
+import { marketApi } from '@repo/supabase';
 
 export const Route = createFileRoute('/dashboard/markets/edit/$marketId')({
     loader: ({ context, params }) => {
@@ -43,7 +43,18 @@ function EditMarket() {
     const onSubmit = async (values: MarketFormValues) => {
 
         try {
-            await mutation.mutateAsync();
+            if(!data.market_details) {
+                throw new Error("Missing Market Details");
+            }
+
+            await mutation.mutateAsync({
+                id: data.id,
+                name: values.name,
+                details: {
+                    ...data.market_details,
+                    state: values.state
+                }
+            });
 
             toast((t) => (
                 <ToastSuccess toast={t} message={"Market Updated!"} />

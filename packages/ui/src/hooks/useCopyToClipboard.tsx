@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 
-import ToastSuccess from '../components/Toasts/ToastSuccess';
+import ToastSuccess from '../components/toasts/ToastSuccess';
 
 function useCopyToClipboard(): { isCopied: boolean, copy: (value: string) => void } {
     const [copied, setCopied] = useState(false);

@@ -1,10 +1,11 @@
 /* Inputs */
-export { default as TextArea } from './Inputs/TextArea';
-export { default as TextInput } from './Inputs/TextInput';
+export { default as TextArea } from './inputs/TextArea';
+export { default as TextInput } from './inputs/TextInput';
+export { default as SubscribeButton } from './inputs/SubscribeButton';
 
 /* Toasts */
-export { default as ToastError } from './Toasts/ToastError';
-export { default as ToastSuccess } from './Toasts/ToastSuccess';
+export { default as ToastError } from './toasts/ToastError';
+export { default as ToastSuccess } from './toasts/ToastSuccess';
 
 /* Icons */
 export { default as RoundedIcon } from './RoundedIcon';
@@ -14,9 +15,14 @@ export { default as SocialIcon } from './SocialIcon';
 export { default as BubbleDivider } from './SVG/BubbleDivider';
 export { default as WaveDivider } from './SVG/WaveDivider';
 
+/* Theme Changer */
+export { default as ThemeChanger } from './themeChanger/ThemeChanger';
+export { default as ThemeIcon } from './themeChanger/ThemeIcon';
+export { default as ThemeValidator } from './themeChanger/ThemeValidator';
+
 /* ShadCN UI */
-export { Avatar, AvatarImage, AvatarFallback } from './ui/avatar';
-export { Badge, badgeVariants } from './ui/badge';
+export { Avatar, AvatarImage, AvatarFallback } from './shadcn/avatar';
+export { Badge, badgeVariants } from './shadcn/badge';
 export { 
     Breadcrumb, 
     BreadcrumbList, 
@@ -25,8 +31,8 @@ export {
     BreadcrumbPage,
     BreadcrumbSeparator,
     BreadcrumbEllipsis 
-} from './ui/breadcrumb';
-export { Button, buttonVariants } from './ui/button';
+} from './shadcn/breadcrumb';
+export { Button, buttonVariants } from './shadcn/button';
 export {
     Card,
     CardHeader,
@@ -34,7 +40,7 @@ export {
     CardDescription,
     CardContent,
     CardFooter
-} from './ui/card';
+} from './shadcn/card';
 export {
   Dialog,
   DialogPortal,
@@ -46,7 +52,7 @@ export {
   DialogFooter,
   DialogTitle,
   DialogDescription,
-} from './ui/dialog';
+} from './shadcn/dialog';
 export {
     DropdownMenu,
     DropdownMenuPortal,
@@ -63,8 +69,8 @@ export {
     DropdownMenuSub,
     DropdownMenuSubTrigger,
     DropdownMenuSubContent
-} from './ui/dropdown-menu';
-export { Input } from './ui/input';
+} from './shadcn/dropdown-menu';
+export { Input } from './shadcn/input';
 export {
   Select,
   SelectContent,
@@ -76,8 +82,8 @@ export {
   SelectSeparator,
   SelectTrigger,
   SelectValue,
-} from './ui/select';
-export { Separator } from './ui/separator';
+} from './shadcn/select';
+export { Separator } from './shadcn/separator';
 export {
     Sheet,
     SheetTrigger,
@@ -87,7 +93,7 @@ export {
     SheetFooter,
     SheetTitle,
     SheetDescription
-} from './ui/sheet';
+} from './shadcn/sheet';
 export {
     Sidebar,
     SidebarContent,
@@ -113,9 +119,9 @@ export {
     SidebarSeparator,
     SidebarTrigger,
     useSidebar,
-} from './ui/sidebar';
-export { Skeleton } from './ui/skeleton';
-export { Switch } from './ui/switch';
+} from './shadcn/sidebar';
+export { Skeleton } from './shadcn/skeleton';
+export { Switch } from './shadcn/switch';
 export {
     Table,
     TableHeader,
@@ -125,13 +131,13 @@ export {
     TableRow,
     TableCell,
     TableCaption,
-} from './ui/table';
+} from './shadcn/table';
 export { 
     Tooltip, 
     TooltipTrigger, 
     TooltipContent, 
     TooltipProvider
-} from './ui/tooltip';
+} from './shadcn/tooltip';
 
 /* Plate */
 export {

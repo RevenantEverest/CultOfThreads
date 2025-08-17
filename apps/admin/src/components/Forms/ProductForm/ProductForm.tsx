@@ -1,6 +1,4 @@
-import type { Product } from '@@admin/api/products';
-import type { ProductDetails } from '@@admin/api/productDetails';
-import type { ProductMedia } from '@@admin/api/productMedia';
+import type { Product, ProductDetails, ProductMedia } from '@repo/supabase';
 
 import { FaShop, FaCartShopping, FaDollarSign } from 'react-icons/fa6';
 import validator from 'validator';

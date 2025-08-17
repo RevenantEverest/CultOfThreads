@@ -1,4 +1,4 @@
-import type { ProductDetailsStatus } from '@@admin/api/productDetails';
+import type { ProductDetailsStatus } from '@repo/supabase';
 
 type StatusBadgeSize = "sm" | "md" | "lg";
 

@@ -1,4 +1,4 @@
-import type { MarketWithDetails } from '@@admin/api/markets';
+import type { MarketWithDetails } from '@repo/supabase';
 
 import { 
     Button,
@@ -19,7 +19,7 @@ import { AnimatePresence, motion } from 'motion/react';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import * as marketApi from '@@admin/api/markets';
+import { marketApi } from '@repo/supabase';
 
 interface RemoveMarketProps {
     market: MarketWithDetails

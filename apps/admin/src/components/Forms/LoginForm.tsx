@@ -1,8 +1,8 @@
 import { useAppForm } from '@repo/ui/hooks';
 import { useNavigate } from '@tanstack/react-router';
-import toast from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 
-import supabase from '@@admin/supabaseClient';
+import { supabase } from '@repo/supabase';
 
 import { Card, CardContent, ToastError } from '@repo/ui';
 

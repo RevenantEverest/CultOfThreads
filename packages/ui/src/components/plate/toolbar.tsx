@@ -11,9 +11,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuRadioGroup,
   DropdownMenuSeparator,
-} from '../ui/dropdown-menu';
-import { Separator } from '../ui/separator';
-import { Tooltip, TooltipTrigger } from '../ui/tooltip';
+} from '../shadcn/dropdown-menu';
+import { Separator } from '../shadcn/separator';
+import { Tooltip, TooltipTrigger } from '../shadcn/tooltip';
 import { cn } from '../../lib/utils';
 
 function Toolbar({

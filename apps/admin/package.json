@@ -9,13 +9,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@repo/ui": "workspace:*",
+    "@repo/ui": "*",
+    "@repo/supabase": "*",
     "@tanstack/react-router": "^1.120.15",
     "slate": "^0.117.2",
     "slate-react": "^0.117.3"
   },
   "devDependencies": {
-    "@repo/tailwind-config": "workspace:*",
+    "@repo/tailwind-config": "*",
     "@tanstack/react-router-devtools": "^1.120.15",
     "@tanstack/router-vite-plugin": "^1.120.15"
   },

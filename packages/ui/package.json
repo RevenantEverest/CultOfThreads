@@ -21,6 +21,10 @@
       "types": "./dist/utils/index.d.ts",
       "import": "./dist/utils/index.js"
     },
+    "./themes": {
+      "types": "./dist/themes/index.d.ts",
+      "import": "./dist/themes/index.js"
+    },
     "./styles.css": "./dist/index.css"
   },
   "license": "MIT",

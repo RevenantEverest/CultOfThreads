@@ -1,0 +1,19 @@
+{
+  "extends": ["//"],
+    "tasks": {
+        "build": {
+            "dependsOn": ["build:supabase"],
+            "env": ["NEXT_PUBLIC_SUPABASE_URL", "NEXT_PUBLIC_SUPABASE_KEY"]
+        },
+        "build:supabase": {
+            "outputs": ["dist/**"]
+        },
+        "dev": {
+            "with": ["dev:supabase"]
+        },
+        "dev:supabase": {
+            "cache": false,
+            "persistent": true
+        }
+    }
+}

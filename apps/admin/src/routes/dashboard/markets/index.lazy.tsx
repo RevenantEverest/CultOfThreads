@@ -14,7 +14,7 @@ import Search from '@@admin/components/Search';
 import { Layout, Breadcrumb } from '@@admin/components/Common';
 import { MarketList, AddMarket } from '@@admin/components/Markets';
 
-import * as marketsApi from '@@admin/api/markets';
+import { marketApi } from '@repo/supabase';
 
 export const Route = createLazyFileRoute('/dashboard/markets/')({
     component: Markets,
@@ -25,7 +25,7 @@ function Markets() {
     const theme = useThemeStore((state) => state.theme);
     const query = useQuery({ 
         queryKey: ["markets"], 
-        queryFn: marketsApi.fetchAll
+        queryFn: marketApi.fetchAll
     });
 
     const [search, setSearch] = useState("");

@@ -1,7 +1,5 @@
 import type { ProductFormValues } from '@@admin/components/Forms/ProductForm';
-import type { UpdateProduct } from '@@admin/api/products';
-import type { ProductMedia } from '@@admin/api/productMedia';
-import type { ProductDetailsStatus } from '@@admin/api/productDetails';
+import type { UpdateProductParams, ProductMedia, ProductDetailsStatus } from '@repo/supabase';
 
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
@@ -15,8 +13,7 @@ import {
 import { Layout, Breadcrumb } from '@@admin/components/Common';
 import { ProductForm } from '@@admin/components/Forms/ProductForm';
 
-import * as productApi from '@@admin/api/products';
-import * as productMediaApi from '@@admin/api/productMedia';
+import { productApi, productMediaApi } from '@repo/supabase';
 import StatusBadge from '@@admin/components/Products/StatusBadge';
 
 export const Route = createFileRoute('/dashboard/products/edit/$productId')({
@@ -80,7 +77,7 @@ function EditProduct() {
     const onSubmit = async (values: ProductFormValues) => {
         if(!data.product_details) return;
 
-        const productData: UpdateProduct = {
+        const productData: UpdateProductParams = {
             id: data.id,
             name: values.name,
             description: values.description,
@@ -100,6 +97,11 @@ function EditProduct() {
 
             for(let i = 0; i < values.images.length; i++) {
                 const currentImage = values.images[i];
+
+                if(!currentImage) {
+                    continue;
+                }
+
                 await fileMutation.mutateAsync({ productId: data.id, file: currentImage });
             };
 

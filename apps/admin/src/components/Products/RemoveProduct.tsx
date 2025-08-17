@@ -1,4 +1,4 @@
-import type { Product } from '@@admin/api/products';
+import type { Product } from '@repo/supabase';
 
 import { 
     Button,
@@ -19,7 +19,7 @@ import { AnimatePresence, motion } from 'motion/react';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import * as productApi from '@@admin/api/products';
+import { productApi } from '@repo/supabase';
 
 interface RemoveProductProps {
     product: Product

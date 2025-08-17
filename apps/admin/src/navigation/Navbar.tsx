@@ -1,4 +1,4 @@
-import ThemeChanger from '@@admin/components/ThemeChanger/ThemeChanger';
+import { ThemeChanger } from '@repo/ui';
 import { useThemeStore } from '@@admin/store/theme';
 import { SidebarTrigger } from '@repo/ui';
 
@@ -16,7 +16,7 @@ function Navbar() {
                     <p className="font-semibold">Admin Panel</p>
                 </div>
                 <div className="flex-1 flex justify-end pr-3">
-                    <ThemeChanger theme={theme} setTheme={setTheme} />
+                    <ThemeChanger currentTheme={theme} setTheme={setTheme} />
                 </div>
             </div>
         </div>

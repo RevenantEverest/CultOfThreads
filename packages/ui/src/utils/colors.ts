@@ -10,19 +10,26 @@ const GAMMA = 2.4;
 export function hexToRgb(hexColor: string): RGB | null {
     const parsedHex = regex.hexColor.exec(hexColor);
 
+    if(!parsedHex) {
+        return null;
+    }
+
+    const [_, r, g, b] = parsedHex;
+
     function parseValue(str: string) {
         return parseInt(str, 16);
+    };
+
+    if(!r || !g || !b) {
+        return null;
     }
 
-    if(parsedHex) {
-        return {
-            r: parseValue(parsedHex[1]),
-            g: parseValue(parsedHex[2]),
-            b: parseValue(parsedHex[3])
-        };
-    }
+    return {
+        r: parseValue(r),
+        g: parseValue(g),
+        b: parseValue(b)
+    };
 
-    return null;
 };
 
 export function rgbStringToHex(rgb: string): string | null {
@@ -30,7 +37,11 @@ export function rgbStringToHex(rgb: string): string | null {
     
     if (!match) return null;
     
-    const [_, r, g, b] = match.map(Number); // eslint-disable-line @typescript-eslint/no-unused-vars
+    const [_, r, g, b] = match.map(Number);
+
+    if(!r || !g || !b) {
+        return null;
+    }
     
     if (r > 255 || g > 255 || b > 255) return null;
 
@@ -45,7 +56,7 @@ export function luminance({ r, g, b }: RGB): number {
     const a = [r, g, b].map((v) => {
         v /= 255;
         return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, GAMMA);
-    });
+    }) as [number, number, number];
 
     const value = a[0] * RED + a[1] * GREEN + a[2] * BLUE;
 

@@ -1,5 +1,6 @@
 import type { ProductFormValues } from '@@admin/components/Forms/ProductForm';
-import type { ProductDetailsStatus } from '@@admin/api/productDetails';
+import type { ProductDetailsStatus } from '@repo/supabase';
+import type { CreateProductParams } from '@repo/supabase';
 
 import { createLazyFileRoute } from '@tanstack/react-router';
 import { toast } from 'react-hot-toast';
@@ -13,8 +14,7 @@ import {
 import { Layout, Breadcrumb } from '@@admin/components/Common';
 import { ProductForm } from '@@admin/components/Forms/ProductForm';
 
-import * as productsApi from '@@admin/api/products';
-import * as productMediaApi from '@@admin/api/productMedia';
+import { productApi, productMediaApi } from '@repo/supabase';
 
 export const Route = createLazyFileRoute('/dashboard/products/add')({
     component: AddProduct,
@@ -26,7 +26,7 @@ function AddProduct() {
 
     const queryClient = useQueryClient();
     const mutation = useMutation({
-        mutationFn: productsApi.create,
+        mutationFn: productApi.create,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["products"] })
         }
@@ -52,7 +52,7 @@ function AddProduct() {
 
     const onSubmit = async (values: ProductFormValues) => {
 
-        const productData: productsApi.CreateParam = {
+        const productData: CreateProductParams = {
                 name: values.name,
                 description: values.description,
                 details: {
@@ -67,6 +67,11 @@ function AddProduct() {
             const data = await mutation.mutateAsync(productData);
             for(let i = 0; i < values.images.length; i++) {
                 const currentImage = values.images[i];
+
+                if(!currentImage) {
+                    continue;
+                }
+                
                 await fileMutation.mutateAsync({ productId: data.id, file: currentImage });
             };
 

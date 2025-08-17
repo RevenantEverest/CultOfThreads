@@ -1,5 +1,5 @@
 import type { MarketFormValues } from '@@admin/components/Forms/MarketForm';
-import type { CreateMarketParams } from '@@admin/api/markets';
+import type { CreateMarketParams } from '@repo/supabase';
 
 import { createLazyFileRoute } from '@tanstack/react-router';
 import { toast } from 'react-hot-toast';
@@ -13,7 +13,7 @@ import {
 import { Layout, Breadcrumb } from '@@admin/components/Common';
 import MarketForm from '@@admin/components/Forms/MarketForm';
 
-import * as marketsApi from '@@admin/api/markets';
+import { marketApi } from '@repo/supabase';
 
 export const Route = createLazyFileRoute('/dashboard/markets/add')({
     component: AddMarket,
@@ -25,7 +25,7 @@ function AddMarket() {
 
     const queryClient = useQueryClient();
     const mutation = useMutation({
-        mutationFn: marketsApi.create,
+        mutationFn: marketApi.create,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["markets"] })
         }

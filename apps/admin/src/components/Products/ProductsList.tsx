@@ -1,4 +1,4 @@
-import type { ProductWithDetails } from '@@admin/api/products';
+import type { ProductWithDetails } from '@repo/supabase';
 
 import {
     Card,

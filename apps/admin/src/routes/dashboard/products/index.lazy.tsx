@@ -14,7 +14,7 @@ import { AddProduct, ProductsList } from '@@admin/components/Products';
 import { useThemeStore } from '@@admin/store/theme';
 import Search from '@@admin/components/Search';
 
-import * as productsApi from '@@admin/api/products';
+import { productApi } from '@repo/supabase';
 
 export const Route = createLazyFileRoute('/dashboard/products/')({
     component: DashboardProducts,
@@ -24,7 +24,7 @@ function DashboardProducts() {
 
     const theme = useThemeStore((state) => state.theme);
 
-    const query = useQuery({ queryKey: ['products'], queryFn: productsApi.fetchAll });
+    const query = useQuery({ queryKey: ['products'], queryFn: productApi.fetchAll });
     const [search, setSearch] = useState("");
 
     useEffect(() => {

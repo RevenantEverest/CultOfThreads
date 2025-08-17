@@ -48,9 +48,9 @@ function RichTextEditor({ value, onChange }: RichTextEditorProps) {
             onChange={({ value }) => onChange(value)}
         >
             <FixedToolbar className="bg-muted justify-start">
-                <ToolbarButton onClick={() => editor.tf.h1.toggle()}>H1</ToolbarButton>
-                <ToolbarButton onClick={() => editor.tf.h2.toggle()}>H2</ToolbarButton>
-                <ToolbarButton onClick={() => editor.tf.h3.toggle()}>H3</ToolbarButton>
+                <ToolbarButton onClick={() => editor.tf.h1?.toggle()}>H1</ToolbarButton>
+                <ToolbarButton onClick={() => editor.tf.h2?.toggle()}>H2</ToolbarButton>
+                <ToolbarButton onClick={() => editor.tf.h3?.toggle()}>H3</ToolbarButton>
                 <ToolbarButton onClick={() => editor.tf.blockquote.toggle()}>Quote</ToolbarButton>
                 
                 <MarkToolbarButton nodeType="bold" tooltip="Bold (CTRL+B)">

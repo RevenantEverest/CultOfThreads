@@ -1,4 +1,4 @@
-import type { MarketWithDetails } from '@@admin/api/markets';
+import type { MarketWithDetails } from '@repo/supabase';
 
 import { Link } from '@tanstack/react-router';
 import { FaPencil } from 'react-icons/fa6';

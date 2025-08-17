@@ -5,7 +5,7 @@ import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import { Toaster } from 'react-hot-toast';
 
 import AuthValidator from '@@admin/components/Auth/AuthValidator';
-import ThemeValidator from '@@admin/components/ThemeChanger/ThemeValidator';
+import ThemeHandler from '@@admin/components/ThemeHandler';
 
 import { ENV } from '@@admin/constants';
 
@@ -23,7 +23,7 @@ function Root() {
         <React.Fragment>
             <Outlet />
             <AuthValidator />
-            <ThemeValidator />
+            <ThemeHandler />
             <Toaster 
                 position="top-center"
                 toastOptions={{

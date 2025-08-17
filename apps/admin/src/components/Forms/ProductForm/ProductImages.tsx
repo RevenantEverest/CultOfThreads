@@ -1,4 +1,4 @@
-import type { ProductMedia } from '@@admin/api/productMedia';
+import type { ProductMedia } from '@repo/supabase';
 
 import { ProductImage as Image } from '@@admin/components/Products';
 import { URLS } from '@@admin/constants';
@@ -24,8 +24,8 @@ function ProductImages({ images, onRemoveImage }: ProductImagesProps) {
         return(
             <div className="flex gap-4">
                 <Image
-                    url={`${URLS.supabaseStorageUrl}/${images[0].media_url ?? ""}`}
-                    onRemoveImage={() => onRemoveImage(images[0])}
+                    url={`${URLS.supabaseStorageUrl}/${images?.[0]?.media_url ?? ""}`}
+                    onRemoveImage={() => images[0] && onRemoveImage(images[0])}
                     alt={`featured product image`}
                 />
                 <div className="grid grid-flow-col gap-3 grid-rows-2">

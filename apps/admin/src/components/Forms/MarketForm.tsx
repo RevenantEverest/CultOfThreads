@@ -1,5 +1,4 @@
-import type { Market } from '@@admin/api/markets';
-import type { MarketDetails } from '@@admin/api/marketDetails';
+import type { Market, MarketDetails } from '@repo/supabase';
 
 import { Card, CardContent } from '@repo/ui';
 import { useAppForm } from '@repo/ui/hooks';

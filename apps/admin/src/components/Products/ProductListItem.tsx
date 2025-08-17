@@ -1,5 +1,4 @@
-import type { ProductWithDetails } from '@@admin/api/products';
-import type { ProductDetailsStatus } from '@@admin/api/productDetails';
+import type { ProductWithDetails, ProductDetailsStatus } from '@repo/supabase';
 
 import { Link } from '@tanstack/react-router';
 import {
