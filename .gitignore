@@ -9,8 +9,6 @@
 **/server/dist/
 **/public/dist/
 
-**/apps/
-
 # Files
 *.DS_Store
 *.env
