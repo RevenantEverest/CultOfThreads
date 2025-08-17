@@ -1,0 +1,1 @@
+export const hexColor = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i;
