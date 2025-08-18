@@ -1,3 +1,5 @@
+"use client"
+
 import type { IconType } from 'react-icons';
 
 import { motion } from 'motion/react';

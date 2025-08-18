@@ -11,9 +11,9 @@ const colors: ThemeColors = {
     muted: "#704c4f"
 };
 
-const cute: Theme = {
+const bloom: Theme = {
     name: "light",
     colors
 };
 
-export default cute;
+export default bloom;

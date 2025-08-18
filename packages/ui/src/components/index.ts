@@ -41,6 +41,7 @@ export {
     CardContent,
     CardFooter
 } from './shadcn/card';
+export { Collapsible, CollapsibleTrigger, CollapsibleContent } from './shadcn/collapsible';
 export {
   Dialog,
   DialogPortal,
