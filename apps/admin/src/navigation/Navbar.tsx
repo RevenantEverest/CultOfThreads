@@ -1,14 +1,24 @@
 import { ThemeChanger } from '@repo/ui';
 import { useThemeStore } from '@@admin/store/theme';
-import { SidebarTrigger } from '@repo/ui';
+import { SidebarTrigger, useSidebar } from '@repo/ui';
 
 function Navbar() {
 
     const theme = useThemeStore((state) => state.theme);
     const setTheme = useThemeStore((state) => state.setTheme);
 
+    const { open } = useSidebar(); // true = expanded, false = collapsed
+
+    const sidebarWidth = open ? '16rem' : '3rem'; // adjust to your widths
+
     return(
-        <div className="fixed top-0 z-30 bg-card py-4 border-b-1 border-muted w-[86%]">
+        <div 
+            className="fixed top-0 z-30 bg-card py-4 border-b-1 border-muted transition-all duration-300 ease-in-out"
+            style={{
+                left: sidebarWidth, // start after the sidebar
+                width: `calc(100% - ${sidebarWidth})`, // fill the rest
+            }}
+        >
             <div className="flex">
                 <div className="flex gap-2 pl-3">
                     <SidebarTrigger className="hover:bg-muted" />
