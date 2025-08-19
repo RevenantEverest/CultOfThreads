@@ -22,10 +22,6 @@ jobs:
           run: bun install
           working-directory: .
 
-        - name: Run ESLint on Client
-          run: bun client:lint
-          working-directory: .
-        
-        - name: Run ESLint on Admin
-          run: bun admin:lint
+        - name: Run ESLint
+          run: bun lint
           working-directory: .
