@@ -2,9 +2,7 @@
     "extends": "@repo/typescript-config/vite.json",
     "include": ["src"],
     "compilerOptions": {
-        "target": "esnext",
-        "module": "esnext",
-        "moduleResolution": "bundler",
+        "target": "es2024",
         "baseUrl": ".",
         "paths": {
             "@@admin/*": ["./src/*"]
