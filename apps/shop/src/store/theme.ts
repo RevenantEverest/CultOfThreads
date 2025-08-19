@@ -3,7 +3,7 @@ import type { Theme } from '@repo/ui';
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 
-import { cute } from '@@shop/themes';
+import { cute } from '@repo/ui/themes';
 
 interface ThemeState {
     theme: Theme,

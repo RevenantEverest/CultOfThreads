@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
+import "@repo/ui/styles.css";
 
 import React from 'react';
 
@@ -11,7 +12,7 @@ import { Sparkle } from '@@shop/components/Common';
 import Navbar from '@@shop/navigation/Navbar';
 import Footer from '@@shop/navigation/Footer';
 
-import ThemeValidator from '@@shop/components/ThemeChanger/ThemeValidator';
+import ThemeHandler from '@@shop/components/ThemeHandler';
 import Providers from '@@shop/Providers';
 
 const geistSans = Geist({
@@ -37,7 +38,7 @@ export default function RootLayout({ children, }: Readonly<{
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
                 <Providers>
                 <div className="min-h-[100vh] text-text bg-background overflow-x-hidden">
-                    <ThemeValidator />
+                    <ThemeHandler />
                     <Navbar />
                     <div className="w-[100dvw] h-[100dvh] fixed">
                         <Sparkle
