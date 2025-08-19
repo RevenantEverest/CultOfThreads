@@ -14,7 +14,7 @@ export function hexToRgb(hexColor: string): RGB | null {
         return null;
     }
 
-    const [_, r, g, b] = parsedHex;
+    const [_, r, g, b] = parsedHex; // eslint-disable-line
 
     function parseValue(str: string) {
         return parseInt(str, 16);
@@ -37,7 +37,7 @@ export function rgbStringToHex(rgb: string): string | null {
     
     if (!match) return null;
     
-    const [_, r, g, b] = match.map(Number);
+    const [_, r, g, b] = match.map(Number); // eslint-disable-line
 
     if(!r || !g || !b) {
         return null;

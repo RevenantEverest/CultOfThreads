@@ -34,7 +34,7 @@ function DashboardProducts() {
         toast((t) => (
             <ToastError toast={t} message={"Error fetching products"} />
         ));
-    }, [query.isError]);
+    }, [query.isError, query.error]);
 
     return(
         <Layout className="pb-20">

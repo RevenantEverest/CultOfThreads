@@ -40,7 +40,7 @@ function MobileNavbar({ isOpen, setIsOpen }: MobileNavbarProps) {
                         href={route.pathname}
                         className={`
                             hover:bg-secondary/10 hover:cursor-pointer w-20 rounded-md text-lg 
-                            
+                            ${isActiveLink && "bg-primary"}
                         `}
                     >
                         <p className={`font-semibold`}>

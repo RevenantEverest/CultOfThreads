@@ -3,6 +3,7 @@
 import type { ProductMedia } from '@repo/supabase';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { FaChevronCircleRight, FaChevronCircleLeft } from 'react-icons/fa';
 import { URLS } from '@@shop/constants';
 
@@ -48,7 +49,7 @@ function ProductImages({ images }: ProductImages) {
                     `}
                     onClick={() => setImageIndex(index)}
                 >
-                    <img
+                    <Image
                         alt={'Product Image'}
                         src={URLS.supabaseStorageUrl + image.media_url}
                     />
@@ -67,7 +68,7 @@ function ProductImages({ images }: ProductImages) {
                         onClick={previousImage}
                     />
                 }
-                <img className="rounded-xl border-muted border-4" src={URLS.supabaseStorageUrl + (images[imageIndex] && images[imageIndex].media_url)} alt={`featured`} />
+                <Image className="rounded-xl border-muted border-4" src={URLS.supabaseStorageUrl + (images[imageIndex] && images[imageIndex].media_url)} alt={`featured`} />
                 {
                     images.length > 1 &&
                     <FaChevronCircleRight 

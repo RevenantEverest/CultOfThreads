@@ -1,18 +1,19 @@
 import type { ProductListing } from '@repo/supabase';
 
+import Link from 'next/link';
+import Image from 'next/image';
 import { FaDollarSign } from 'react-icons/fa6';
 import { motion } from 'motion/react';
 import { Card, CardContent } from '@repo/ui';
 
 import { URLS } from '@@shop/constants';
-import Link from 'next/link';
 
 interface ProductListItemProps {
     product: ProductListing,
     index: number
 };
 
-function ProductListItem({ product, index }: ProductListItemProps) {
+function ProductListItem({ product }: ProductListItemProps) {
 
     const featuredImage = product.product_media && product.product_media[0];
 
@@ -28,7 +29,7 @@ function ProductListItem({ product, index }: ProductListItemProps) {
                         <CardContent className="flex justify-center items-center p-4">
                             {
                                 product.product_media &&
-                                <img 
+                                <Image 
                                     className="rounded-xl"
                                     src={URLS.supabaseStorageUrl + (featuredImage ? featuredImage.media_url : "")} 
                                     alt={product.name}

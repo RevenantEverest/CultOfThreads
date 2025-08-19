@@ -11,7 +11,7 @@ function AuthValidator() {
         if(!auth.user) {
             navigate({ to: "/login" });
         }
-    }, [auth]);
+    }, [auth, navigate]);
 
     useEffect(() => {
         validateAuth();

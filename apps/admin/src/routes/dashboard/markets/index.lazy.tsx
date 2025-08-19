@@ -37,7 +37,7 @@ function Markets() {
         toast((t) => (
             <ToastError toast={t} message={"Error fetching markets"} />
         ));
-    }, [query.isError]);
+    }, [query.isError, query.error]);
 
     return(
         <Layout className="pb-20">

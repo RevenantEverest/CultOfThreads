@@ -6,9 +6,6 @@ import { useQuery } from '@tanstack/react-query';
 
 import { productApi } from '@repo/supabase';
 
-interface ProductListProps {
-};
-
 function ProductList() {
 
     const query = useQuery({

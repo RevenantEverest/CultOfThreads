@@ -56,10 +56,10 @@ function AddProduct() {
                 name: values.name,
                 description: values.description,
                 details: {
-                    market_price: Number(values.market_price) ?? 0,
-                    online_price: Number(values.online_price) ?? 0,
+                    market_price: Number(values.market_price),
+                    online_price: Number(values.online_price),
                     status: values.status as ProductDetailsStatus,
-                    weight_grams: Number(values.weight_grams) ?? 0
+                    weight_grams: Number(values.weight_grams)
                 }            
             };
 
