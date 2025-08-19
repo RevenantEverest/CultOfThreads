@@ -1,8 +1,8 @@
-import type { ProductListing } from '@@shop/api/products';
+import type { ProductListing } from '@repo/supabase';
 
 import { FaDollarSign } from 'react-icons/fa6';
 import { motion } from 'motion/react';
-import { Card, CardContent, CardFooter } from '@repo/ui';
+import { Card, CardContent } from '@repo/ui';
 
 import { URLS } from '@@shop/constants';
 import Link from 'next/link';
@@ -13,6 +13,8 @@ interface ProductListItemProps {
 };
 
 function ProductListItem({ product, index }: ProductListItemProps) {
+
+    const featuredImage = product.product_media && product.product_media[0];
 
     return(
         <Link href={`/shop/${product.id}`}>
@@ -28,7 +30,7 @@ function ProductListItem({ product, index }: ProductListItemProps) {
                                 product.product_media &&
                                 <img 
                                     className="rounded-xl"
-                                    src={URLS.supabaseStorageUrl + product.product_media[0].media_url} 
+                                    src={URLS.supabaseStorageUrl + (featuredImage ? featuredImage.media_url : "")} 
                                     alt={product.name}
                                 />
                             }

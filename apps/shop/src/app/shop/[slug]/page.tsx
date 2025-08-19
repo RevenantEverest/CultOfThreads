@@ -1,5 +1,5 @@
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
-import * as productApi from '@@shop/api/products';
+import { productApi } from '@repo/supabase';
 import { Product } from '@@shop/components/Products';
 import { Layout } from '@@shop/components/Common';
 import Newsletter from '@@shop/components/Newsletter';
@@ -19,7 +19,7 @@ async function SingleProduct({ params }: SingleProductProps) {
     const queryClient = new QueryClient();
     await queryClient.prefetchQuery({
         queryKey: ["products", slug],
-        queryFn: () => productApi.fetchById(slug)
+        queryFn: () => productApi.fetchListingById(slug)
     });
 
     return(

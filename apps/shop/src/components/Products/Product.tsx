@@ -1,7 +1,7 @@
 "use client"
 
 import { useQuery } from '@tanstack/react-query';
-import * as productApi from '@@shop/api/products';
+import { productApi } from '@repo/supabase';
 
 import ProductImages from './ProductImages';
 import ProductDetails from './ProductDetails';
@@ -14,7 +14,7 @@ function Product({ slug }: ProductProps) {
 
     const query = useQuery({
         queryKey: ["products", slug],
-        queryFn: () => productApi.fetchById(slug)
+        queryFn: () => productApi.fetchListingById(slug)
     });
 
     return(

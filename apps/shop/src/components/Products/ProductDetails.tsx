@@ -1,4 +1,4 @@
-import type { ProductDetails as Details } from '@@shop/api/productDetails';
+import type { ProductDetails as Details } from '@repo/supabase';
 
 import { FaShop, FaCartShopping, FaDollarSign } from 'react-icons/fa6';
 import { createSlateEditor, PlateStatic } from 'platejs';

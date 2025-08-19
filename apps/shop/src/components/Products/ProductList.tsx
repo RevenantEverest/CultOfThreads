@@ -1,10 +1,10 @@
 "use client"
 
-import type { ProductListing } from '@@shop/api/products';
+import type { ProductListing } from '@repo/supabase';
 import ProductListItem from './ProductListItem';
 import { useQuery } from '@tanstack/react-query';
 
-import * as productsApi from '@@shop/api/products';
+import { productApi } from '@repo/supabase';
 
 interface ProductListProps {
 };
@@ -13,7 +13,7 @@ function ProductList() {
 
     const query = useQuery({
         queryKey: ["products"],
-        queryFn: productsApi.fetchAll
+        queryFn: productApi.fetchListings
     });
 
     const renderProducts = (products: ProductListing[]) => {

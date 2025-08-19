@@ -1,6 +1,6 @@
 "use client"
 
-import type { ProductMedia } from '@@shop/api/productMedia';
+import type { ProductMedia } from '@repo/supabase';
 
 import { useState } from 'react';
 import { FaChevronCircleRight, FaChevronCircleLeft } from 'react-icons/fa';
@@ -67,7 +67,7 @@ function ProductImages({ images }: ProductImages) {
                         onClick={previousImage}
                     />
                 }
-                <img className="rounded-xl border-muted border-4" src={URLS.supabaseStorageUrl + images[imageIndex].media_url} alt={`featured`} />
+                <img className="rounded-xl border-muted border-4" src={URLS.supabaseStorageUrl + (images[imageIndex] && images[imageIndex].media_url)} alt={`featured`} />
                 {
                     images.length > 1 &&
                     <FaChevronCircleRight 
