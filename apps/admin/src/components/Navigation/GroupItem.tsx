@@ -20,7 +20,7 @@ function GroupItem({ title, url, icon }: GroupItemProps) {
             <SidebarMenuButton asChild>
                 <Link to={url}>
                     <Icon />
-                    <span>{title}</span>
+                    <span className="font-semibold">{title}</span>
                 </Link>
             </SidebarMenuButton>
         </SidebarMenuItem>
