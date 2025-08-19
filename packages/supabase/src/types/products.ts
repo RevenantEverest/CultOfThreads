@@ -1,5 +1,6 @@
 import type { DatabaseItem } from '../supabaseClient.js';
 import type { ProductDetails, CreateProductDetails } from './productDetails.js';
+import type { ProductMedia } from './productMedia.js';
 
 export type Product = DatabaseItem<"products">["Row"];
 export type CreateProduct = DatabaseItem<"products">["Insert"];
@@ -15,4 +16,8 @@ export interface CreateProductParams extends CreateProduct {
 export interface UpdateProductParams extends CreateProduct {
     id: Product["id"],
     details: Omit<ProductDetails, "product_id">
+};
+
+export interface ProductListing extends ProductWithDetails {
+    product_media: ProductMedia[] | null
 };

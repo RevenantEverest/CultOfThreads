@@ -1,7 +1,59 @@
-import type { ProductWithDetails, CreateProductParams, UpdateProductParams } from '../types/products.js';
+import type { 
+    ProductWithDetails, 
+    CreateProductParams, 
+    UpdateProductParams, 
+    ProductListing
+} from '../types/products.js';
 
 import { supabase } from '../supabaseClient.js';
 import * as productDetailsApi from './productDetails.js';
+
+export async function fetchListings(): Promise<ProductListing[]> {
+    const { data, error } = await (
+        supabase.from('products')
+        .select(`
+            *,
+            product_details (
+                *
+            ),
+            product_media (
+                *
+            )
+        `)
+    ).limit(1, { foreignTable: "product_media" });
+
+    if(error) {
+        throw error;
+    }
+
+    return data ?? [];
+};
+
+export async function fetchListingById(id: string): Promise<ProductListing> {
+    const { data, error } = await (
+        supabase.from('products')
+        .select(`
+            *,
+            product_details (
+                *
+            ),
+            product_media (
+                *
+            )
+        `)
+        .eq('id', id)
+    );
+
+    if(error) {
+        throw error;
+    }
+
+    if(!data[0]) {
+        throw new Error("Data is null");
+    }
+
+    return data[0];
+};
 
 export async function fetchAll(): Promise<ProductWithDetails[]> {
     const { data, error } = await (

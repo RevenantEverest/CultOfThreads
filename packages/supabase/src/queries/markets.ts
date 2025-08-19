@@ -118,9 +118,9 @@ export async function destroy(market: MarketWithDetails) {
 };
 
 /* Util Files */
-async function createMarketLogoFile() {
+// async function createMarketLogoFile() {
 
-};
+// };
 
 async function destroyMarketLogoFile(url: string) {
     const { data, error } = await supabase.storage.from('content').remove([url]);
