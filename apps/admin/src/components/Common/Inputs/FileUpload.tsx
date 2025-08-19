@@ -19,7 +19,7 @@ function FileUpload({ limit=0, onChange }: FileUploadProps) {
 
     useEffect(() => {
         onChange(images);
-    }, [images]);
+    }, [images]); // eslint-disable-line
 
     const openFileBrowser = () => {
         if(!ref.current) {
@@ -38,7 +38,7 @@ function FileUpload({ limit=0, onChange }: FileUploadProps) {
             return;
         }
 
-        setImages([...images, ...e.target.files]);
+        setImages([...images, ...Array.from(e.target.files)]);
     };
 
     const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
