@@ -11,7 +11,7 @@ import { useThemeStore } from '@@shop/store/theme';
 import { useScrollPosition } from '@repo/ui/hooks';
 
 import { FaBars } from 'react-icons/fa6';
-import ThemeChanger from '@@shop/components/ThemeChanger/ThemeChanger';
+import { ThemeChanger } from '@repo/ui';
 import MobileNavbar from './MobileNavbar';
 
 import { IMAGE_RESOURCES } from '@repo/ui';
@@ -77,7 +77,7 @@ function Navbar() {
                 >
                     <p className="font-semibold">
                         {
-                            title === "" ? "Home" :
+                            title === "" || !title ? "Home" :
                             title.charAt(0).toUpperCase() + title.slice(1)
                         }
                     </p>
@@ -119,7 +119,7 @@ function Navbar() {
                         {renderRoutes()}
                     </div>
                     <div className="flex-1 hidden md:flex items-center justify-end gap-5">
-                        <ThemeChanger theme={theme} setTheme={setTheme} />
+                        <ThemeChanger currentTheme={theme} setTheme={setTheme} />
                     </div>
                     <div className="md:flex-1 flex items-center justify-end md:hidden">
                         <div className="ml-4 mr-4 flex md:hidden justify-center content-center items-center" onClick={() => setIsMobileOpen(!isMobileOpen)}>

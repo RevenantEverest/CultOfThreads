@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 import { useThemeStore } from '@@shop/store/theme';
 
-import ThemeChanger from '@@shop/components/ThemeChanger/ThemeChanger';
+import { ThemeChanger } from '@repo/ui';
 import _Routes from './_Routes';
 
 interface MobileNavbarProps {
@@ -45,7 +45,7 @@ function MobileNavbar({ isOpen, setIsOpen }: MobileNavbarProps) {
                     >
                         <p className={`font-semibold`}>
                             {
-                                title === "" ? "Home" :
+                                title === "" || !title ? "Home" :
                                 title.charAt(0).toUpperCase() + title.slice(1)
                             }
                         </p>
@@ -69,7 +69,7 @@ function MobileNavbar({ isOpen, setIsOpen }: MobileNavbarProps) {
             </div>
             <div className="flex flex-col gap-6 w-3/6 pl-5 pt-10">
                 <p className="font-semibold">Themes:</p>
-                <ThemeChanger theme={theme} setTheme={setTheme} />
+                <ThemeChanger currentTheme={theme} setTheme={setTheme} />
             </div>
         </motion.div>
     );
