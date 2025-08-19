@@ -3,7 +3,7 @@ name: ESLint
 on: [pull_request]
 
 jobs:
-  client-eslint:
+  eslint:
     runs-on: ubuntu-latest
 
     steps:
