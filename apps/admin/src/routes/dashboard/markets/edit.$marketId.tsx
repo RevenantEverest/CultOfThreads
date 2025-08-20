@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 
@@ -21,6 +21,7 @@ export const Route = createFileRoute('/dashboard/markets/edit/$marketId')({
 function EditMarket() {
 
     const params = Route.useParams();
+    const navigate = useNavigate();
 
     const { data } = useSuspenseQuery({ 
         queryKey: ["markets", params.marketId],
@@ -52,13 +53,17 @@ function EditMarket() {
                 name: values.name,
                 details: {
                     ...data.market_details,
-                    state: values.state
-                }
+                    state: values.state,
+                },
+                created_at: data.created_at,
+                image: values.image
             });
 
             toast((t) => (
                 <ToastSuccess toast={t} message={"Market Updated!"} />
             ));
+
+            navigate({ to: "/dashboard/markets" });
         }
         catch(error) {
             console.error("Mutation Error", error);
@@ -88,6 +93,7 @@ function EditMarket() {
                 <MarketForm
                     type="update"
                     initialValues={initialValues}
+                    logoUrl={data.market_details?.logo_url}
                     onSubmit={onSubmit}
                 />
             </div>
