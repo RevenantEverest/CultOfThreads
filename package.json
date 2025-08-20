@@ -6,7 +6,7 @@
     "rm:npm": "find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +",
     "build": "dotenv -e .env -- turbo run build",
     "dev": "dotenv -e .env -- turbo run dev",
-    "lint": "turbo run lint",
+    "lint": "dotenv -e .env -- turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types",
     "gen:supabase": "bunx supabase gen types typescript --project-id znuzagnhttsgjyddmlrk > packages/supabase/src/database.types.ts"
