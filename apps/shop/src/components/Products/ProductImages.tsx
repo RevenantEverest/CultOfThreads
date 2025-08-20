@@ -51,6 +51,8 @@ function ProductImages({ images }: ProductImages) {
                 >
                     <Image
                         alt={'Product Image'}
+                        height={400}
+                        width={400}
                         src={URLS.supabaseStorageUrl + image.media_url}
                     />
                 </button>
@@ -68,7 +70,13 @@ function ProductImages({ images }: ProductImages) {
                         onClick={previousImage}
                     />
                 }
-                <Image className="rounded-xl border-muted border-4" src={URLS.supabaseStorageUrl + (images[imageIndex] && images[imageIndex].media_url)} alt={`featured`} />
+                <Image 
+                    className="rounded-xl border-muted border-4"
+                    height={1080}
+                    width={1080}
+                    src={URLS.supabaseStorageUrl + (images[imageIndex] && images[imageIndex].media_url)} 
+                    alt={`featured`}
+                />
                 {
                     images.length > 1 &&
                     <FaChevronCircleRight 

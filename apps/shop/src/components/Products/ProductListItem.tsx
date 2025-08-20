@@ -31,6 +31,8 @@ function ProductListItem({ product }: ProductListItemProps) {
                                 product.product_media &&
                                 <Image 
                                     className="rounded-xl"
+                                    height={500}
+                                    width={500}
                                     src={URLS.supabaseStorageUrl + (featuredImage ? featuredImage.media_url : "")} 
                                     alt={product.name}
                                 />
