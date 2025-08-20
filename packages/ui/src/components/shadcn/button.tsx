@@ -29,6 +29,8 @@ const buttonVariants = cva(
                 default: "h-9 px-4 py-2 has-[>svg]:px-3",
                 sm: "h-8 rounded-md gap-1.5 px-8 has-[>svg]:px-2.5",
                 lg: "h-10 rounded-md px-6 has-[>svg]:px-4",
+                xl: "h-12 rounded-md px-8 has-[>svg]:px-6 text-lg",
+                xxl: "h-14 rounded-md px-10 has-[>svg]:px-8 text-xl",
                 icon: "size-9",
             },
             colorScheme: {
@@ -66,7 +68,7 @@ function Button({ className, variant, size, colorScheme, asChild=false, ...props
                         size,
                         className: (
                             (!props.disabled ? " hover:cursor-pointer" : "") +
-                            " font-bold " +
+                            " font-bold relative " +
                             className
                         )
                     }))

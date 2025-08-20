@@ -1,19 +1,23 @@
 "use client"
 
+import type { Theme } from '../../types/theme';
 import { useFormContext } from '../../context/formContext';
-import { Button } from '../shadcn/button';
-import React from 'react';
+import { Button, type ButtonProps } from '../shadcn/button';
+import { BeatLoader } from 'react-spinners';
 
-interface SubscribeButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
-    label: string
+interface SubscribeButtonProps extends ButtonProps {
+    label: string,
+    theme: Theme
 };
 
-function SubscribeButton({ label, className }: SubscribeButtonProps) {
+function SubscribeButton({ label, theme, ...rest }: SubscribeButtonProps) {
     const form = useFormContext();
     return (
         <form.Subscribe selector={(state) => ([state.canSubmit, state.isSubmitting])}>
             {([canSubmit, isSubmitting]) => (
-                <Button disabled={isSubmitting || !canSubmit} className={className}>{label}</Button>
+                <Button disabled={isSubmitting || !canSubmit} {...rest}>
+                    {isSubmitting ? <BeatLoader color={theme.colors.muted} size="11" /> : label }
+                </Button>
             )}
         </form.Subscribe>
     )

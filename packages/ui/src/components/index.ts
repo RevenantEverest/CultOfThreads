@@ -21,6 +21,7 @@ export { default as ThemeIcon } from './themeChanger/ThemeIcon';
 export { default as ThemeValidator } from './themeChanger/ThemeValidator';
 
 /* ShadCN UI */
+export { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './shadcn/accordion';
 export { Avatar, AvatarImage, AvatarFallback } from './shadcn/avatar';
 export { Badge, badgeVariants } from './shadcn/badge';
 export { 
