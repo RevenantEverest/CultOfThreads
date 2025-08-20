@@ -48,7 +48,7 @@ export async function fetchById(id: string): Promise<MarketWithDetails> {
 };
 
 export async function create(marketData: CreateMarketParams) {
-    const marketRes = await (
+    const { data, error } = await (
         supabase.from('markets')
         .insert({
             name: marketData.name
@@ -56,15 +56,15 @@ export async function create(marketData: CreateMarketParams) {
         .select()
     );
 
-    if(marketRes.error) {
-        throw marketRes.error;
+    if(error) {
+        throw error;
     }
 
-    const market = marketRes.data[0];
-
-    if(!market) {
-        throw new Error("Market is null");
+    if(!data[0]) {
+        throw new Error("Data is null");
     }
+
+    const market = data[0];
 
     const marketDetails: CreateMarketDetails = {
         market_id: market.id,
@@ -72,18 +72,8 @@ export async function create(marketData: CreateMarketParams) {
     };
 
     if(marketData.image) {
-        const uuid = uuidGenerator();
-        const bucketPath = `/markets/${market.id}/${uuid}`;
-
-        const fileUpload = await (
-            supabase.storage.from('content').upload(bucketPath, marketData.image)
-        );
-
-        if(fileUpload.error) {
-            throw fileUpload.error;
-        }
-
-        marketDetails.logo_url = fileUpload.data.fullPath;
+        const marketImagePath = await createMarketLogoFile(market.id, marketData.image);
+        marketDetails.logo_url = marketImagePath;
     }
 
     await marketDetailsApi.create(marketDetails);
@@ -97,8 +87,28 @@ export async function update(market: UpdateMarketParams) {
             await destroyMarketLogoFile(market.details?.logo_url);
         }
 
-
+        const marketImagePath = await createMarketLogoFile(market.id, market.image);
+        market.details.logo_url = marketImagePath;
     }
+
+    const { data, error } = await supabase.from('markets').update({
+        name: market.name
+    }).eq("id", market.id).select();
+
+    if(error) {
+        throw error;
+    }
+
+    if(!data) {
+        throw new Error("Data is null");
+    }
+
+    await marketDetailsApi.update({
+        ...market.details,
+        market_id: market.id,
+    });
+
+    return data[0];
 };
 
 export async function destroy(market: MarketWithDetails) {
@@ -117,16 +127,41 @@ export async function destroy(market: MarketWithDetails) {
     return data;
 };
 
-/* Util Files */
-// async function createMarketLogoFile() {
+/* 
+    Util Files 
+*/
+async function createMarketLogoFile(marketId: string, image: File) {
+    const uuid = uuidGenerator();
+    const fileExtension = image.type.split("/")[1];
+    const bucketPath = `/markets/${marketId}/${uuid}.${fileExtension}`;
 
-// };
+    const fileUpload = await (
+        supabase.storage.from('content').upload(bucketPath, image)
+    );
+
+    if(fileUpload.error) {
+        throw fileUpload.error;
+    }
+
+    return fileUpload.data.fullPath;
+};
 
 async function destroyMarketLogoFile(url: string) {
-    const { data, error } = await supabase.storage.from('content').remove([url]);
+
+    const path = url.split("content/")[1];
+
+    if(!path) {
+        throw new Error("Path is invalid");
+    }
+
+    const { data, error } = await supabase.storage.from('content').remove([path]);
 
     if(error) {
         throw error;
+    }
+
+    if(!data) {
+        throw new Error("Market image is missing");
     }
 
     return data[0];

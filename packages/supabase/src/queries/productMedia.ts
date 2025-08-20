@@ -17,7 +17,8 @@ export async function getByProductId(productId: Product["id"]) {
 export async function create({ productId, file }: CreateProductMedia) {
     const uuid = uuidGenerator();
 
-    const bucketPath = `/products/${productId}/${uuid}`;
+    const fileExtension = file.type.split("/")[1];
+    const bucketPath = `/products/${productId}/${uuid}.${fileExtension}`;
     const fileUpload = await supabase.storage.from('content').upload(bucketPath, file);    
     
     if(fileUpload.error) {
@@ -39,7 +40,13 @@ export async function create({ productId, file }: CreateProductMedia) {
 
 export async function destroy(productMedia: ProductMedia) {
     if(productMedia.media_url) {
-        const fileDelete = await supabase.storage.from('content').remove([productMedia.media_url]);
+        const path = productMedia.media_url.split("content/")[1];
+
+        if(!path) {
+            throw new Error("Path is invalid");
+        }
+
+        const fileDelete = await supabase.storage.from('content').remove([path]);
 
         if(fileDelete.error) {
             throw fileDelete.error;

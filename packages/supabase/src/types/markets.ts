@@ -12,7 +12,7 @@ export interface CreateMarketParams extends CreateMarket {
     image?: File
 };
 
-export interface UpdateMarketParams extends CreateMarket {
+export interface UpdateMarketParams extends Market {
     details: Omit<MarketDetails, "market_id">,
     image?: File
 };
