@@ -2,9 +2,10 @@ import type { Market, MarketDetails } from '@repo/supabase';
 
 import { Card, CardContent } from '@repo/ui';
 import { useAppForm } from '@repo/ui/hooks';
-import { FileUpload } from '@@admin/components/Common';
+import { FileUpload, StateSelect } from '@@admin/components/Common';
 
 import { useThemeStore } from '@@admin/store/theme';
+import { supabaseStorageUrl } from '@@admin/constants/urls';
 
 type MarketFormType = "create" | "update";
 
@@ -31,16 +32,18 @@ export interface MarketFormValues extends MarketValues {
 export interface MarketFormProps {
     type: MarketFormType,
     initialValues: MarketFormValues,
-    onSubmit: (values: MarketFormValues) => void,
+    logoUrl?: string | null,
+    onSubmit: (values: MarketFormValues) => Promise<void>,
 };
 
-function MarketForm({ type, initialValues, onSubmit }: MarketFormProps) {
+function MarketForm({ type, initialValues, logoUrl, onSubmit }: MarketFormProps) {
 
     const theme = useThemeStore((state) => state.theme);
+
     const form = useAppForm({
         defaultValues: initialValues,
         onSubmit: async ({ value }) => {
-            onSubmit(value);
+            await onSubmit(value);
         }
     });
 
@@ -56,8 +59,18 @@ function MarketForm({ type, initialValues, onSubmit }: MarketFormProps) {
         >
             <form.AppForm>
                 <Card>
-                    <CardContent className="py-8 flex flex-col gap-5">
-                        <div className="w-full">
+                    <CardContent className="py-8 flex gap-5">
+                        {
+                            logoUrl && 
+                            <div className="h-35 w-35 overflow-hidden">
+                                <img 
+                                    className="relative object-cover w-full h-full rounded-lg border-card-light border-4"
+                                    src={`${supabaseStorageUrl}/${logoUrl}`} 
+                                    alt={initialValues.name}
+                                />
+                            </div>
+                        }
+                        <div className="w-full flex-1">
                             <form.AppField
                                 name="name"
                                 validators={{
@@ -70,8 +83,8 @@ function MarketForm({ type, initialValues, onSubmit }: MarketFormProps) {
                                 )}
                             />
                         </div>
-                        <div className="w-full">
-                            <form.AppField
+                        <div className="">
+                            <form.Field
                                 name="state"
                                 validators={{
                                     onChange: ({ value }) => (
@@ -79,7 +92,7 @@ function MarketForm({ type, initialValues, onSubmit }: MarketFormProps) {
                                     )
                                 }}
                                 children={(field) => (
-                                    <field.TextField label="State" type="text" theme={theme} />
+                                    <StateSelect value={field.state.value} onChange={(value) => field.handleChange(value)} />
                                 )}
                             />
                         </div>
@@ -104,6 +117,7 @@ function MarketForm({ type, initialValues, onSubmit }: MarketFormProps) {
                 </Card>
                 <div className="flex justify-end">
                     <form.SubscribeField 
+                        theme={theme}
                         label={type.charAt(0).toUpperCase() + type.substring(1)} 
                         className="bg-primary px-10"
                     />

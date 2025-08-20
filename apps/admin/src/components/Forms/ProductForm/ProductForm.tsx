@@ -41,9 +41,9 @@ export interface ProductFormValues extends ProductValues {
 export interface ProductFormProps {
     type: ProductFormType,
     initialValues: ProductFormValues,
-    onSubmit: (values: ProductFormValues) => void,
+    onSubmit: (values: ProductFormValues) => Promise<void>,
     productImages?: ProductMedia[],
-    onRemoveImage?: (image: ProductMedia) => void
+    onRemoveImage?: (image: ProductMedia) => Promise<void>
 };
 
 function ProductForm({ type, initialValues, productImages, onSubmit, onRemoveImage }: ProductFormProps) {
@@ -52,7 +52,7 @@ function ProductForm({ type, initialValues, productImages, onSubmit, onRemoveIma
     const form = useAppForm({
         defaultValues: initialValues,
         onSubmit: async ({ value }) => {
-            onSubmit(value);
+            await onSubmit(value);
         }
     });
 
@@ -190,7 +190,8 @@ function ProductForm({ type, initialValues, productImages, onSubmit, onRemoveIma
                     </CardContent>
                 </Card>
                 <div className="flex justify-end">
-                    <form.SubscribeField 
+                    <form.SubscribeField
+                        theme={theme}
                         label={type.charAt(0).toUpperCase() + type.substring(1)} 
                         className="bg-primary px-10"
                     />

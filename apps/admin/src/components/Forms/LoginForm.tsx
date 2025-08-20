@@ -98,7 +98,7 @@ function LoginForm() {
                             </div>
                         </div>
                         <div>
-                            <form.SubscribeField label="Login" className="px-10" />
+                            <form.SubscribeField theme={theme} label="Login" className="px-10" />
                         </div>
                     </form.AppForm>
                 </form>

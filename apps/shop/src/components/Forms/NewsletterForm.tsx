@@ -97,7 +97,7 @@ function NewsletterForm() {
                                 />
                             </div>
                         </div>
-                        <form.SubscribeField label="Subscribe" className="w-full bg-secondary !text-card" />
+                        <form.SubscribeField theme={theme} label="Subscribe" className="w-full py-5.5 text-md !text-card" />
                     </form.AppForm>
                 </form>
             </CardContent>
