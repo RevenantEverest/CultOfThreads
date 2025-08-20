@@ -6,6 +6,7 @@ import Newsletter from '@@shop/components/Newsletter';
 
 import { IMAGE_RESOURCES } from '@repo/ui';
 import Image from 'next/image';
+import { FAQ } from '@@shop/components/FAQ';
 
 function Home() {
     return (
@@ -18,17 +19,18 @@ function Home() {
                             Where Cuteness Meets the Creeps — Discover handmade horror plushies that blend spooky 
                             vibes with an irresistibly adorable twist. Perfect for collectors, horror fans, and anyone who loves the strange and sweet.
                         </p>
-                        <Button size="lg" className="rounded-full text-white bg-secondary">
+                        <Button size="xxl" className="rounded-full text-white bg-primary">
                             Shop Now
                         </Button>
                     </div>
                     <div className="order-1 md:order-2 md:flex-1 flex items-center justify-center">
-                        <Image className="w-full" src={IMAGE_RESOURCES.LOGO_LANDSCAPE} alt="logo" />
+                        <Image width={800} height={800} className="w-full" src={IMAGE_RESOURCES.LOGO_LANDSCAPE} alt="logo" />
                     </div>
                 </div>
             </PageHeader>
-            <Layout main transparent className="lg:px-96 !pt-4 pb-10 md:pb-0">
+            <Layout main transparent className="lg:px-96 !pt-4 pb-10 md:pb-20 gap-10 md:gap-50">
                 <Highlights />
+                <FAQ />
             </Layout>
             <Newsletter className="w-full bg-card z-20 relative py-20 md:px-56" />
         </React.Fragment>
