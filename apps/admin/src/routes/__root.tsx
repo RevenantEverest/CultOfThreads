@@ -3,6 +3,7 @@ import { createRootRouteWithContext, Outlet } from '@tanstack/react-router';
 import { QueryClient } from '@tanstack/react-query';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import { Toaster } from 'react-hot-toast';
+import { SidebarProvider } from '@repo/ui';
 
 import AuthValidator from '@@admin/components/Auth/AuthValidator';
 import ThemeHandler from '@@admin/components/ThemeHandler';
@@ -21,7 +22,9 @@ function Root() {
 
     return(
         <React.Fragment>
-            <Outlet />
+            <SidebarProvider defaultOpen={true}>
+                <Outlet />
+            </SidebarProvider>
             <AuthValidator />
             <ThemeHandler />
             <Toaster 
