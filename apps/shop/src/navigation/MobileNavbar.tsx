@@ -27,27 +27,22 @@ function MobileNavbar({ isOpen, setIsOpen }: MobileNavbarProps) {
 
     const renderRoutes = () => {
         return _Routes.map((route, index) => {
-            const title = route.pathname.split("/")[1];
-            const isActiveLink = title === currentPathname.split("/")[1];
+            const isActiveLink = currentPathname.split("/")[1] === route.pathname.split("/")[1];
 
             return(
                 <div
-                    className={`py-4`}
-                    key={`mobile-navbar-route-${title}-${index}`} 
+                    className={`py-2 px-2 rounded-xl w-full text-center ${isActiveLink && " bg-primary/80 text-text"}`}
+                    key={`mobile-navbar-route-${route.title}-${index}`} 
                     onClick={() => setIsOpen(!isOpen)}
                 >
                     <Link 
                         href={route.pathname}
                         className={`
                             hover:bg-secondary/10 hover:cursor-pointer w-20 rounded-md text-lg 
-                            ${isActiveLink && "bg-primary"}
                         `}
                     >
                         <p className={`font-semibold`}>
-                            {
-                                title === "" || !title ? "Home" :
-                                title.charAt(0).toUpperCase() + title.slice(1)
-                            }
+                            {route.title}
                         </p>
                     </Link>
                 </div>
@@ -64,7 +59,7 @@ function MobileNavbar({ isOpen, setIsOpen }: MobileNavbarProps) {
             exit={exit} 
             transition={transition}
         >
-            <div className="flex flex-col px-5 mt-10">
+            <div className="flex flex-col px-5 mt-10 items-center justify-center">
                 {renderRoutes()}
             </div>
             <div className="flex flex-col gap-6 w-3/6 pl-5 pt-10">

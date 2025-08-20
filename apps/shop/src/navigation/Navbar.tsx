@@ -63,23 +63,19 @@ function Navbar() {
 
     const renderRoutes = () => {
         return _Routes.map((route, index) => {
-            const title = route.pathname.split("/")[1];
-            const isActiveLink = title === currentPathname.split("/")[1];
+            const isActiveLink = currentPathname.split("/")[1] === route.pathname.split("/")[1];
 
             return(
                 <Link 
                     href={route.pathname}
-                    key={`navbar-route-${title}-${index}`} 
+                    key={`navbar-route-${route.title}-${index}`} 
                     className={`
                         hover:bg-primary hover:cursor-pointer w-20 rounded-md text-center py-1
                         ${isActiveLink && " bg-primary"}
                     `}
                 >
                     <p className="font-semibold">
-                        {
-                            title === "" || !title ? "Home" :
-                            title.charAt(0).toUpperCase() + title.slice(1)
-                        }
+                        {route.title}
                     </p>
                 </Link>
             );
