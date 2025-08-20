@@ -27,9 +27,7 @@ function Layout({ className, main, transparent, children, ...rest }: React.Props
             `}
             {...rest}
         >
-            <div className="z-20 w-full">
-                {children}
-            </div>
+            {children}
         </div>
     );
 };
