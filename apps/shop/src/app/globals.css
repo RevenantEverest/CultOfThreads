@@ -12,6 +12,10 @@
   url("https://db.onlinewebfonts.com/t/90ac0d0bd7175a62627d2742f2d24311.svg#BeachBarScript-Heavy")format("svg");
 }
 
+@theme {
+  --font-beach: var(--font-beach);
+}
+
 :root {
   --font-beach: 'BeachBarScript-Heavy', sans-serif;
 }
