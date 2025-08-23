@@ -1,7 +1,8 @@
-import { useAppForm } from '@repo/ui/hooks';
+import React from 'react';
 import { useNavigate } from '@tanstack/react-router';
 import { toast } from 'react-hot-toast';
 
+import { useAppForm } from '@repo/ui/hooks';
 import { supabase } from '@repo/supabase';
 
 import { Card, CardContent, ToastError } from '@repo/ui';
@@ -14,7 +15,7 @@ export interface LoginFormValues {
     password: string
 };
 
-function LoginForm() {
+function LoginForm({ className, ...rest }: React.HTMLAttributes<HTMLDivElement>) {
 
     const theme = useThemeStore((state) => state.theme);
     const login = useAuthStore((state) => state.login);
@@ -66,7 +67,7 @@ function LoginForm() {
     });
 
     return(
-        <Card className="w-full">
+        <Card className={`w-full ${className}`} {...rest}>
             <CardContent className="py-8">
                 <h1 className="text-center font-bold text-4xl mb-10">Login</h1>
                 <form
