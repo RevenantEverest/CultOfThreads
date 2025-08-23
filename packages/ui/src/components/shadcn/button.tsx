@@ -37,6 +37,8 @@ const buttonVariants = cva(
                 "primary": "border-primary bg-primary hover:bg-primary/80",
                 "secondary": "border-secondary bg-secondary hover:bg-secondary/80",
                 "accent": "border-accent bg-accent hover:bg-accent/80",
+                "card": "border-card bg-card hover:bg-card/80",
+                "cardLight": "border-card-light bg-card-light hover:bg-card-light/80",
                 "gradient": "bg-gradient-to-tr from-primary to-accent"
             }
         },

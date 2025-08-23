@@ -42,6 +42,7 @@ export {
     CardContent,
     CardFooter
 } from './shadcn/card';
+export { Calendar, CalendarDayButton } from './shadcn/calendar';
 export { Collapsible, CollapsibleTrigger, CollapsibleContent } from './shadcn/collapsible';
 export {
   Dialog,
@@ -73,6 +74,8 @@ export {
     DropdownMenuSubContent
 } from './shadcn/dropdown-menu';
 export { Input } from './shadcn/input';
+export { Label } from './shadcn/label';
+export { Popover, PopoverTrigger, PopoverContent, PopoverAnchor } from './shadcn/popover';
 export {
   Select,
   SelectContent,
@@ -134,6 +137,7 @@ export {
     TableCell,
     TableCaption,
 } from './shadcn/table';
+export { Tabs, TabsList, TabsTrigger, TabsContent } from './shadcn/tabs';
 export { 
     Tooltip, 
     TooltipTrigger, 
