@@ -22,14 +22,16 @@ function MarketListItem({ market }: MarketListItemProps) {
     return(
         <TableRow className="border-b-muted font-semibold">
             <TableCell className={`${cellClass}`}>
-                {
-                    market.market_details?.logo_url &&
-                    <img 
-                        className="w-18 rounded-lg"
-                        src={`${URLS.supabaseStorageUrl}/${market.market_details.logo_url}`} 
-                        alt={market.name}
-                    />
-                }
+                <div className="w-24 h-24 flex overflow-hidden">
+                    {
+                        market.market_details?.logo_url &&
+                        <img 
+                            className="shrink-0 relative object-cover w-full h-full rounded-lg"
+                            src={`${URLS.supabaseStorageUrl}/${market.market_details.logo_url}`} 
+                            alt={market.name}
+                        />
+                    }
+                </div>
             </TableCell>
             <TableCell className={`${cellClass}`}>
                 <Link to="/dashboard/markets/edit/$marketId" params={{ marketId: market.id.toString() }}>
@@ -41,13 +43,15 @@ function MarketListItem({ market }: MarketListItemProps) {
                     <p>{market.market_details?.state}</p>
                 </div>
             </TableCell>
-            <TableCell className={`${cellClass} text-right flex items-center justify-end gap-2`}>
-                <Link to={`/dashboard/markets/edit/$marketId`} params={{ marketId: market.id.toString() }}>
-                    <Button size="icon" className="relative">
-                        <FaPencil />
-                    </Button>
-                </Link>
-                <RemoveMarket market={market} />
+            <TableCell className={`${cellClass}`}>
+                <div className="h-full w-full flex items-center justify-end gap-2">
+                    <Link to={`/dashboard/markets/edit/$marketId`} params={{ marketId: market.id.toString() }}>
+                        <Button size="icon" className="relative">
+                            <FaPencil />
+                        </Button>
+                    </Link>
+                    <RemoveMarket market={market} />
+                </div>
             </TableCell>
         </TableRow>
     );
