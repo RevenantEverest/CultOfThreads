@@ -1,16 +1,14 @@
 import { createLazyFileRoute } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 
-import { TailSpin } from 'react-loader-spinner';
+import { BeatLoader } from 'react-spinners';
 import { useQuery } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 
 import { Layout, Breadcrumb } from '@@admin/components/Common';
-import {
-    ToastError 
-} from '@repo/ui';
+import { ToastError } from '@repo/ui';
 
-import { AddProduct, ProductsList } from '@@admin/components/Products';
+import { AddProduct, ProductsList, ProductSettingsButton } from '@@admin/components/Products';
 import { useThemeStore } from '@@admin/store/theme';
 import Search from '@@admin/components/Search';
 
@@ -52,20 +50,17 @@ function DashboardProducts() {
                     <div className="w-full">
                         <Search setSearch={setSearch} />
                     </div>
-                    <div className="flex w-full justify-end">
+                    <div className="flex gap-2 w-full justify-end">
                         <AddProduct />
+                        <ProductSettingsButton />
                     </div>
                 </div>
                 {
                     query.isLoading ?
-                    <TailSpin
-                        visible={true}
-                        height="40"
-                        width="40"
+                    <BeatLoader
+                        className="flex flex-1 items-center justify-center mt-10"
+                        size={15}
                         color={theme.colors.primary}
-                        ariaLabel="tail-spin-loading"
-                        radius="1"
-                        wrapperClass="flex flex-1 items-center justify-center"
                     />
                     :
                     <ProductsList search={search} products={query.data ?? []} />

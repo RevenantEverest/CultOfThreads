@@ -2,7 +2,7 @@ import { createLazyFileRoute } from '@tanstack/react-router';
 
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { TailSpin } from 'react-loader-spinner';
+import { BeatLoader } from 'react-spinners';
 import toast from 'react-hot-toast';
 
 import {
@@ -61,14 +61,10 @@ function Markets() {
                 </div>
                 {
                     query.isLoading ?
-                    <TailSpin
-                        visible={true}
-                        height="40"
-                        width="40"
+                    <BeatLoader
+                        className="flex flex-1 items-center justify-center mt-10"
+                        size={15}
                         color={theme.colors.primary}
-                        ariaLabel="tail-spin-loading"
-                        radius="1"
-                        wrapperClass="flex flex-1 items-center justify-center"
                     />
                     :
                     <MarketList search={search} markets={query.data ?? []} />
