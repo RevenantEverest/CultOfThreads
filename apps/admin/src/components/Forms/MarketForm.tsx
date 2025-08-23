@@ -102,10 +102,6 @@ function MarketForm({ type, initialValues, logoUrl, onSubmit }: MarketFormProps)
                     <CardContent className="py-8 flex flex-col gap-10">
                     <p className="font-bold">Media</p>
                     <div className="flex flex-col gap-12">
-                        {/* {
-                            (productImages && productImages.length > 0 && onRemoveImage) &&
-                            <ProductImages images={productImages} onRemoveImage={onRemoveImage} /> 
-                        } */}
                         <form.Field
                             name="image"
                             children={(field) => (
