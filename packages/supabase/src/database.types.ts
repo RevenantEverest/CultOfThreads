@@ -66,7 +66,8 @@ export type Database = {
         Row: {
           address: string
           created_at: string
-          date: string
+          date_from: string
+          date_to: string | null
           flyer_url: string
           id: string
           market_id: string
@@ -74,7 +75,8 @@ export type Database = {
         Insert: {
           address: string
           created_at?: string
-          date: string
+          date_from: string
+          date_to?: string | null
           flyer_url: string
           id?: string
           market_id: string
@@ -82,7 +84,8 @@ export type Database = {
         Update: {
           address?: string
           created_at?: string
-          date?: string
+          date_from?: string
+          date_to?: string | null
           flyer_url?: string
           id?: string
           market_id?: string
@@ -414,10 +417,6 @@ export type Database = {
     Functions: {
       is_admin: {
         Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-      log_and_return_true: {
-        Args: { user_id: string }
         Returns: boolean
       }
     }
