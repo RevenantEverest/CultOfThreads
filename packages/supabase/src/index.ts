@@ -16,3 +16,6 @@ export * from './types/markets.js';
 
 export * as marketDetailsApi from './queries/marketDetails.js';
 export * from './types/marketDetails.js';
+
+export * as eventsApi from './queries/events.js';
+export * from './types/events.js';
