@@ -1,5 +1,10 @@
-import { SelectTrigger, SelectValue } from '@radix-ui/react-select';
-import { Select, SelectContent, SelectItem } from '@repo/ui';
+import { 
+    Select, 
+    SelectContent, 
+    SelectItem, 
+    SelectTrigger, 
+    SelectValue 
+} from '@repo/ui';
 
 interface StateItem {
     state: string,
@@ -84,7 +89,7 @@ function StateSelect({ value, onChange }: StateSelectProps) {
                 <SelectTrigger className="bg-card-light px-2.5 py-2.5 rounded-md font-semibold text-sm w-40">
                     <SelectValue placeholder="Choose A State" />
                 </SelectTrigger>
-                <SelectContent className="border-card font-semibold">
+                <SelectContent className="font-semibold">
                     {renderStates()}
                 </SelectContent>
             </Select>
