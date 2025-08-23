@@ -71,13 +71,14 @@ function RemoveMarket({ market }: RemoveMarketProps) {
                                 duration: .5
                             }}
                         >
-                            <Card className="px-10">
+                            <Card className="px-5">
                                 <CardContent className="py-8 flex flex-col gap-8">
                                     <DialogClose className="absolute right-5 top-5 hover:cursor-pointer hover:text-primary hover:bg-card-light duration-150 p-1 rounded-full">
                                         <FaTimes />
                                     </DialogClose>
                                     <DialogTitle className="text-center text-xl">
                                         Are you sure you want to delete 
+                                        <br />
                                         <span className="text-primary font-bold ml-1">{market.name}</span>?
                                     </DialogTitle>
                                     <div className="flex gap-2 items-center justify-center">
@@ -85,7 +86,7 @@ function RemoveMarket({ market }: RemoveMarketProps) {
                                             Yes, delete
                                         </Button>
                                         <DialogClose asChild>
-                                            <Button className="text-primary bg-transparent border-1 hover:bg-primary hover:text-black">
+                                            <Button variant="outline">
                                                 No, close
                                             </Button>
                                         </DialogClose>
