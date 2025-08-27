@@ -15,7 +15,7 @@ interface ProductListItemProps {
 
 function ProductListItem({ product }: ProductListItemProps) {
 
-    const featuredImage = product.product_media && product.product_media[0];
+    const featuredImage = product.media && product.media[0];
 
     return(
         <Link href={`/shop/${product.id}`}>
@@ -28,7 +28,7 @@ function ProductListItem({ product }: ProductListItemProps) {
                     <Card className="w-80 border-muted/20">
                         <CardContent className="flex justify-center items-center p-4">
                             {
-                                product.product_media &&
+                                product.media &&
                                 <Image 
                                     className="rounded-xl"
                                     height={500}
@@ -44,7 +44,7 @@ function ProductListItem({ product }: ProductListItemProps) {
                         <div className="flex items-center -ml-1">
                             <FaDollarSign className="text-primary text-lg" />
                             <p className="font-semibold">
-                                {product.product_details?.online_price}
+                                {product.details?.online_price}
                             </p>
                         </div>
                     </div>

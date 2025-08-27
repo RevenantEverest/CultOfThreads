@@ -21,17 +21,17 @@ function Product({ slug }: ProductProps) {
         <div className="flex flex-col md:flex-row gap-10">
             <div className="flex-1">
                 {
-                    (query.data && query.data.product_media) && 
-                    <ProductImages images={query.data.product_media} />
+                    (query.data && query.data.media) && 
+                    <ProductImages images={query.data.media} />
                 }
             </div>
             <div className="flex-1">
                 {
-                    (query.data && query.data.product_details) &&
+                    (query.data && query.data.details) &&
                     <ProductDetails 
                         name={query.data.name} 
                         description={query.data.description?.toString()}
-                        details={query.data.product_details}
+                        details={query.data.details}
                     />
                 }
             </div>

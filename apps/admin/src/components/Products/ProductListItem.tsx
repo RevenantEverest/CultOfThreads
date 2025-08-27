@@ -29,21 +29,21 @@ function ProductListItem({ product }: ProductListItemProps) {
             <TableCell className={`${cellClass}`}>
                 <div className="flex items-center gap-1 justify-center">
                     {
-                        product?.product_details?.status && 
-                        <StatusBadge status={product.product_details.status as ProductDetailsStatus} />
+                        product?.details?.status && 
+                        <StatusBadge status={product.details.status as ProductDetailsStatus} />
                     }
                 </div>
             </TableCell>
             <TableCell className={`${cellClass}`}>
                 <div className="flex items-center gap-1 justify-center">
                     <FaDollarSign className="text-primary" />
-                    <p>{product?.product_details?.online_price ?? 0}</p>
+                    <p>{product?.details?.online_price ?? 0}</p>
                 </div>
             </TableCell>
             <TableCell className={`${cellClass}`}>
                 <div className="flex items-center gap-1 justify-center">
                     <FaDollarSign className="text-primary" />
-                    <p>{product?.product_details?.market_price ?? 0}</p>
+                    <p>{product?.details?.market_price ?? 0}</p>
                 </div>
             </TableCell>
             <TableCell className={`${cellClass} text-right flex items-end justify-end gap-2`}>

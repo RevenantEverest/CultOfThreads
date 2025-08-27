@@ -1,12 +1,14 @@
 import type { DatabaseItem } from '../supabaseClient.js';
+import { ProductCategoryFull } from './productCategories.js';
 import type { ProductDetails, CreateProductDetails } from './productDetails.js';
 import type { ProductMedia } from './productMedia.js';
+import { ProductTagFull } from './productTags.js';
 
 export type Product = DatabaseItem<"products">["Row"];
 export type CreateProduct = DatabaseItem<"products">["Insert"];
 
 export interface ProductWithDetails extends Product {
-    product_details: ProductDetails | null
+    details: ProductDetails | null
 };
 
 export interface CreateProductParams extends CreateProduct {
@@ -19,5 +21,7 @@ export interface UpdateProductParams extends CreateProduct {
 };
 
 export interface ProductListing extends ProductWithDetails {
-    product_media: ProductMedia[] | null
+    media: ProductMedia[] | null,
+    categories: ProductCategoryFull[] | null,
+    tags: ProductTagFull[] | null
 };

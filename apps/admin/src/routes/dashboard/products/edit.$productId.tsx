@@ -66,29 +66,29 @@ function EditProduct() {
     const initialValues: ProductFormValues = {
         name: data.name ?? "",
         description: data.description as string ?? "",
-        market_price: data?.product_details?.market_price?.toString() ?? "0",
-        online_price: data?.product_details?.online_price?.toString() ?? "0",
-        weight_grams: data?.product_details?.weight_grams?.toString() ?? "0",
-        status: data?.product_details?.status ?? "",
-        etsy_listing: data?.product_details?.etsy_listing ?? "",
+        market_price: data?.details?.market_price?.toString() ?? "0",
+        online_price: data?.details?.online_price?.toString() ?? "0",
+        weight_grams: data?.details?.weight_grams?.toString() ?? "0",
+        status: data?.details?.status ?? "",
+        etsy_listing: data?.details?.etsy_listing ?? "",
         images: []
     };
 
     const onSubmit = async (values: ProductFormValues) => {
-        if(!data.product_details) return;
+        if(!data.details) return;
 
         const productData: UpdateProductParams = {
             id: data.id,
             name: values.name,
             description: values.description,
             details: {
-                id: data.product_details.id,
+                id: data.details.id,
                 market_price: Number(values.market_price),
                 online_price: Number(values.online_price),
                 status: values.status,
                 weight_grams: Number(values.weight_grams),
                 etsy_listing: values.etsy_listing,
-                created_at: data.product_details.created_at
+                created_at: data.details.created_at
             }
         };
 
@@ -143,8 +143,8 @@ function EditProduct() {
                         {data.name}
                     </h1>
                     {
-                        data.product_details?.status &&
-                        <StatusBadge size="md" status={data.product_details.status as ProductDetailsStatus} />
+                        data.details?.status &&
+                        <StatusBadge size="md" status={data.details.status as ProductDetailsStatus} />
                     }
                 </div>
                 <Breadcrumb

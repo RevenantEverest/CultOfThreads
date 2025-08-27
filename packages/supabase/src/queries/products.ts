@@ -13,11 +13,23 @@ export async function fetchListings(): Promise<ProductListing[]> {
         supabase.from('products')
         .select(`
             *,
-            product_details (
+            details:product_details (
                 *
             ),
-            product_media (
+            media:product_media (
                 *
+            ),
+            categories:product_categories (
+                *,
+                category:categories (
+                    *
+                )
+            ),
+            tags:product_tags (
+                *,
+                tag:tags (
+                    *
+                )
             )
         `)
     ).limit(1, { foreignTable: "product_media" });
@@ -34,11 +46,23 @@ export async function fetchListingById(id: string): Promise<ProductListing> {
         supabase.from('products')
         .select(`
             *,
-            product_details (
+            details:product_details (
                 *
             ),
-            product_media (
+            media:product_media (
                 *
+            ),
+            categories:product_categories (
+                *,
+                category:categories (
+                    *
+                )
+            ),
+            tags:product_tags (
+                *,
+                tag:tags (
+                    *
+                )
             )
         `)
         .eq('id', id)
@@ -60,7 +84,7 @@ export async function fetchAll(): Promise<ProductWithDetails[]> {
         supabase.from('products')
         .select(`
             *,
-            product_details (
+            details:product_details (
                 *
             )
         `)
@@ -78,7 +102,7 @@ export async function fetchById(id: string): Promise<ProductWithDetails> {
         supabase.from('products')
         .select(`
             *,
-            product_details (
+            details:product_details (
                 *
             )    
         `)
