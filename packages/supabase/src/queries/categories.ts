@@ -51,11 +51,11 @@ export async function create(categoryData: CreateCategory): Promise<Category> {
     return data[0];
 };
 
-export async function update(categoryData: CreateCategory): Promise<Category> {
+export async function update(categoryData: Category): Promise<Category> {
     const { data, error } = await (
         supabase.from("categories").update({
             name: categoryData.name
-        }).select()
+        }).eq("id", categoryData.id).select()
     );
 
     if(error) {
