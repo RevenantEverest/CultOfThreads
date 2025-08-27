@@ -2,6 +2,7 @@ import { createLazyFileRoute } from '@tanstack/react-router';
 
 import { Layout, Breadcrumb } from '@@admin/components/Common';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@repo/ui';
+import { CategoryContainer } from '@@admin/containers';
 
 export const Route = createLazyFileRoute('/dashboard/products/settings/')({
     component: ProductSettings,
@@ -27,6 +28,7 @@ function ProductSettings() {
                         <TabsTrigger value="tags">Tags</TabsTrigger>
                     </TabsList>
                     <TabsContent value="categories">
+                        <CategoryContainer />
                     </TabsContent>
                     <TabsContent value="categories">
                     </TabsContent>
