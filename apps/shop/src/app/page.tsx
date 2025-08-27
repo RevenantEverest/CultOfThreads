@@ -1,12 +1,29 @@
 import React from 'react';
+import { Metadata } from 'next';
 import { Button } from '@repo/ui';
 import { PageHeader, Layout } from '@@shop/components/Common';
 import { Highlights } from '@@shop/components/Homepage';
+import { FAQ } from '@@shop/components/FAQ';
 import Newsletter from '@@shop/components/Newsletter';
 
 import { IMAGE_RESOURCES } from '@repo/ui';
 import Image from 'next/image';
-import { FAQ } from '@@shop/components/FAQ';
+
+export async function generateMetadata(): Promise<Metadata> {
+    return {
+        title: "Cult of Threads",
+        description: `
+            Discover unique handmade crochet goods and creepy plush horror characters. Explore our collection for quirky gifts, spooky décor, and one-of-a-kind creations
+        `,
+        openGraph: {
+            siteName: "Cult of Threads | Handmade Crochet Plushies",
+            images: IMAGE_RESOURCES.OPEN_GRAPH
+        },
+        twitter: {
+            images: IMAGE_RESOURCES.TWITTER_META
+        }
+    };
+};
 
 function Home() {
     return (
