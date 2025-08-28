@@ -22,7 +22,7 @@ function DashboardProducts() {
 
     const theme = useThemeStore((state) => state.theme);
 
-    const query = useQuery({ queryKey: ['products'], queryFn: productApi.fetchAll });
+    const query = useQuery({ queryKey: ['products'], queryFn: productApi.fetchListings });
     const [search, setSearch] = useState("");
 
     useEffect(() => {

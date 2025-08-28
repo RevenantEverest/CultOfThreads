@@ -1,4 +1,4 @@
-import type { ProductWithDetails } from '@repo/supabase';
+import type { ProductListing } from '@repo/supabase';
 
 import {
     Card,
@@ -13,7 +13,7 @@ import ProductListItem from './ProductListItem';
 
 interface ProductsListProps {
     search?: string,
-    products: ProductWithDetails[]
+    products: ProductListing[]
 };
 
 function ProductsList({ search, products }: ProductsListProps) {
