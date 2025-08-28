@@ -11,7 +11,7 @@ export async function fetchAll(): Promise<MarketWithDetails[]> {
         supabase.from('markets')
         .select(`
             *,
-            market_details (
+            details:market_details (
                 *
             )
         `)
@@ -29,7 +29,7 @@ export async function fetchById(id: string): Promise<MarketWithDetails> {
         supabase.from('markets')
         .select(`
             *,
-            market_details (
+            details:market_details (
                 *
             )
         `)
@@ -113,8 +113,8 @@ export async function update(market: UpdateMarketParams) {
 };
 
 export async function destroy(market: MarketWithDetails) {
-    if(market.market_details?.logo_url) {
-        await storage.destroy("content", market.market_details.logo_url);
+    if(market.details?.logo_url) {
+        await storage.destroy("content", market.details.logo_url);
     }
 
     const { data, error } = await (
