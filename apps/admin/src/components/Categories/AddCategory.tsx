@@ -18,7 +18,7 @@ import CategoryForm from '@@admin/components/Forms/CategoryForm';
 import { categoryApi } from '@repo/supabase';
 import { useState } from 'react';
 
-function AddEvent() {
+function AddCategory() {
 
     const [visible, setVisible] = useState(false);
 
@@ -79,4 +79,4 @@ function AddEvent() {
     );
 };
 
-export default AddEvent;
+export default AddCategory;

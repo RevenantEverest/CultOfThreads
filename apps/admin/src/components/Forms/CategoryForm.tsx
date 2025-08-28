@@ -9,13 +9,13 @@ type CategoryFormType = "create" | "update";
 
 export type CategoryFormValues = Record<keyof Pick<Category, "name">, string>;
 
-export interface MarketFormProps {
+export interface CategoryFormProps {
     type: CategoryFormType,
     initialValues: CategoryFormValues,
     onSubmit: (values: CategoryFormValues) => Promise<void>,
 };
 
-function CategoryForm({ type, initialValues, onSubmit }: MarketFormProps) {
+function CategoryForm({ type, initialValues, onSubmit }: CategoryFormProps) {
 
     const theme = useThemeStore((state) => state.theme);
 
