@@ -71,8 +71,8 @@ function ProductForm({ type, initialValues, productImages, onSubmit, onRemoveIma
             }}
         >
             <form.AppForm>
-                <div className="flex gap-3">
-                    <div className="w-9/12 flex flex-col gap-3">
+                <div className="flex flex-col md:flex-row gap-3">
+                    <div className="w-full md:w-9/12 flex flex-col gap-3">
                         <Card className="w-full">
                             <CardContent className="py-8">
                                 <div className="w-full flex flex-col items-center justify-center gap-8">
@@ -129,7 +129,7 @@ function ProductForm({ type, initialValues, productImages, onSubmit, onRemoveIma
                         <Card className="w-full">
                             <CardContent className="py-8 flex flex-col gap-10">
                             <p className="font-bold">Pricing</p>
-                            <div className="w-full flex gap-5">
+                            <div className="w-full flex flex-col md:flex-row gap-5">
                                 <div className="flex-1">
                                     <form.AppField
                                         name="market_price"
@@ -187,7 +187,7 @@ function ProductForm({ type, initialValues, productImages, onSubmit, onRemoveIma
                             </CardContent>
                         </Card>
                     </div>
-                    <div className="w-3/12">
+                    <div className="w-full md:w-3/12">
                         <Card className="sticky top-20 h-screen">
                             <CardContent className="py-8 flex flex-col gap-10">
                                 <form.Field

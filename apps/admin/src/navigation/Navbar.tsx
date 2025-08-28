@@ -1,6 +1,7 @@
 import { ThemeChanger } from '@repo/ui';
 import { useThemeStore } from '@@admin/store/theme';
 import { SidebarTrigger, useSidebar } from '@repo/ui';
+import { useIsMobile } from '@repo/ui/hooks';
 
 function Navbar() {
 
@@ -8,8 +9,11 @@ function Navbar() {
     const setTheme = useThemeStore((state) => state.setTheme);
 
     const { open } = useSidebar(); // true = expanded, false = collapsed
+    const isMobile = useIsMobile();
 
-    const sidebarWidth = open ? '16rem' : '3rem'; // adjust to your widths
+    const sidebarWidth = isMobile ? "0rem" : (open ? "16rem" : "3rem"); // adjust to your widths
+
+    console.log("Sidebar Open => ", open);
 
     return(
         <div 
@@ -25,7 +29,7 @@ function Navbar() {
                     <span className="text-muted">&#124;</span>
                     <p className="font-semibold">Admin Panel</p>
                 </div>
-                <div className="flex-1 flex justify-end pr-3">
+                <div className="flex-1 justify-end pr-3 hidden md:flex">
                     <ThemeChanger currentTheme={theme} setTheme={setTheme} />
                 </div>
             </div>
