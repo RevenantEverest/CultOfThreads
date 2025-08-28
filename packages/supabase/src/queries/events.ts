@@ -15,7 +15,7 @@ export async function fetchAll(): Promise<EventWithMarket[]> {
             *,
             market:market_id (
                 *,
-                market_details (
+                details:market_details (
                     *
                 )
             )
@@ -37,7 +37,7 @@ export async function fetchById(id: string): Promise<EventWithMarket> {
             *,
             market:market_id (
                 *,
-                market_details (
+                details:market_details (
                     *
                 )
             )    

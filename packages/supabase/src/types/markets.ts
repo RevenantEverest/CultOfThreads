@@ -4,7 +4,7 @@ import type { MarketDetails, CreateMarketDetails } from './marketDetails.js';
 export type Market = DatabaseItem<"markets">["Row"];
 export type CreateMarket = DatabaseItem<"markets">["Insert"];
 export interface MarketWithDetails extends Market {
-    market_details: MarketDetails | null
+    details: MarketDetails | null
 };
 
 export interface CreateMarketParams extends CreateMarket {

@@ -33,7 +33,7 @@ function EventListItem({ event }: EventListItemProps) {
             <TableCell className={`${cellClass}`}>
                 <div className="w-24 h-24 flex overflow-hidden">
                 {
-                    event.market.market_details?.logo_url &&
+                    event.market.details?.logo_url &&
                     <img 
                         className="shrink-0 relative object-cover w-full h-full rounded-lg"
                         src={`${URLS.supabaseStorageUrl}/${event.flyer_url}`} 
@@ -49,7 +49,7 @@ function EventListItem({ event }: EventListItemProps) {
             </TableCell>
             <TableCell className={`${cellClass}`}>
                 <div className="flex items-center gap-1 justify-center">
-                    <p>{event.market.market_details?.state}</p>
+                    <p>{event.market.details?.state}</p>
                 </div>
             </TableCell>
             <TableCell className={`${cellClass}`}>
