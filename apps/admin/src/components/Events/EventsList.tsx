@@ -43,7 +43,7 @@ function MarketList({ search, events }: EventListProps) {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {eventList.sort((a, b) => a.market.name.localeCompare(b.market.name)).map((event) => (
+                        {eventList.sort((a, b) => b.date_from.localeCompare(a.date_from)).map((event) => (
                             <EventListItem key={event.id} event={event} />
                         ))}
                     </TableBody>
