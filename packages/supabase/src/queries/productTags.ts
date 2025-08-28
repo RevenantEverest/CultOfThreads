@@ -52,9 +52,9 @@ export async function create(tagData: CreateProductTag): Promise<ProductTag> {
     return data[0];
 };
 
-export async function destroy(tag: ProductTag) {
+export async function destroy({ tagId, productId }: { tagId: string, productId: string }) {
     const { data, error } = await (
-        supabase.from("product_tags").delete().eq("id", tag.id)
+        supabase.from("product_tags").delete().eq("tag_id", tagId).eq("product_id", productId)
     );
 
     if(error) {

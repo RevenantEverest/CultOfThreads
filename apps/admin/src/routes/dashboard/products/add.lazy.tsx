@@ -14,7 +14,12 @@ import {
 import { Layout, Breadcrumb } from '@@admin/components/Common';
 import { ProductForm } from '@@admin/components/Forms/ProductForm';
 
-import { productApi, productMediaApi } from '@repo/supabase';
+import { 
+    productApi, 
+    productCategoryApi, 
+    productMediaApi,
+    productTagApi
+} from '@repo/supabase';
 
 export const Route = createLazyFileRoute('/dashboard/products/add')({
     component: AddProduct,
@@ -36,6 +41,20 @@ function AddProduct() {
         mutationFn: productMediaApi.create,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["product_media"] })
+        }
+    });
+
+    const categoryMutation = useMutation({
+        mutationFn: productCategoryApi.create,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["products"] })
+        }
+    });
+
+    const tagMutation = useMutation({
+        mutationFn: productTagApi.create,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["products"] })
         }
     });
 
@@ -77,6 +96,32 @@ function AddProduct() {
                 await fileMutation.mutateAsync({ productId: data.id, file: currentImage });
             };
 
+            /*
+                Add Categories
+            */
+            for(let i = 0; i < values.categories.length; i++) {
+                const currentCategory = values.categories[i];
+
+                if(!currentCategory) {
+                    continue;
+                }
+
+                await categoryMutation.mutateAsync({ product_id: data.id, category_id: currentCategory });
+            };
+
+            /*
+                Add Tags
+            */
+            for(let i = 0; i < values.tags.length; i++) {
+                const currentTag = values.tags[i];
+
+                if(!currentTag) {
+                    continue;
+                }
+
+                await tagMutation.mutateAsync({ product_id: data.id, tag_id: currentTag });
+            };
+
             toast((t) => (
                 <ToastSuccess toast={t} message={"Product Created!"} />
             ));
@@ -87,7 +132,7 @@ function AddProduct() {
             console.error("Mutation Error", error);
             toast((t) => (
                 <ToastError toast={t} message={"Error Creating Product"} />
-            ))
+            ));
         }
     };
 

@@ -1,4 +1,4 @@
-import type { ProductWithDetails } from '@repo/supabase';
+import type { Tag } from '@repo/supabase';
 
 import {
     Card,
@@ -9,18 +9,20 @@ import {
     TableHeader,
     TableRow
 } from '@repo/ui';
-import ProductListItem from './ProductListItem';
+import { FaClock } from 'react-icons/fa6';
 
-interface ProductsListProps {
-    search?: string,
-    products: ProductWithDetails[]
+import TagListItem from './TagListItem';
+
+interface TagListProps {
+    search: string,
+    tags: Tag[]
 };
 
-function ProductsList({ search, products }: ProductsListProps) {
+function TagList({ search, tags }: TagListProps) {
 
     const headClass = "bg-card-light font-semibold";
 
-    const productsList = products.filter((el) => {
+    const tagsList = tags.filter((el) => {
         if(el.name && search) {
             return el.name.toLowerCase().indexOf(search.toLowerCase()) !== -1;
         }
@@ -35,18 +37,19 @@ function ProductsList({ search, products }: ProductsListProps) {
                     <TableHeader>
                         <TableRow className="font-bold border-b-muted hover:!bg-transparent">
                             <TableHead className={`${headClass} font-bold w-1/10 rounded-tl-lg`}></TableHead>
+                            <TableHead className={`${headClass}`}>Tag Name</TableHead>
                             <TableHead className={`${headClass}`}>
-                                Name <span className="text-xs text-accent font-semibold">({products.length})</span>
+                                <div className="flex items-center justify-center gap-2">
+                                    <FaClock />
+                                    <p>Created At</p>
+                                </div>
                             </TableHead>
-                            <TableHead className={`${headClass} text-center`}>Status</TableHead>
-                            <TableHead className={`${headClass} text-center`}>Online Price</TableHead>
-                            <TableHead className={`${headClass} text-center`}>Market Price</TableHead>
                             <TableHead className={`${headClass} text-right rounded-tr-lg`}>Actions</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {productsList.sort((a, b) => a.name.localeCompare(b.name)).map((product) => (
-                            <ProductListItem key={product.id} product={product} />
+                        {tagsList.sort((a, b) => a.name.localeCompare(b.name)).map((tag) => (
+                            <TagListItem key={tag.id} tag={tag} />
                         ))}
                     </TableBody>
                 </Table>
@@ -55,4 +58,4 @@ function ProductsList({ search, products }: ProductsListProps) {
     );
 };
 
-export default ProductsList;
+export default TagList;

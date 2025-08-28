@@ -7,7 +7,7 @@ import { useAppForm } from '@repo/ui/hooks';
 
 import { useThemeStore } from '@@admin/store/theme';
 import { FileUpload, RichText } from '@@admin/components/Common';
-import { CategorySelectContainer } from '@@admin/containers';
+import { CategorySelectContainer, TagSelectContainer } from '@@admin/containers';
 
 import ProductStatus from './ProductStatus';
 import ProductImages from './ProductImages';
@@ -205,8 +205,24 @@ function ProductForm({ type, initialValues, productImages, onSubmit, onRemoveIma
                                         <CategorySelectContainer 
                                             values={field.state.value} 
                                             onChange={(value, isDelete) => {
-                                                console.log("Changing values => ", value, isDelete);
-
+                                                const current = field.state.value;
+                                                if(isDelete) {
+                                                    const newArr = current.filter((item) => item !== value);
+                                                    field.handleChange(newArr);
+                                                }
+                                                else {
+                                                    field.handleChange([...current, value]);
+                                                }
+                                            }}
+                                        />
+                                    )}
+                                />
+                                <form.Field
+                                    name="tags"
+                                    children={(field) => (
+                                        <TagSelectContainer 
+                                            values={field.state.value} 
+                                            onChange={(value, isDelete) => {
                                                 const current = field.state.value;
                                                 if(isDelete) {
                                                     const newArr = current.filter((item) => item !== value);

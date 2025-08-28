@@ -13,7 +13,12 @@ import {
 import { Layout, Breadcrumb } from '@@admin/components/Common';
 import { ProductForm } from '@@admin/components/Forms/ProductForm';
 
-import { productApi, productCategoryApi, productMediaApi } from '@repo/supabase';
+import { 
+    productApi, 
+    productCategoryApi, 
+    productMediaApi, 
+    productTagApi
+} from '@repo/supabase';
 import StatusBadge from '@@admin/components/Products/StatusBadge';
 
 export const Route = createFileRoute('/dashboard/products/edit/$productId')({
@@ -71,6 +76,20 @@ function EditProduct() {
 
     const categoryRemoveMutation = useMutation({
         mutationFn: productCategoryApi.destroy,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["products"] });
+        }
+    });
+
+    const tagMutation = useMutation({
+        mutationFn: productTagApi.create,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["products"] });
+        }
+    });
+
+    const tagRemoveMutation = useMutation({
+        mutationFn: productTagApi.destroy,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["products"] });
         }
@@ -145,6 +164,33 @@ function EditProduct() {
                         await categoryRemoveMutation.mutateAsync({ categoryId: current, productId: productData.id });
                     }
                 };
+            };
+
+            /*
+                Add Tags
+            */
+            for(let i = 0; i < values.tags.length; i++) {
+                const originalTags = data.tags ? data.tags.map((t) => t.tag_id) : [];
+                const currentTag = values.tags[i];
+
+                if(!currentTag || originalTags.includes(currentTag)) {
+                    continue;
+                }
+
+                await tagMutation.mutateAsync({ product_id: productData.id, tag_id: currentTag });
+            };
+
+            /*
+                Remove Tags
+            */
+            if(data.tags) {
+                for(let i = 0; i < data.tags.length; i++) {
+                    const current = data.tags.map((t) => t.tag_id)[i];
+
+                    if(current && !values.tags.includes(current)) {
+                        await tagRemoveMutation.mutateAsync({ tagId: current, productId: productData.id });
+                    }
+                }   
             }
 
             toast((t) => (
