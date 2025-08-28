@@ -48,9 +48,9 @@ export async function create(categoryData: CreateProductCategory): Promise<Produ
     return data[0];
 };
 
-export async function destroy(category: ProductCategory) {
+export async function destroy({ categoryId, productId }: { categoryId: string, productId: string }) {
     const { data, error } = await (
-        supabase.from("product_categories").delete().eq("id", category.id)
+        supabase.from("product_categories").delete().eq("category_id", categoryId).eq("product_id", productId)
     ); 
 
     if(error) {
