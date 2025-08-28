@@ -15,6 +15,9 @@ export { default as SocialIcon } from './SocialIcon';
 export { default as BubbleDivider } from './SVG/BubbleDivider';
 export { default as WaveDivider } from './SVG/WaveDivider';
 
+/* Motion */
+export { default as MotionHover } from './motion/MotionHover';
+
 /* Theme Changer */
 export { default as ThemeChanger } from './themeChanger/ThemeChanger';
 export { default as ThemeIcon } from './themeChanger/ThemeIcon';
