@@ -3,7 +3,7 @@ import type { UpdateProductParams, ProductMedia, ProductDetailsStatus } from '@r
 
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 import {
     ToastSuccess,
@@ -13,14 +13,14 @@ import {
 import { Layout, Breadcrumb } from '@@admin/components/Common';
 import { ProductForm } from '@@admin/components/Forms/ProductForm';
 
-import { productApi, productMediaApi } from '@repo/supabase';
+import { productApi, productCategoryApi, productMediaApi } from '@repo/supabase';
 import StatusBadge from '@@admin/components/Products/StatusBadge';
 
 export const Route = createFileRoute('/dashboard/products/edit/$productId')({
     loader: ({ context, params }) => {
         context.queryClient.prefetchQuery({
             queryKey: ["products", params.productId],
-            queryFn: () => productApi.fetchById(params.productId)
+            queryFn: () => productApi.fetchListingById(params.productId)
         });
     },
     component: EditProduct,
@@ -33,11 +33,10 @@ function EditProduct() {
 
     const { data } = useSuspenseQuery({ 
         queryKey: ["products", params.productId],
-        queryFn: () => productApi.fetchById(params.productId)
+        queryFn: () => productApi.fetchListingById(params.productId)
     });
 
     const queryClient = useQueryClient();
-    const productMedia = useQuery({ queryKey: ['product_media'], queryFn: () => productMediaApi.getByProductId(data.id) });
     const mutation = useMutation({
         mutationFn: productApi.update,
         onSuccess: () => {
@@ -63,6 +62,20 @@ function EditProduct() {
         }
     });
 
+    const categoryMutation = useMutation({
+        mutationFn: productCategoryApi.create,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["products"] });
+        }
+    });
+
+    const categoryRemoveMutation = useMutation({
+        mutationFn: productCategoryApi.destroy,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["products"] });
+        }
+    });
+
     const initialValues: ProductFormValues = {
         name: data.name ?? "",
         description: data.description as string ?? "",
@@ -71,6 +84,8 @@ function EditProduct() {
         weight_grams: data?.details?.weight_grams?.toString() ?? "0",
         status: data?.details?.status ?? "",
         etsy_listing: data?.details?.etsy_listing ?? "",
+        categories: data.categories ? data.categories.map((c) => c.category_id) : [],
+        tags: data.tags ? data.tags.map((t) => t.tag_id) : [],
         images: []
     };
 
@@ -104,6 +119,33 @@ function EditProduct() {
 
                 await fileMutation.mutateAsync({ productId: data.id, file: currentImage });
             };
+
+            /*
+                Add Categories
+            */
+            for(let i = 0; i < values.categories.length; i++) {
+                const originalCategories = data.categories ? data.categories.map((c) => c.category_id) : [];
+                const currentCategory = values.categories[i];
+
+                if(!currentCategory || originalCategories.includes(currentCategory)) {
+                    continue;
+                }
+
+                await categoryMutation.mutateAsync({ product_id: productData.id, category_id: currentCategory });
+            };
+
+            /*
+                Remove Categories
+            */
+            if(data.categories) {
+                for(let i = 0; i < data.categories.length; i++) {
+                    const current = data.categories.map((c) => c.category_id)[i];
+
+                    if(current && !values.categories.includes(current)) {
+                        await categoryRemoveMutation.mutateAsync({ categoryId: current, productId: productData.id });
+                    }
+                };
+            }
 
             toast((t) => (
                 <ToastSuccess toast={t} message={"Product Updated!"} />
@@ -159,7 +201,7 @@ function EditProduct() {
                 <ProductForm
                     type="update"
                     initialValues={initialValues}
-                    productImages={productMedia.data}
+                    productImages={data.media ?? []}
                     onSubmit={onSubmit}
                     onRemoveImage={onRemoveImage}
                 />

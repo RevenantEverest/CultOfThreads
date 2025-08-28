@@ -17,10 +17,10 @@ interface ProductStatusProps {
 function ProductStatus({ value, onChange }: ProductStatusProps) {
 
     return(
-        <div className="flex flex-col">
+        <div className="flex flex-col w-full">
             <p className="font-bold text-sm">Status: </p>
             <Select onValueChange={(value) => onChange(value)}>
-                <SelectTrigger className="w-[180px] !bg-card-light border-0 font-semibold !h-11 rounded-lg mt-1.5">
+                <SelectTrigger className="w-full !bg-card-light border-0 font-semibold !h-11 rounded-lg mt-1.5">
                     <SelectValue placeholder={value ? (value.charAt(0) + value.substring(1).toLocaleLowerCase()) : "Draft"} />
                 </SelectTrigger>
                 <SelectContent className="font-semibold text-text border-background bg-card">

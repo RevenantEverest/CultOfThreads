@@ -7,7 +7,7 @@ function ProductSettingsButton() {
 
     return(
         <Tooltip>
-            <TooltipTrigger>
+            <TooltipTrigger asChild>
                 <Link to="/dashboard/products/settings">
                     <Button colorScheme={"cardLight"}>
                         <FaCogs />

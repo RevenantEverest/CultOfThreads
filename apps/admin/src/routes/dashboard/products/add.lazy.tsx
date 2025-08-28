@@ -47,21 +47,23 @@ function AddProduct() {
         weight_grams: "",
         status: "DRAFT" as ProductDetailsStatus,
         etsy_listing: "",
+        categories: [],
+        tags: [],
         images: []
     };
 
     const onSubmit = async (values: ProductFormValues) => {
 
         const productData: CreateProductParams = {
-                name: values.name,
-                description: values.description,
-                details: {
-                    market_price: Number(values.market_price),
-                    online_price: Number(values.online_price),
-                    status: values.status as ProductDetailsStatus,
-                    weight_grams: Number(values.weight_grams)
-                }            
-            };
+            name: values.name,
+            description: values.description,
+            details: {
+                market_price: Number(values.market_price),
+                online_price: Number(values.online_price),
+                status: values.status as ProductDetailsStatus,
+                weight_grams: Number(values.weight_grams)
+            }            
+        };
 
         try {
             const data = await mutation.mutateAsync(productData);
