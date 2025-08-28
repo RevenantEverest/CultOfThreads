@@ -24,10 +24,10 @@ function MarketListItem({ market }: MarketListItemProps) {
             <TableCell className={`${cellClass}`}>
                 <div className="w-24 h-24 flex overflow-hidden">
                     {
-                        market.market_details?.logo_url &&
+                        market.details?.logo_url &&
                         <img 
                             className="shrink-0 relative object-cover w-full h-full rounded-lg"
-                            src={`${URLS.supabaseStorageUrl}/${market.market_details.logo_url}`} 
+                            src={`${URLS.supabaseStorageUrl}/${market.details.logo_url}`} 
                             alt={market.name}
                         />
                     }
@@ -40,7 +40,7 @@ function MarketListItem({ market }: MarketListItemProps) {
             </TableCell>
             <TableCell className={`${cellClass}`}>
                 <div className="flex items-center gap-1 justify-center">
-                    <p>{market.market_details?.state}</p>
+                    <p>{market.details?.state}</p>
                 </div>
             </TableCell>
             <TableCell className={`${cellClass}`}>
