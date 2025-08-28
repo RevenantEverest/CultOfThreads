@@ -4,7 +4,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { FaDollarSign } from 'react-icons/fa6';
 import { motion } from 'motion/react';
-import { Card, CardContent } from '@repo/ui';
+import { MotionHover } from '@repo/ui';
+
+import ProductTags from './ProductTags';
 
 import { URLS } from '@@shop/constants';
 
@@ -19,27 +21,25 @@ function ProductListItem({ product }: ProductListItemProps) {
 
     return(
         <Link href={`/shop/${product.id}`}>
-            <motion.div
-                whileHover={{ y: "-.5dvh" }}
-            >
+            <MotionHover>
                 <motion.div
+                    className="flex flex-col gap-3"
                     viewport={{ once: true }}
                 >
-                    <Card className="w-80 border-muted/20">
-                        <CardContent className="flex justify-center items-center p-4">
-                            {
-                                product.media &&
-                                <Image 
-                                    className="rounded-xl"
-                                    height={500}
-                                    width={500}
-                                    src={URLS.supabaseStorageUrl + (featuredImage ? featuredImage.media_url : "")} 
-                                    alt={product.name}
-                                />
-                            }
-                        </CardContent>
-                    </Card>
+                    <div className="flex justify-center items-center w-80 border-secondary border-6 rounded-xl">
+                        {
+                            product.media &&
+                            <Image 
+                                className="rounded-xl"
+                                height={500}
+                                width={500}
+                                src={URLS.supabaseStorageUrl + (featuredImage ? featuredImage.media_url : "")} 
+                                alt={product.name}
+                            />
+                        }
+                    </div>
                     <div className="flex flex-col gap-2 px-2">
+                        {(product.tags && product.tags.length > 0) && <ProductTags tags={product.tags} />}
                         <p className="font-bold text-left text-xl">{product.name}</p>
                         <div className="flex items-center -ml-1">
                             <FaDollarSign className="text-primary text-lg" />
@@ -49,7 +49,7 @@ function ProductListItem({ product }: ProductListItemProps) {
                         </div>
                     </div>
                 </motion.div>
-            </motion.div>
+            </MotionHover>
         </Link>
     );
 };
