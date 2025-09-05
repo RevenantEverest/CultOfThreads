@@ -32,6 +32,36 @@ export type Database = {
         }
         Relationships: []
       }
+      contact_form: {
+        Row: {
+          created_at: string
+          email: string
+          first_name: string
+          id: string
+          last_name: string
+          message: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          first_name: string
+          id?: string
+          last_name: string
+          message: string
+          status: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          first_name?: string
+          id?: string
+          last_name?: string
+          message?: string
+          status?: string
+        }
+        Relationships: []
+      }
       contacts: {
         Row: {
           address: string | null
@@ -154,23 +184,23 @@ export type Database = {
         Row: {
           contact_id: string
           created_at: string
-          id: number
+          id: string
         }
         Insert: {
           contact_id: string
           created_at?: string
-          id?: number
+          id?: string
         }
         Update: {
           contact_id?: string
           created_at?: string
-          id?: number
+          id?: string
         }
         Relationships: [
           {
             foreignKeyName: "newsletter_contact_id_fkey"
             columns: ["contact_id"]
-            isOneToOne: false
+            isOneToOne: true
             referencedRelation: "contacts"
             referencedColumns: ["id"]
           },
@@ -378,6 +408,39 @@ export type Database = {
           created_at?: string
           id?: string
           name?: string
+        }
+        Relationships: []
+      }
+      traffic_analytics: {
+        Row: {
+          created_at: string
+          id: string
+          landing_page_url: string
+          utm_campaign: string | null
+          utm_content: string | null
+          utm_medium: string | null
+          utm_source: string
+          utm_term: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          landing_page_url: string
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source: string
+          utm_term?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          landing_page_url?: string
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string
+          utm_term?: string | null
         }
         Relationships: []
       }
