@@ -51,7 +51,7 @@ function ProductDetails({ name, description, details }: ProductDetailsProps) {
                     <p>Market Price:</p>
                     <div className="bg-card-light flex items-center px-5 py-1 rounded-full">
                         <FaDollarSign className="text-primary" />
-                        <p>{details.market_price}</p>
+                        <p>{details.market_price?.toLocaleString()}</p>
                     </div>
                 </div>
                 <div className="flex flex-col md:flex-row items-center pb-2 font-bold text-lg gap-3 md:gap-2 flex-1">
@@ -59,7 +59,7 @@ function ProductDetails({ name, description, details }: ProductDetailsProps) {
                     <p>Online Price:</p>
                     <div className="bg-card-light flex items-center px-5 py-1 rounded-full">
                         <FaDollarSign className="text-primary" />
-                        <p>{details.online_price}</p>
+                        <p>{details.online_price?.toLocaleString()}</p>
                     </div>
                 </div>
             </div>
