@@ -3,7 +3,7 @@ import { createClient } from '@supabase/supabase-js';
 
 export type DatabaseItem<T extends keyof Database["public"]["Tables"]> = Database["public"]["Tables"][T];
 
-function getEnvVar(name: "SUPABASE_URL" | "SUPABASE_KEY"): string {
+export function getEnvVar(name: "SUPABASE_URL" | "SUPABASE_KEY"): string {
     if(typeof process !== "undefined" && process.env) {
 
         /*
