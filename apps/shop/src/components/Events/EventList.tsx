@@ -1,6 +1,8 @@
 "use client"
 
-import { eventsApi, EventWithMarket } from '@repo/supabase';
+import type { EventWithMarket } from '@repo/supabase';
+
+import { eventsApi } from '@repo/supabase';
 import { useQuery } from '@tanstack/react-query';
 import EventListItem from './EventListItem';
 
