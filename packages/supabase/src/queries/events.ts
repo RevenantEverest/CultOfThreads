@@ -1,4 +1,4 @@
-import { 
+import type { 
     Event, 
     EventWithMarket, 
     CreateEventParams,
@@ -7,6 +7,30 @@ import {
 
 import { supabase } from '../supabaseClient.js';
 import { storage } from '../utils/index.js';
+
+export async function fetchUpcoming({ limit }: { limit: number }): Promise<EventWithMarket[]> {
+    const { data, error } = await (
+        supabase.from("events")
+        .select(`
+            *,
+            market:market_id (
+                *,
+                details:market_details (
+                    *
+                )
+            )
+        `)
+        .filter('date_to', 'gte', new Date().toISOString())
+        .order('date_from', { ascending: true })
+        .limit(limit)
+    );
+
+    if(error) {
+        throw error;
+    }
+
+    return data ?? [];
+};
 
 export async function fetchAll(): Promise<EventWithMarket[]> {
     const { data, error } = await (

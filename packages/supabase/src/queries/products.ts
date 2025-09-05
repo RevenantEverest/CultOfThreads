@@ -8,6 +8,116 @@ import type {
 import { supabase } from '../supabaseClient.js';
 import * as productDetailsApi from './productDetails.js';
 
+export async function fetchByTagName(tagName: string): Promise<ProductListing[]> {
+    const { data, error } = await (
+        supabase
+        .from('products')
+        .select(`
+            *,
+            details:product_details!inner (
+                *
+            ),
+            media:product_media (
+                *
+            ),
+            categories:product_categories (
+                *,
+                category:categories (
+                    *
+                )
+            ),
+            tags:product_tags!inner (
+                *,
+                tag:tags!inner (
+                    *
+                )
+            )
+        `)
+        .eq('tags.tag.name', tagName)
+        .eq('details.status', "ACTIVE")
+        .limit(1, { foreignTable: "product_media" })
+    );
+
+    if(error) {
+        throw error;
+    }
+
+    return data ?? [];
+};
+
+export async function fetchActiveListings(): Promise<ProductListing[]> {
+    const { data, error } = await (
+        supabase.from('products')
+        .select(`
+            *,
+            details:product_details!inner (
+                *
+            ),
+            media:product_media (
+                *
+            ),
+            categories:product_categories (
+                *,
+                category:categories (
+                    *
+                )
+            ),
+            tags:product_tags (
+                *,
+                tag:tags (
+                    *
+                )
+            )
+        `)
+        .eq('details.status', "ACTIVE")
+    ).limit(1, { foreignTable: "product_media" });
+
+    if(error) {
+        throw error;
+    }
+
+    return data ?? [];
+};
+
+export async function fetchActiveListingById(id: string): Promise<ProductListing> {
+    const { data, error } = await (
+        supabase.from('products')
+        .select(`
+            *,
+            details:product_details!inner (
+                *
+            ),
+            media:product_media (
+                *
+            ),
+            categories:product_categories (
+                *,
+                category:categories (
+                    *
+                )
+            ),
+            tags:product_tags (
+                *,
+                tag:tags (
+                    *
+                )
+            )
+        `)
+        .eq('details.status', "ACTIVE")
+        .eq('id', id)
+    );
+
+    if(error) {
+        throw error;
+    }
+
+    if(!data[0]) {
+        throw new Error("Data is null");
+    }
+
+    return data[0];
+};
+
 export async function fetchListings(): Promise<ProductListing[]> {
     const { data, error } = await (
         supabase.from('products')
