@@ -180,7 +180,7 @@ function ProductForm({ type, initialValues, productImages, onSubmit, onRemoveIma
                                 <form.Field
                                     name="images"
                                     children={(field) => (
-                                        <FileUpload onChange={(images: File[]) => field.handleChange(images)} />
+                                        <FileUpload limit={10} onChange={(images: File[]) => field.handleChange(images)} />
                                     )}
                                 />
                             </div>
