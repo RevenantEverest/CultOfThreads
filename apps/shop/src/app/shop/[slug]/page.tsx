@@ -1,4 +1,4 @@
-import { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 
 import { Product } from '@@shop/components/Products';
@@ -8,6 +8,10 @@ import Newsletter from '@@shop/components/Newsletter';
 import { productApi } from '@repo/supabase';
 import { URLS } from '@@shop/constants';
 import { json, text } from '@@shop/utils';
+
+export const viewport: Viewport = {
+    themeColor: "#FB5377"
+};
 
 interface SingleProductProps {
     params: Promise<{
@@ -23,7 +27,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
         const queryClient = new QueryClient();
         const data = await queryClient.fetchQuery({
             queryKey: ["products", params.slug],
-            queryFn: () => productApi.fetchListingById(params.slug)
+            queryFn: () => productApi.fetchActiveListingById(params.slug)
         });
 
         const description = json.richTextToString(data.description as string);
@@ -34,7 +38,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
             openGraph: {
                 siteName: "Cult of Threads",
                 url: `https://cultofthreads.com/shop/${params.slug}`,
-                images: [URLS.supabaseStorageUrl + data.product_media?.[0]?.media_url]
+                images: [URLS.supabaseStorageUrl + data.media?.[0]?.media_url]
             }
         };
     }
@@ -52,7 +56,7 @@ async function SingleProduct({ params }: SingleProductProps) {
     const queryClient = new QueryClient();
     await queryClient.prefetchQuery({
         queryKey: ["products", slug],
-        queryFn: () => productApi.fetchListingById(slug)
+        queryFn: () => productApi.fetchActiveListingById(slug)
     });
 
     return(
