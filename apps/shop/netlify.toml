@@ -1,0 +1,9 @@
+# apps/shop/netlify.toml
+[build]
+  # The command to run the build.
+  command = "npm run build" 
+
+  publish = ".next" 
+
+[functions]
+  node_bundler = "esbuild"
