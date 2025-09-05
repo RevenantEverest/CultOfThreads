@@ -58,7 +58,7 @@ const faqContent: FAQItem[] = [
     }
 ];
 
-function FAQ(props: React.HTMLAttributes<HTMLDivElement>) {
+function FAQ({ className, ...rest }: React.HTMLAttributes<HTMLDivElement>) {
 
     const renderContent = () => {
         return faqContent.map((item, index) => {
@@ -71,14 +71,13 @@ function FAQ(props: React.HTMLAttributes<HTMLDivElement>) {
                     item={item}
                     isFirst={isFirst}
                     isLast={isLast}
-                    {...props}
                 />
             );
         });
     };
 
     return(
-        <div className="flex flex-col items-center justify-center gap-10 w-full">
+        <div className={`flex flex-col items-center justify-center gap-10 w-full ${className}`} {...rest}>
             <h1 className="font-beach text-3xl md:text-6xl text-center">
                 FAQ&apos;s
             </h1>
