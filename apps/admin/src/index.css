@@ -1,0 +1,17 @@
+@import "@repo/tailwind-config";
+@import "tailwindcss";
+@import "@repo/ui/styles.css";
+
+@font-face {
+  font-family: "BeachBarScript-Heavy";
+  src: url("https://db.onlinewebfonts.com/t/90ac0d0bd7175a62627d2742f2d24311.eot");
+  src: url("https://db.onlinewebfonts.com/t/90ac0d0bd7175a62627d2742f2d24311.eot?#iefix")format("embedded-opentype"),
+  url("https://db.onlinewebfonts.com/t/90ac0d0bd7175a62627d2742f2d24311.woff2")format("woff2"),
+  url("https://db.onlinewebfonts.com/t/90ac0d0bd7175a62627d2742f2d24311.woff")format("woff"),
+  url("https://db.onlinewebfonts.com/t/90ac0d0bd7175a62627d2742f2d24311.ttf")format("truetype"),
+  url("https://db.onlinewebfonts.com/t/90ac0d0bd7175a62627d2742f2d24311.svg#BeachBarScript-Heavy")format("svg");
+}
+
+:root {
+  --font-beach: 'BeachBarScript-Heavy', sans-serif;
+}

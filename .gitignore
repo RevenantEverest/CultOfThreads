@@ -1,7 +1,14 @@
 # Directories
 **/dist/
 **/node_modules/
-**/.yarn
+**/.yarn/
+**/.turbo/
+**/.next/
+**/dist/
+**/dist-ssr/
+**/server/dist/
+**/public/dist/
+**/.tanstack/
 
 # Files
 *.DS_Store
@@ -10,3 +17,7 @@
 *.env.development.local
 *.env.test.local
 *.env.production.local
+*.log
+*.local
+*.cache
+
