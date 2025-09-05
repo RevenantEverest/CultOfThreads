@@ -12,13 +12,17 @@ import { FaEnvelope, FaUser } from 'react-icons/fa6';
 import { useThemeStore } from '@@shop/store/theme';
 import { useAppForm } from '@repo/ui/hooks';
 
-interface NewsletterFormValues {
+export interface NewsletterFormValues {
     first_name: string,
     last_name: string,
     email: string
 };
 
-function NewsletterForm() {
+interface NewsletterFormProps {
+    onSubmit: (values: NewsletterFormValues) => Promise<void>
+};
+
+function NewsletterForm({ onSubmit }: NewsletterFormProps) {
 
     const theme = useThemeStore((state) => state.theme);
 
@@ -30,8 +34,8 @@ function NewsletterForm() {
 
     const form = useAppForm({
         defaultValues: initialValues,
-        onSubmit: async () => {
-
+        onSubmit: async ({ value }) => {
+            await onSubmit(value);
         }
     });
 
@@ -65,20 +69,7 @@ function NewsletterForm() {
                                             )
                                         }}
                                         children={(field) => (
-                                            <field.TextField placeholder="First Name" type="text" theme={theme} icon={FaUser} />
-                                        )}
-                                    />
-                                </div>
-                                <div className="flex-1">
-                                    <form.AppField
-                                        name="last_name"
-                                        validators={{
-                                            onChange: ({ value }) => (
-                                                value === "" ? "Field is Required" : undefined
-                                            )
-                                        }}
-                                        children={(field) => (
-                                            <field.TextField placeholder="Last Name" type="text" theme={theme} icon={FaUser} />
+                                            <field.TextField placeholder="Name" type="text" theme={theme} icon={FaUser} />
                                         )}
                                     />
                                 </div>
