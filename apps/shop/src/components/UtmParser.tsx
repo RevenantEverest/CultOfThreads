@@ -39,7 +39,7 @@ function UtmParser() {
         catch(error) {
             console.error(error);
         }
-    }, []);
+    }, []); //eslint-disable-line
 
     return null;
 };
