@@ -12,6 +12,8 @@ function ProductTags({ tags }: ProductTagsProps) {
                 return "bg-green-600 text-white";
             case "horror":
                 return "bg-purple-600 text-white";
+            case "best seller":
+                return "bg-accent text-black";
             default:
                 return "bg-primary text-white";
         }
