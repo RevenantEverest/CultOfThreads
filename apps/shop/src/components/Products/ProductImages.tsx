@@ -6,6 +6,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { FaChevronCircleRight, FaChevronCircleLeft } from 'react-icons/fa';
 import { URLS } from '@@shop/constants';
+import { Lightbox } from '../Common';
 
 interface ProductImages {
     images: ProductMedia[]
@@ -13,6 +14,7 @@ interface ProductImages {
 
 function ProductImages({ images }: ProductImages) {
 
+    const [open, setOpen] = useState(false);
     const [imageIndex, setImageIndex] = useState(0);
 
     const nextImage = () => {
@@ -71,11 +73,12 @@ function ProductImages({ images }: ProductImages) {
                     />
                 }
                 <Image 
-                    className="rounded-xl border-muted border-4"
+                    className="rounded-xl border-muted border-4 hover:cursor-zoom-in"
                     height={1080}
                     width={1080}
                     src={URLS.supabaseStorageUrl + (images[imageIndex] && images[imageIndex].media_url)} 
                     alt={`featured`}
+                    onClick={() => setOpen(true)}
                 />
                 {
                     images.length > 1 &&
@@ -88,6 +91,12 @@ function ProductImages({ images }: ProductImages) {
             <div className="flex flex-row md:flex-col gap-3">
                 {images.length > 1 && renderImages()}
             </div>
+            <Lightbox 
+                open={open} 
+                setOpen={setOpen} 
+                index={imageIndex}
+                images={images.map((image) => URLS.supabaseStorageUrl + image.media_url)}
+            />
         </div>
     );
 };
