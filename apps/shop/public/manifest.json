@@ -1,6 +1,6 @@
 {
   "short_name": "Cult of Threads",
-  "name": "Crochet Small Business",
+  "name": "Cult of Threads | Handmade Crochet Horror Plushies",
   "icons": [
     {
       "src": "favicon.ico",
@@ -20,6 +20,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
+  "theme_color": "#FB5377",
   "background_color": "#ffffff"
 }
