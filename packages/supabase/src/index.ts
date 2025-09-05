@@ -5,6 +5,12 @@ export * from './supabaseClient.js';
 export * as categoryApi from './queries/categories.js';
 export * from './types/categories.js';
 
+export * as contactFormApi from './queries/contactForm.js';
+export * from './types/contactForm.js';
+
+export * as contactApi from './queries/contacts.js';
+export * from './types/contacts.js';
+
 export * as eventsApi from './queries/events.js';
 export * from './types/events.js';
 
@@ -13,6 +19,9 @@ export * from './types/marketDetails.js';
 
 export * as marketApi from './queries/markets.js';
 export * from './types/markets.js';
+
+export * as newsletterApi from './queries/newsletter.js';
+export * from './types/newsletter.js';
 
 export * as productCategoryApi from './queries/productCategories.js';
 export * from './types/productCategories.js';
@@ -32,6 +41,8 @@ export * from './types/productTags.js';
 export * as tagApi from './queries/tags.js';
 export * from './types/tags.js';
 
+export * as trafficAnalyticsApi from './queries/trafficAnalytics.js';
+export * from './types/trafficAnalytics.js';
 
 
 
