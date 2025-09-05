@@ -1,7 +1,31 @@
+import type { Metadata, Viewport } from 'next';
+
 import { HydrationBoundary } from '@tanstack/react-query';
 import { PageHeader, Layout } from '@@shop/components/Common';
+import { EventList } from '@@shop/components/Events';
 import Newsletter from '@@shop/components/Newsletter';
-import EventList from '@@shop/components/Events/EventList';
+
+import { IMAGE_RESOURCES } from '@repo/ui';
+
+export const viewport: Viewport = {
+    themeColor: "#FB5377"
+};
+
+export async function generateMetadata(): Promise<Metadata> {
+    return {
+        title: "Cult of Threads | Events",
+        description: `
+            Discover unique handmade crochet goods and creepy plush horror characters. Explore our collection for quirky gifts, spooky décor, and one-of-a-kind creations
+        `,
+        openGraph: {
+            siteName: "Cult of Threads | Handmade Crochet Plushies",
+            images: IMAGE_RESOURCES.OPEN_GRAPH
+        },
+        twitter: {
+            images: IMAGE_RESOURCES.TWITTER_META
+        }
+    };
+};
 
 async function Events() {
 
@@ -19,9 +43,9 @@ async function Events() {
                 </div>
             </PageHeader>
             <Layout main transparent className="gap-20">
-                <div>
-                    <h1 className="text-6xl font-beach">See Where We&apos;ll Be Next</h1>
-                    <p></p>
+                <div className="text-center flex flex-col">
+                    <p className="order-2 md:order-1 mt-5 md:mt-0 text-lg md:text-2xl text-muted mb-2 uppercase font-semibold">Thinking about catching us in person?</p>
+                    <h1 className="order-1 md:order-2 text-5xl md:text-6xl font-beach">See Where We&apos;ll Be Next</h1>
                 </div>
                 <EventList />
             </Layout>
