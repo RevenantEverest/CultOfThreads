@@ -22,6 +22,15 @@ jobs:
           run: bun install
           working-directory: .
 
+        - name: Create env file
+          env:
+            NEXT_PUBLIC_SUPABASE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_KEY }}
+            NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          run: |
+            touch .env
+            echo NEXT_PUBLIC_SUPABASE_KEY="$NEXT_PUBLIC_SUPABASE_KEY" >> .env
+            echo NEXT_PUBLIC_SUPABASE_URL="$NEXT_PUBLIC_SUPABASE_URL" >> .env
+
         - name: Run ESLint
           run: bun lint
           working-directory: .
