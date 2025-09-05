@@ -10,14 +10,18 @@ import { FaUser, FaEnvelope, FaPencil } from 'react-icons/fa6';
 import { useAppForm } from '@repo/ui/hooks';
 import { useThemeStore } from '@@shop/store/theme';
 
-interface ContactFormValues {
+export interface ContactFormValues {
     firstName: string,
     lastName: string,
     email: string,
     message: string
 };
 
-function ContactForm() {
+interface ContactFormProps {
+    onSubmit: (values: ContactFormValues) => Promise<void>
+};
+
+function ContactForm({ onSubmit }: ContactFormProps) {
 
     const theme = useThemeStore((state) => state.theme);
 
@@ -30,8 +34,14 @@ function ContactForm() {
 
     const form = useAppForm({
         defaultValues: initialValues,
-        onSubmit: async () => {
-
+        onSubmit: async ({ value }) => {
+            try {
+                await onSubmit(value);
+                form.reset();
+            }
+            catch(error) {
+                console.error(error);
+            }
         }
     });
 
