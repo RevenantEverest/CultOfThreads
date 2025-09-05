@@ -14,6 +14,7 @@ import Footer from '@@shop/navigation/Footer';
 
 import ThemeHandler from '@@shop/components/ThemeHandler';
 import Providers from '@@shop/Providers';
+import UtmParser from '@@shop/components/UtmParser';
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -38,7 +39,9 @@ export default function RootLayout({ children, }: Readonly<{
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
                 <Providers>
                 <div className="min-h-[100vh] text-text bg-background overflow-x-hidden">
+                    <UtmParser />
                     <ThemeHandler />
+                    <UtmParser />
                     <Navbar />
                     <div className="w-[100dvw] h-[100dvh] fixed">
                         <Sparkle
@@ -55,7 +58,7 @@ export default function RootLayout({ children, }: Readonly<{
                     <Footer />
 
                     <Toaster 
-                        position="top-right"
+                        position="top-center"
                         toastOptions={{
                             style: {
                                 border: "none",
