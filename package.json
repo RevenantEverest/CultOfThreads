@@ -9,7 +9,7 @@
     "lint": "dotenv -e .env -- turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types",
-    "gen:supabase": "bunx supabase gen types typescript --project-id znuzagnhttsgjyddmlrk > packages/supabase/src/database.types.ts"
+    "gen:supabase": "dotenv -e .env -- sh -c 'bunx supabase gen types typescript --project-id $SUPABASE_PROJECT_ID > packages/supabase/src/database.types.ts'"
   },
   "workspaces": [
     "apps/*",
@@ -47,6 +47,7 @@
     "tw-animate-css": "^1.3.4",
     "uuid": "^11.1.0",
     "validator": "^13.15.15",
+    "yet-another-react-lightbox": "^3.25.0",
     "zustand": "^5.0.5"
   },
   "devDependencies": {
