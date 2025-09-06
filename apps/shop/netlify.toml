@@ -1,7 +1,7 @@
 # apps/shop/netlify.toml
 [build]
   # The command to run the build.
-  command = "npm run build" 
+  command = "npm install && npm run build" 
 
   publish = ".next" 
 
