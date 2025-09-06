@@ -10,7 +10,7 @@ import {
     TooltipContent
 } from './shadcn/tooltip';
 
-type SocialIconSize = "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl" | "6xl" | "7xl" | "8xl";
+export type SocialIconSize = "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl" | "6xl" | "7xl" | "8xl";
 
 interface SocialIconProps {
     icon: IconType,
@@ -52,7 +52,7 @@ function SocialIcon({ icon, tooltip, to, size="lg" }: SocialIconProps) {
                     </motion.div>
                 </TooltipTrigger>
                 <TooltipContent>
-                    <p className="font-semibold">{tooltip}</p>
+                    <p className="font-bold">{tooltip}</p>
                 </TooltipContent>
             </Tooltip>
         </TooltipProvider>

@@ -9,7 +9,7 @@ export { default as ToastSuccess } from './toasts/ToastSuccess';
 
 /* Icons */
 export { default as RoundedIcon } from './RoundedIcon';
-export { default as SocialIcon } from './SocialIcon';
+export { default as SocialIcon, type SocialIconSize } from './SocialIcon';
 
 /* Dividers */
 export { default as BubbleDivider } from './SVG/BubbleDivider';
