@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import "@repo/ui/styles.css";
 
-import React from 'react';
+import React, { Suspense } from 'react';
 
 import { AnimatePresence } from 'motion/react';
 import { Toaster } from 'react-hot-toast';
@@ -39,9 +39,10 @@ export default function RootLayout({ children, }: Readonly<{
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
                 <Providers>
                 <div className="min-h-[100vh] text-text bg-background overflow-x-hidden">
-                    <UtmParser />
+                    <Suspense>
+                        <UtmParser />
+                    </Suspense>
                     <ThemeHandler />
-                    <UtmParser />
                     <Navbar />
                     <div className="w-[100dvw] h-[100dvh] fixed">
                         <Sparkle
@@ -52,7 +53,6 @@ export default function RootLayout({ children, }: Readonly<{
                         />
                     </div>
                     <AnimatePresence mode="popLayout">
-                        {/* <AnimatedOutlet key={nextMatch ? nextMatch.id : ""} /> */}
                         {children}
                     </AnimatePresence>
                     <Footer />
