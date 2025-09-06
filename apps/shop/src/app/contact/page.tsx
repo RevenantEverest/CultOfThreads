@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 
 import React from 'react';
-import { PageHeader, Layout } from '@@shop/components/Common';
+import { PageHeader, Layout, ScrollToSeeMore } from '@@shop/components/Common';
 import { FaEnvelope } from 'react-icons/fa6';
 
 import { ContactContainer } from '@@shop/containers';
@@ -44,6 +44,7 @@ function Contact() {
                 >
                         <FaEnvelope className="text-8xl" />
                         <h1 className="text-4xl md:text-8xl uppercase">Contact</h1>
+                        <ScrollToSeeMore />
                 </div>
             </PageHeader>
             <Layout main transparent className="gap-50 mb-40">

@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 
 import { ProductList } from '@@shop/components/Products';
-import { Layout, PageHeader } from '@@shop/components/Common';
+import { Layout, PageHeader, ScrollToSeeMore } from '@@shop/components/Common';
 import { UpcomingEvents } from '@@shop/components/Events';
 import Newsletter from '@@shop/components/Newsletter';
 
@@ -43,7 +43,7 @@ async function Shop() {
     return(
         <HydrationBoundary state={dehydrate(queryClient)}>
             <PageHeader>
-                <div className="flex flex-col md:flex-row gap-10 md:gap-5 items-center justify-center md:px-72 h-[90dvh]">
+                <div className="flex flex-col md:flex-row gap-10 md:gap-5 items-center justify-center md:px-72 h-[90dvh] relative">
                     <div className="order-2 md:order-1 md:flex-1 flex flex-col text-center md:text-left items-center md:items-start justify-center">
                         <h1 className="text-4xl md:text-6xl text-text font-bold mb-4">Our Offerings</h1>
                         <p className="text-md text-text/60 font-semibold mb-5 md:mb-10 w-11/12 md:w-4/6">
@@ -80,6 +80,7 @@ async function Shop() {
                             />
                         </div>
                     </div>
+                    <ScrollToSeeMore />
                 </div>
             </PageHeader>
             <Layout main transparent className="pb-20 gap-40">
