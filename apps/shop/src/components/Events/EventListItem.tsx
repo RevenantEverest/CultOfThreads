@@ -95,7 +95,7 @@ function EventListItem({ event }: EventListItemProps) {
                     <Button 
                         disabled={isPast} 
                         variant="outline"
-                        onClick={() => copier.copy(event.address)}
+                        onClick={() => copier.copy(event.address, "Address copied to clipboard!")}
                     >
                         Copy Address
                     </Button>

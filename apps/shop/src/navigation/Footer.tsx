@@ -49,7 +49,7 @@ function Footer() {
                     <div className="flex flex-1 flex-col gap-6 items-center md:items-end -mt-1">
                         <h1 className="font-obo font-semibold text-xl text-center md:text-left">Grow With Us</h1>
                         <div className="flex justify-center md:justify-end gap-6 w-full">
-                            <SocialIcon icon={FaEtsy} tooltip="Etsy" to={SOCIAL_LINKS.INSTAGRAM.url} size="3xl" />
+                            <SocialIcon icon={FaEtsy} tooltip="Etsy" to={SOCIAL_LINKS.ETSY.url} size="3xl" />
                             <SocialIcon icon={FaFacebookF} tooltip="Facebook" to={SOCIAL_LINKS.INSTAGRAM.url} size="3xl" />
                             <SocialIcon icon={FaInstagram} tooltip="Instagram" to={SOCIAL_LINKS.INSTAGRAM.url} size="3xl" />
                             <SocialIcon icon={FaTiktok} tooltip="TikTok" to={SOCIAL_LINKS.TIK_TOK.url} size="3xl" />

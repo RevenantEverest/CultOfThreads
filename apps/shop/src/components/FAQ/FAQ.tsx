@@ -9,21 +9,23 @@ const faqContent: FAQItem[] = [
     {
         question: "Do you take custom orders?",
         answer: `
-            i can't always guarantee it but i'll try my best.
+            I can't always guarantee it, but send me a message and I can let you know!
         `
     },
     {
         question: "Is this safe for children?",
         answer: `
-            The safety eyes are secured on the plushie but 
+            For plushies the safety eyes are secured on but 
             there is always a small chance that a small child 
-            may choke on them if the eyes were to fall off
+            may choke on them if the eyes were to fall off.
+            
+            For pins the backing without the rubber stopper is sharp.
         `
     },
     {
         question: "Can you make modifications on existing plushies?",
         answer: `
-            If they are already finished I cannot but I can definitely make a custom made one for you.
+            If they are already finished I cannot, but I can definitely make a custom made one for you.
         `
     },
     {
@@ -41,7 +43,7 @@ const faqContent: FAQItem[] = [
     {
         question: "Do they come to life?",
         answer: `
-            Not that i know of but i cant say for sure.
+            Not that I know of but I can't say for sure. 👀
         `
     },
     {
@@ -53,7 +55,7 @@ const faqContent: FAQItem[] = [
     {
         question: "Are they safe to wash?",
         answer: `
-            I would recommend using a wet wipe first but if you put it in the wash make sure to wash on delicate.
+            I would recommend using a wet wipe first and foremost, but absolute worst case if you put it in the wash make sure to wash on delicate.
         `
     }
 ];
