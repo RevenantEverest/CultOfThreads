@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 import { Button } from '@repo/ui';
-import { PageHeader, Layout } from '@@shop/components/Common';
+import { PageHeader, Layout, ScrollToSeeMore } from '@@shop/components/Common';
 import { FAQ } from '@@shop/components/FAQ';
 import { UpcomingEvents } from '@@shop/components/Events';
 import Newsletter from '@@shop/components/Newsletter';
@@ -53,6 +53,7 @@ function Home() {
                     <div className="order-1 md:order-2 md:flex-1 flex items-center justify-center">
                         <Image width={800} height={800} className="w-full" src={IMAGE_RESOURCES.LOGO_LANDSCAPE} alt="logo" />
                     </div>
+                    <ScrollToSeeMore />
                 </div>
             </PageHeader>
             <Layout main transparent className="!pt-4 pb-10 md:pb-20 gap-50 md:gap-20">
