@@ -17,17 +17,18 @@ interface SingleProductProps {
     params: Promise<{
         slug: string
     }>,
-    searchParams: {
+    searchParams: Promise<{
         [key: string]: string | string[] | undefined
-    }
+    }>
 };
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
     try {
+        const { slug } = await params;
         const queryClient = new QueryClient();
         const data = await queryClient.fetchQuery({
-            queryKey: ["products", params.slug],
-            queryFn: () => productApi.fetchActiveListingById(params.slug)
+            queryKey: ["products", slug],
+            queryFn: () => productApi.fetchActiveListingById(slug)
         });
 
         const description = json.richTextToString(data.description as string);
@@ -37,7 +38,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
             description: text.truncate(description),
             openGraph: {
                 siteName: "Cult of Threads",
-                url: `https://cultofthreads.com/shop/${params.slug}`,
+                url: `https://cultofthreads.com/shop/${slug}`,
                 images: [URLS.supabaseStorageUrl + data.media?.[0]?.media_url]
             }
         };
