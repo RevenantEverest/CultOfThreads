@@ -3,10 +3,12 @@ import type { Metadata, Viewport } from 'next';
 import React from 'react';
 
 import { Layout } from '@@shop/components/Common';
-import Newsletter from '@@shop/components/Newsletter';
 import { UpcomingEvents } from '@@shop/components/Events';
+import { AboutMe } from '@@shop/components/About';
+import Newsletter from '@@shop/components/Newsletter';
 
 import { IMAGE_RESOURCES } from '@repo/ui';
+import { FAQ } from '@@shop/components/FAQ';
 
 export const viewport: Viewport = {
     themeColor: "#FB5377"
@@ -32,7 +34,11 @@ function About() {
 
     return(
         <React.Fragment>
-            <Layout main transparent>
+            <div className="px-5 md:px-20 pt-40">
+                <AboutMe />
+            </div>
+            <Layout main transparent className="gap-40">
+                <FAQ />
                 <UpcomingEvents />
             </Layout>
             <Newsletter className="w-full bg-card z-20 relative py-20 md:px-56" />
