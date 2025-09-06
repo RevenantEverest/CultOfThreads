@@ -3,7 +3,7 @@ import { toast } from 'react-hot-toast';
 
 import ToastSuccess from '../components/toasts/ToastSuccess';
 
-function useCopyToClipboard(): { isCopied: boolean, copy: (value: string) => void } {
+function useCopyToClipboard(): { isCopied: boolean, copy: (value: string, message?: string) => void } {
     const [copied, setCopied] = useState(false);
 
     useEffect(() => {
@@ -20,7 +20,7 @@ function useCopyToClipboard(): { isCopied: boolean, copy: (value: string) => voi
         }
     }, [copied]);
 
-    const copyToClipboard = async (value: string) => {
+    const copyToClipboard = async (value: string, message?: string) => {
 
         const codeSnippet = String(value).replace(/\n$/, '');
 
@@ -28,7 +28,7 @@ function useCopyToClipboard(): { isCopied: boolean, copy: (value: string) => voi
             await navigator.clipboard.writeText(codeSnippet);
             setCopied(true);
             toast((t) => (
-                <ToastSuccess toast={t} message="Code Snippet Copied!" />
+                <ToastSuccess toast={t} message={message ?? "Snippet Copied!"} />
             ));
         }
     };
