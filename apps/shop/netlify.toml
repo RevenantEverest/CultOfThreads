@@ -3,7 +3,7 @@
   # The command to run the build.
   command = "bun run build --filter=...shop" 
 
-  publish = ".next" 
+  publish = "apps/shop/.next" 
 
 [functions]
   node_bundler = "esbuild"

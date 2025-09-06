@@ -3,4 +3,4 @@
   # This command is run from the monorepo root.
   command = "bun run build --filter=...admin"
 
-  publish = "dist"
+  publish = "apps/admin/dist"
