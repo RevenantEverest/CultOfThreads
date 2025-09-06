@@ -54,7 +54,6 @@ export default function RootLayout({ children, }: Readonly<{
                         />
                     </div>
                     <AnimatePresence mode="popLayout">
-                        {/* <AnimatedOutlet key={nextMatch ? nextMatch.id : ""} /> */}
                         {children}
                     </AnimatePresence>
                     <Footer />
