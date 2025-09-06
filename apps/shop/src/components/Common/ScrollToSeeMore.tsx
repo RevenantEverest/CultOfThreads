@@ -2,11 +2,12 @@
 
 import { FaChevronDown } from 'react-icons/fa6';
 import { motion } from 'motion/react';
+import React from 'react';
 
-function ScrollToSeeMore() {
+function ScrollToSeeMore({ className }: React.HTMLAttributes<HTMLDivElement>) {
   
     return(
-        <div className="absolute bottom-15 md:bottom-20">
+        <div className={`absolute bottom-15 md:bottom-20 ${className}`}>
             <motion.div
                 className="flex flex-col items-center justify-center"
                 animate={{
