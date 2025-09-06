@@ -1,6 +1,6 @@
 # apps/admin/netlify.toml
 [build]
   # This command is run from the monorepo root.
-  command = "npm install && npm run build"
+  command = "bun install && bun run build"
 
   publish = "dist"
