@@ -15,6 +15,7 @@ import Footer from '@@shop/navigation/Footer';
 import ThemeHandler from '@@shop/components/ThemeHandler';
 import Providers from '@@shop/Providers';
 import UtmParser from '@@shop/components/UtmParser';
+import ScrollToTopOnNavigate from '@@shop/components/ScrollToTopOnNavigate';
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -42,6 +43,7 @@ export default function RootLayout({ children, }: Readonly<{
                     <Suspense>
                         <UtmParser />
                     </Suspense>
+                    <ScrollToTopOnNavigate />
                     <ThemeHandler />
                     <Navbar />
                     <div className="w-[100dvw] h-[100dvh] fixed">

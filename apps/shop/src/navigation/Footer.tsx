@@ -44,10 +44,10 @@ function Footer() {
                 <WaveDivider className="absolute z-40 w-full -top-10" bgColor={theme.colors.card} />
                 <div className="flex flex-col md:flex-row items-center justify-center md:w-6/12 pb-10 gap-20 md:gap-0">
                     <div className="flex-1 flex justify-center md:justify-start">
-                        <Image className="!relative w-full md:!w-5/12" fill src={IMAGE_RESOURCES.LOGO_CIRCLE} alt="cult of threads logo" />
+                        <Image className="!relative !w-9/12 md:!w-5/12" fill src={IMAGE_RESOURCES.LOGO_CIRCLE} alt="cult of threads logo" />
                     </div>
                     <div className="flex flex-1 flex-col gap-6 items-center md:items-end -mt-1">
-                        <h1 className="font-obo font-semibold text-xl text-center md:text-left">Grow With Us</h1>
+                        <h1 className="font-bold text-2xl text-center md:text-left">Grow With Us</h1>
                         <div className="flex justify-center md:justify-end gap-6 w-full">
                             <SocialIcon icon={FaEtsy} tooltip="Etsy" to={SOCIAL_LINKS.ETSY.url} size="3xl" />
                             <SocialIcon icon={FaFacebookF} tooltip="Facebook" to={SOCIAL_LINKS.INSTAGRAM.url} size="3xl" />

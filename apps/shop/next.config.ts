@@ -10,6 +10,10 @@ const nextConfig: NextConfig = {
             },
             {
                 protocol: "https",
+                hostname: "cdn.imgchest.com"
+            },
+            {
+                protocol: "https",
                 hostname: new URL(process.env.NEXT_PUBLIC_SUPABASE_URL as string).hostname
             }
         ]
