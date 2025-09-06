@@ -6,14 +6,14 @@ import { motion } from 'motion/react';
 function ScrollToSeeMore() {
   
     return(
-        <div className="absolute bottom-20 ">
+        <div className="absolute bottom-15 md:bottom-20">
             <motion.div
                 className="flex flex-col items-center justify-center"
                 animate={{
-                    y: ["0vh", "-2vh", "0vh"]
+                    y: ["0vh", "-1.5vh", "0vh"]
                 }}
                 transition={{
-                    duration: 2.5,
+                    duration: 2,
                     repeat: Infinity
                 }}
             >
