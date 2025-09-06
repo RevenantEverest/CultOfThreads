@@ -43,7 +43,6 @@ export default function RootLayout({ children, }: Readonly<{
                         <UtmParser />
                     </Suspense>
                     <ThemeHandler />
-                    <UtmParser />
                     <Navbar />
                     <div className="w-[100dvw] h-[100dvh] fixed">
                         <Sparkle
