@@ -16,7 +16,7 @@ function ToastSuccess({ toast, position="top-right", duration=3000, message }: T
     toast.position = position;
 
     return(
-        <Card className="bg-card shadow-lg w-full">
+        <Card className="bg-card shadow-lg w-full p-4 border-muted/60 border-2">
             <div className="flex gap-2 w-full items-center">
                 <FaCircleCheck className="text-primary" />
                 <p className="text-text">{message}</p>
