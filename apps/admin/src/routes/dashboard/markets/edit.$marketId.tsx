@@ -38,13 +38,13 @@ function EditMarket() {
 
     const initialValues: MarketFormValues = {
         name: data.name,
-        state: data.market_details?.state ?? ""
+        state: data.details?.state ?? ""
     };
 
     const onSubmit = async (values: MarketFormValues) => {
 
         try {
-            if(!data.market_details) {
+            if(!data.details) {
                 throw new Error("Missing Market Details");
             }
 
@@ -52,7 +52,7 @@ function EditMarket() {
                 id: data.id,
                 name: values.name,
                 details: {
-                    ...data.market_details,
+                    ...data.details,
                     state: values.state,
                 },
                 created_at: data.created_at,
@@ -93,7 +93,7 @@ function EditMarket() {
                 <MarketForm
                     type="update"
                     initialValues={initialValues}
-                    logoUrl={data.market_details?.logo_url}
+                    logoUrl={data.details?.logo_url}
                     onSubmit={onSubmit}
                 />
             </div>
