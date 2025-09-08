@@ -76,6 +76,7 @@ function ProductImages({ images }: ProductImages) {
                     className="rounded-xl border-muted border-4 hover:cursor-zoom-in"
                     height={1080}
                     width={1080}
+                    loading="eager"
                     src={URLS.supabaseStorageUrl + (images[imageIndex] && images[imageIndex].media_url)} 
                     alt={`featured`}
                     onClick={() => setOpen(true)}
