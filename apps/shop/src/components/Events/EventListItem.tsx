@@ -48,6 +48,7 @@ function EventListItem({ event }: EventListItemProps) {
                     className="shrink-0 relative object-cover w-full h-full rounded-t-lg"
                     height={500}
                     width={500}
+                    loading="eager"
                     src={flyerUrl}
                     alt={event.market.name}
                 />

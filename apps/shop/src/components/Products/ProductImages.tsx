@@ -55,6 +55,7 @@ function ProductImages({ images }: ProductImages) {
                         alt={'Product Image'}
                         height={400}
                         width={400}
+                        loading="eager"
                         src={URLS.supabaseStorageUrl + image.media_url}
                     />
                 </button>
