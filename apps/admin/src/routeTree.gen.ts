@@ -17,6 +17,7 @@ import { Route as DashboardLayoutImport } from './routes/dashboard/_layout'
 import { Route as DashboardProductsEditProductIdImport } from './routes/dashboard/products/edit.$productId'
 import { Route as DashboardMarketsEditMarketIdImport } from './routes/dashboard/markets/edit.$marketId'
 import { Route as DashboardEventsEditEventIdImport } from './routes/dashboard/events/edit.$eventId'
+import { Route as DashboardContactsEditContactIdImport } from './routes/dashboard/contacts/edit.$contactId'
 
 // Create Virtual Routes
 
@@ -41,6 +42,9 @@ const DashboardMarketsAddLazyImport = createFileRoute(
   '/dashboard/markets/add',
 )()
 const DashboardEventsAddLazyImport = createFileRoute('/dashboard/events/add')()
+const DashboardContactsAddLazyImport = createFileRoute(
+  '/dashboard/contacts/add',
+)()
 const DashboardProductsSettingsIndexLazyImport = createFileRoute(
   '/dashboard/products/settings/',
 )()
@@ -142,6 +146,14 @@ const DashboardEventsAddLazyRoute = DashboardEventsAddLazyImport.update({
   import('./routes/dashboard/events/add.lazy').then((d) => d.Route),
 )
 
+const DashboardContactsAddLazyRoute = DashboardContactsAddLazyImport.update({
+  id: '/contacts/add',
+  path: '/contacts/add',
+  getParentRoute: () => DashboardLayoutRoute,
+} as any).lazy(() =>
+  import('./routes/dashboard/contacts/add.lazy').then((d) => d.Route),
+)
+
 const DashboardProductsSettingsIndexLazyRoute =
   DashboardProductsSettingsIndexLazyImport.update({
     id: '/products/settings/',
@@ -175,6 +187,13 @@ const DashboardEventsEditEventIdRoute = DashboardEventsEditEventIdImport.update(
   } as any,
 )
 
+const DashboardContactsEditContactIdRoute =
+  DashboardContactsEditContactIdImport.update({
+    id: '/contacts/edit/$contactId',
+    path: '/contacts/edit/$contactId',
+    getParentRoute: () => DashboardLayoutRoute,
+  } as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -205,6 +224,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/dashboard/'
       preLoaderRoute: typeof DashboardIndexLazyImport
+      parentRoute: typeof DashboardLayoutImport
+    }
+    '/dashboard/contacts/add': {
+      id: '/dashboard/contacts/add'
+      path: '/contacts/add'
+      fullPath: '/dashboard/contacts/add'
+      preLoaderRoute: typeof DashboardContactsAddLazyImport
       parentRoute: typeof DashboardLayoutImport
     }
     '/dashboard/events/add': {
@@ -263,6 +289,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardProductsIndexLazyImport
       parentRoute: typeof DashboardLayoutImport
     }
+    '/dashboard/contacts/edit/$contactId': {
+      id: '/dashboard/contacts/edit/$contactId'
+      path: '/contacts/edit/$contactId'
+      fullPath: '/dashboard/contacts/edit/$contactId'
+      preLoaderRoute: typeof DashboardContactsEditContactIdImport
+      parentRoute: typeof DashboardLayoutImport
+    }
     '/dashboard/events/edit/$eventId': {
       id: '/dashboard/events/edit/$eventId'
       path: '/events/edit/$eventId'
@@ -298,6 +331,7 @@ declare module '@tanstack/react-router' {
 
 interface DashboardLayoutRouteChildren {
   DashboardIndexLazyRoute: typeof DashboardIndexLazyRoute
+  DashboardContactsAddLazyRoute: typeof DashboardContactsAddLazyRoute
   DashboardEventsAddLazyRoute: typeof DashboardEventsAddLazyRoute
   DashboardMarketsAddLazyRoute: typeof DashboardMarketsAddLazyRoute
   DashboardProductsAddLazyRoute: typeof DashboardProductsAddLazyRoute
@@ -306,6 +340,7 @@ interface DashboardLayoutRouteChildren {
   DashboardEventsIndexLazyRoute: typeof DashboardEventsIndexLazyRoute
   DashboardMarketsIndexLazyRoute: typeof DashboardMarketsIndexLazyRoute
   DashboardProductsIndexLazyRoute: typeof DashboardProductsIndexLazyRoute
+  DashboardContactsEditContactIdRoute: typeof DashboardContactsEditContactIdRoute
   DashboardEventsEditEventIdRoute: typeof DashboardEventsEditEventIdRoute
   DashboardMarketsEditMarketIdRoute: typeof DashboardMarketsEditMarketIdRoute
   DashboardProductsEditProductIdRoute: typeof DashboardProductsEditProductIdRoute
@@ -314,6 +349,7 @@ interface DashboardLayoutRouteChildren {
 
 const DashboardLayoutRouteChildren: DashboardLayoutRouteChildren = {
   DashboardIndexLazyRoute: DashboardIndexLazyRoute,
+  DashboardContactsAddLazyRoute: DashboardContactsAddLazyRoute,
   DashboardEventsAddLazyRoute: DashboardEventsAddLazyRoute,
   DashboardMarketsAddLazyRoute: DashboardMarketsAddLazyRoute,
   DashboardProductsAddLazyRoute: DashboardProductsAddLazyRoute,
@@ -322,6 +358,7 @@ const DashboardLayoutRouteChildren: DashboardLayoutRouteChildren = {
   DashboardEventsIndexLazyRoute: DashboardEventsIndexLazyRoute,
   DashboardMarketsIndexLazyRoute: DashboardMarketsIndexLazyRoute,
   DashboardProductsIndexLazyRoute: DashboardProductsIndexLazyRoute,
+  DashboardContactsEditContactIdRoute: DashboardContactsEditContactIdRoute,
   DashboardEventsEditEventIdRoute: DashboardEventsEditEventIdRoute,
   DashboardMarketsEditMarketIdRoute: DashboardMarketsEditMarketIdRoute,
   DashboardProductsEditProductIdRoute: DashboardProductsEditProductIdRoute,
@@ -338,6 +375,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardLayoutRouteWithChildren
   '/login': typeof LoginLazyRoute
   '/dashboard/': typeof DashboardIndexLazyRoute
+  '/dashboard/contacts/add': typeof DashboardContactsAddLazyRoute
   '/dashboard/events/add': typeof DashboardEventsAddLazyRoute
   '/dashboard/markets/add': typeof DashboardMarketsAddLazyRoute
   '/dashboard/products/add': typeof DashboardProductsAddLazyRoute
@@ -346,6 +384,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/events': typeof DashboardEventsIndexLazyRoute
   '/dashboard/markets': typeof DashboardMarketsIndexLazyRoute
   '/dashboard/products': typeof DashboardProductsIndexLazyRoute
+  '/dashboard/contacts/edit/$contactId': typeof DashboardContactsEditContactIdRoute
   '/dashboard/events/edit/$eventId': typeof DashboardEventsEditEventIdRoute
   '/dashboard/markets/edit/$marketId': typeof DashboardMarketsEditMarketIdRoute
   '/dashboard/products/edit/$productId': typeof DashboardProductsEditProductIdRoute
@@ -356,6 +395,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
   '/login': typeof LoginLazyRoute
   '/dashboard': typeof DashboardIndexLazyRoute
+  '/dashboard/contacts/add': typeof DashboardContactsAddLazyRoute
   '/dashboard/events/add': typeof DashboardEventsAddLazyRoute
   '/dashboard/markets/add': typeof DashboardMarketsAddLazyRoute
   '/dashboard/products/add': typeof DashboardProductsAddLazyRoute
@@ -364,6 +404,7 @@ export interface FileRoutesByTo {
   '/dashboard/events': typeof DashboardEventsIndexLazyRoute
   '/dashboard/markets': typeof DashboardMarketsIndexLazyRoute
   '/dashboard/products': typeof DashboardProductsIndexLazyRoute
+  '/dashboard/contacts/edit/$contactId': typeof DashboardContactsEditContactIdRoute
   '/dashboard/events/edit/$eventId': typeof DashboardEventsEditEventIdRoute
   '/dashboard/markets/edit/$marketId': typeof DashboardMarketsEditMarketIdRoute
   '/dashboard/products/edit/$productId': typeof DashboardProductsEditProductIdRoute
@@ -376,6 +417,7 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardLayoutRouteWithChildren
   '/login': typeof LoginLazyRoute
   '/dashboard/': typeof DashboardIndexLazyRoute
+  '/dashboard/contacts/add': typeof DashboardContactsAddLazyRoute
   '/dashboard/events/add': typeof DashboardEventsAddLazyRoute
   '/dashboard/markets/add': typeof DashboardMarketsAddLazyRoute
   '/dashboard/products/add': typeof DashboardProductsAddLazyRoute
@@ -384,6 +426,7 @@ export interface FileRoutesById {
   '/dashboard/events/': typeof DashboardEventsIndexLazyRoute
   '/dashboard/markets/': typeof DashboardMarketsIndexLazyRoute
   '/dashboard/products/': typeof DashboardProductsIndexLazyRoute
+  '/dashboard/contacts/edit/$contactId': typeof DashboardContactsEditContactIdRoute
   '/dashboard/events/edit/$eventId': typeof DashboardEventsEditEventIdRoute
   '/dashboard/markets/edit/$marketId': typeof DashboardMarketsEditMarketIdRoute
   '/dashboard/products/edit/$productId': typeof DashboardProductsEditProductIdRoute
@@ -397,6 +440,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/login'
     | '/dashboard/'
+    | '/dashboard/contacts/add'
     | '/dashboard/events/add'
     | '/dashboard/markets/add'
     | '/dashboard/products/add'
@@ -405,6 +449,7 @@ export interface FileRouteTypes {
     | '/dashboard/events'
     | '/dashboard/markets'
     | '/dashboard/products'
+    | '/dashboard/contacts/edit/$contactId'
     | '/dashboard/events/edit/$eventId'
     | '/dashboard/markets/edit/$marketId'
     | '/dashboard/products/edit/$productId'
@@ -414,6 +459,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/dashboard'
+    | '/dashboard/contacts/add'
     | '/dashboard/events/add'
     | '/dashboard/markets/add'
     | '/dashboard/products/add'
@@ -422,6 +468,7 @@ export interface FileRouteTypes {
     | '/dashboard/events'
     | '/dashboard/markets'
     | '/dashboard/products'
+    | '/dashboard/contacts/edit/$contactId'
     | '/dashboard/events/edit/$eventId'
     | '/dashboard/markets/edit/$marketId'
     | '/dashboard/products/edit/$productId'
@@ -432,6 +479,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/login'
     | '/dashboard/'
+    | '/dashboard/contacts/add'
     | '/dashboard/events/add'
     | '/dashboard/markets/add'
     | '/dashboard/products/add'
@@ -440,6 +488,7 @@ export interface FileRouteTypes {
     | '/dashboard/events/'
     | '/dashboard/markets/'
     | '/dashboard/products/'
+    | '/dashboard/contacts/edit/$contactId'
     | '/dashboard/events/edit/$eventId'
     | '/dashboard/markets/edit/$marketId'
     | '/dashboard/products/edit/$productId'
@@ -481,6 +530,7 @@ export const routeTree = rootRoute
       "filePath": "dashboard/_layout.tsx",
       "children": [
         "/dashboard/",
+        "/dashboard/contacts/add",
         "/dashboard/events/add",
         "/dashboard/markets/add",
         "/dashboard/products/add",
@@ -489,6 +539,7 @@ export const routeTree = rootRoute
         "/dashboard/events/",
         "/dashboard/markets/",
         "/dashboard/products/",
+        "/dashboard/contacts/edit/$contactId",
         "/dashboard/events/edit/$eventId",
         "/dashboard/markets/edit/$marketId",
         "/dashboard/products/edit/$productId",
@@ -500,6 +551,10 @@ export const routeTree = rootRoute
     },
     "/dashboard/": {
       "filePath": "dashboard/index.lazy.tsx",
+      "parent": "/dashboard"
+    },
+    "/dashboard/contacts/add": {
+      "filePath": "dashboard/contacts/add.lazy.tsx",
       "parent": "/dashboard"
     },
     "/dashboard/events/add": {
@@ -532,6 +587,10 @@ export const routeTree = rootRoute
     },
     "/dashboard/products/": {
       "filePath": "dashboard/products/index.lazy.tsx",
+      "parent": "/dashboard"
+    },
+    "/dashboard/contacts/edit/$contactId": {
+      "filePath": "dashboard/contacts/edit.$contactId.tsx",
       "parent": "/dashboard"
     },
     "/dashboard/events/edit/$eventId": {
