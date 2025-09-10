@@ -1,84 +1,77 @@
+import type { Contact } from '@repo/supabase';
 import { Card, CardContent } from '@repo/ui';
 import {
     Table,
     TableBody,
-    TableCell,
     TableHead,
     TableHeader,
     TableRow,
 } from '@repo/ui';
+import ContactListItem from './ContactListItem';
+import { FaCalendar, FaEnvelope, FaPhone, FaUser } from 'react-icons/fa6';
 
-const invoices = [
-    {
-        invoice: "INV001",
-        paymentStatus: "Paid",
-        totalAmount: "$250.00",
-        paymentMethod: "Credit Card",
-    },
-    {
-        invoice: "INV002",
-        paymentStatus: "Pending",
-        totalAmount: "$150.00",
-        paymentMethod: "PayPal",
-    },
-    {
-        invoice: "INV003",
-        paymentStatus: "Unpaid",
-        totalAmount: "$350.00",
-        paymentMethod: "Bank Transfer",
-    },
-    {
-        invoice: "INV004",
-        paymentStatus: "Paid",
-        totalAmount: "$450.00",
-        paymentMethod: "Credit Card",
-    },
-    {
-        invoice: "INV005",
-        paymentStatus: "Paid",
-        totalAmount: "$550.00",
-        paymentMethod: "PayPal",
-    },
-    {
-        invoice: "INV006",
-        paymentStatus: "Pending",
-        totalAmount: "$200.00",
-        paymentMethod: "Bank Transfer",
-    },
-    {
-        invoice: "INV007",
-        paymentStatus: "Unpaid",
-        totalAmount: "$300.00",
-        paymentMethod: "Credit Card",
-    },
-];
+interface ContactListProps {
+    contacts: Contact[],
+    search: string
+};
 
-function ContactsList() {
+function ContactsList({ contacts, search }: ContactListProps) {
 
-    const headClass = "bg-card-light";
-    const cellClass = "py-4";
+    const headClass = "bg-card-light font-semibold";
+
+    const contactsList = contacts.filter((el) => {
+        if(search) {
+            const name = (el.first_name ?? "") + " " + (el.last_name ?? "");
+            return name.toLowerCase().indexOf(search.toLowerCase()) !== -1;
+        }
+
+        return el;        
+    });
 
     return(
         <Card>
             <CardContent className="py-8">
                 <Table>
                     <TableHeader>
-                        <TableRow className="font-bold border-b-muted">
-                            <TableHead className={`${headClass} font-bold w-1/10 rounded-tl-lg`}>Invoice</TableHead>
-                            <TableHead className={`${headClass}`}>Status</TableHead>
-                            <TableHead className={`${headClass}`}>Method</TableHead>
-                            <TableHead className={`${headClass} text-right rounded-tr-lg`}>Amount</TableHead>
+                        <TableRow className="font-bold border-b-muted hover:!bg-transparent">
+                            <TableHead className={`${headClass} font-bold w-1/10 rounded-tl-lg`}></TableHead>
+                            <TableHead className={`${headClass}`}>
+                                <div className="flex items-center justify-start gap-2">
+                                    <FaUser />
+                                    Name <span className="text-xs text-accent font-semibold">({contacts.length})</span>
+                                </div>
+                            </TableHead>
+                            <TableHead className={`${headClass} text-center`}>
+                                <div className="flex items-center gap-2">
+                                    <FaEnvelope />
+                                    Email
+                                </div>
+                            </TableHead>
+                            <TableHead className={`${headClass} text-center`}>
+                                <div className="flex items-center gap-2">
+                                    <FaPhone />
+                                    Phone
+                                </div>
+                            </TableHead>
+                            <TableHead className={`${headClass} text-center`}>
+                                <div className="flex items-center gap-2">
+                                    <FaCalendar />
+                                    Created At
+                                </div>
+                            </TableHead>
+                            <TableHead className={`${headClass} text-right rounded-tr-lg`}>Actions</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {invoices.map((invoice) => (
-                            <TableRow key={invoice.invoice} className="border-b-muted font-semibold">
-                                <TableCell className={`${cellClass}`}>{invoice.invoice}</TableCell>
-                                <TableCell className={`${cellClass}`}>{invoice.paymentStatus}</TableCell>
-                                <TableCell className={`${cellClass}`}>{invoice.paymentMethod}</TableCell>
-                                <TableCell className={`${cellClass} text-right`}>{invoice.totalAmount}</TableCell>
-                            </TableRow>
-                        ))}
+                        {
+                            contactsList.sort((a, b) => {
+                                const aName = (a.first_name && a.last_name) ? a.first_name + " " + a.last_name : "";
+                                const bName = (b.first_name && b.last_name) ? b.first_name + " " + b.last_name : "";
+                                return aName.localeCompare(bName)
+                            }).map((contact) => (
+                                <ContactListItem key={contact.id} contact={contact} />
+                            ))
+                        }
                     </TableBody>
                 </Table>
             </CardContent>
