@@ -16,7 +16,7 @@ interface EventListProps {
     events: EventWithMarket[]
 };
 
-function MarketList({ search, events }: EventListProps) {
+function EventList({ search, events }: EventListProps) {
 
     const headClass = "bg-card-light font-semibold";
 
@@ -53,4 +53,4 @@ function MarketList({ search, events }: EventListProps) {
     );
 };
 
-export default MarketList;
+export default EventList;
