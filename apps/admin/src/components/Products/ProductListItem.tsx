@@ -35,7 +35,7 @@ function ProductListItem({ product }: ProductListItemProps) {
                 </div>
             </TableCell>
             <TableCell className={`${cellClass}`}>
-                <Link to="/dashboard/products/edit/$productId" params={{ productId: product.id.toString() }}>
+                <Link to="/dashboard/products/item/$productId" params={{ productId: product.id.toString() }}>
                     <p className="hover:cursor-pointer hover:underline">{product.name}</p>
                 </Link>
             </TableCell>
