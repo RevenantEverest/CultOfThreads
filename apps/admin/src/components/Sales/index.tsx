@@ -1,0 +1,1 @@
+export { default as AddSale } from './AddSale';
