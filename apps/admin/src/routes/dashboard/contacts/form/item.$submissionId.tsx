@@ -12,10 +12,10 @@ export const Route = createFileRoute('/dashboard/contacts/form/item/$submissionI
             queryFn: () => contactFormApi.fetchById(params.submissionId)
         })
     },
-    component: ContactFormSubmissionPage,
+    component: ContactFormItem,
 });
 
-function ContactFormSubmissionPage() {
+function ContactFormItem() {
 
     const params = Route.useParams();
 
