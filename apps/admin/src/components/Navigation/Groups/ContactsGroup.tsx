@@ -1,4 +1,4 @@
-import type { SidebarMenuItem as SidebarMenuItemType } from '@@admin/types/sidebar';
+import type { SidebarGroupItem } from '@@admin/types/sidebar';
 import { 
     SidebarGroup,
     SidebarGroupContent,
@@ -11,7 +11,7 @@ import GroupItem from '../GroupItem';
 import { MdPermContactCalendar } from 'react-icons/md';
 import { FaEnvelopeOpenText, FaNewspaper } from 'react-icons/fa6';
 
-const items: SidebarMenuItemType[] = [
+const items: SidebarGroupItem[] = [
     {
       title: "Contacts",
       url: "/dashboard/contacts",

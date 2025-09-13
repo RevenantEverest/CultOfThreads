@@ -1,4 +1,4 @@
-import type { SidebarMenuItem as SidebarMenuItemType } from '@@admin/types/sidebar';
+import type { SidebarGroupItem } from '@@admin/types/sidebar';
 
 import { useState } from 'react';
 import { Link } from '@tanstack/react-router';
@@ -15,7 +15,7 @@ import {
 } from '@repo/ui';
 import { TiChevronRight } from "react-icons/ti";
 
-function SubGroupItem({ title, icon, subRoutes }: SidebarMenuItemType) {
+function SubGroupItem({ title, icon, subRoutes }: SidebarGroupItem) {
 
     const [open, setOpen] = useState(false);
     const { open: sidebarOpen } = useSidebar();

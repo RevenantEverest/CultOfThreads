@@ -1,4 +1,4 @@
-import type { SidebarMenuItem as SidebarMenuItemType } from '@@admin/types/sidebar';
+import type { SidebarGroupItem } from '@@admin/types/sidebar';
 
 import { 
     SidebarGroup,
@@ -13,7 +13,7 @@ import { FaChartLine } from 'react-icons/fa6';
 import SubGroupItem from '../SubGroupItem';
 
 // Menu items.
-const items: SidebarMenuItemType[] = [
+const items: SidebarGroupItem[] = [
     {
         title: "Dashboard",
         url: "/dashboard",

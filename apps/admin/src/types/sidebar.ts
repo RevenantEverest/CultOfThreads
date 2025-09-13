@@ -1,9 +1,9 @@
 import type { LinkProps } from '@tanstack/react-router';
 import type { IconType } from 'react-icons';
 
-export interface SidebarMenuItem {
+export interface SidebarGroupItem {
     title: string,
     url: LinkProps["to"],
     icon: IconType,
-    subRoutes?: Omit<SidebarMenuItem, "icon">[]
+    subRoutes?: Omit<SidebarGroupItem, "icon">[]
 };

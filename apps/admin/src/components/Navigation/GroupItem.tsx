@@ -1,4 +1,4 @@
-import type { SidebarMenuItem as SidebarMenuItemType } from '@@admin/types/sidebar';
+import type { SidebarGroupItem } from '@@admin/types/sidebar';
 
 import { Link } from '@tanstack/react-router';
 import { 
@@ -6,7 +6,7 @@ import {
     SidebarMenuItem
 } from '@repo/ui';
 
-function GroupItem({ title, url, icon }: SidebarMenuItemType) {
+function GroupItem({ title, url, icon }: SidebarGroupItem) {
 
     const Icon = icon;
 
