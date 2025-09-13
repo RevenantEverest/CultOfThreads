@@ -1,6 +1,8 @@
 import type { ProductDetails as Details } from '@repo/supabase';
 
+import posthog from 'posthog-js';
 import { FaShop, FaCartShopping, FaDollarSign } from 'react-icons/fa6';
+import { usePathname } from 'next/navigation';
 import { createSlateEditor, PlateStatic } from 'platejs';
 import {
   BlockquotePlugin,
@@ -20,13 +22,15 @@ import {
 } from '@repo/ui';
 
 interface ProductDetailsProps {
+    id: string,
     name: string,
     description?: string,
     details: Details
 };
 
-function ProductDetails({ name, description, details }: ProductDetailsProps) {
+function ProductDetails({ id, name, description, details }: ProductDetailsProps) {
 
+    const pathname = usePathname();
     const editor = createSlateEditor({
         plugins: [
             BoldPlugin, 
@@ -66,7 +70,14 @@ function ProductDetails({ name, description, details }: ProductDetailsProps) {
             {
                 (details.etsy_listing && details.etsy_listing !== "") ?
                 <div className="flex justify-center md:justify-start">
-                    <a href={details.etsy_listing} target="_blank" rel="noopener noreferrer">
+                    <a 
+                        href={details.etsy_listing} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        onClick={() => {
+                            posthog.capture("product etsy link click", { productId: id, productName: name, location: pathname });
+                        }}
+                    >
                         <Button className="text-text">
                             Shop on Etsy
                         </Button>
