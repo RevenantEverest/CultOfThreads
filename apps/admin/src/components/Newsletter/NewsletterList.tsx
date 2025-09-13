@@ -1,4 +1,7 @@
-import type { Contact } from '@repo/supabase';
+import type { NewsletterWithContact } from '@repo/supabase';
+
+import { FaCalendar, FaEnvelope, FaUser } from 'react-icons/fa6';
+
 import { Card, CardContent } from '@repo/ui';
 import {
     Table,
@@ -7,21 +10,20 @@ import {
     TableHeader,
     TableRow,
 } from '@repo/ui';
-import ContactListItem from './ContactListItem';
-import { FaCalendar, FaEnvelope, FaPhone, FaUser } from 'react-icons/fa6';
+import NewsletterListItem from './NewsletterListItem';
 
-interface ContactListProps {
-    contacts: Contact[],
+interface NewsletterListProps {
+    submissions: NewsletterWithContact[],
     search: string
 };
 
-function ContactsList({ contacts, search }: ContactListProps) {
+function NewsletterList({ submissions, search }: NewsletterListProps) {
 
     const headClass = "bg-card-light font-semibold";
 
-    const contactsList = contacts.filter((el) => {
+    const contactsList = submissions.filter((el) => {
         if(search) {
-            const name = (el.first_name ?? "") + " " + (el.last_name ?? "");
+            const name = (el.contact.first_name ?? "") + " " + (el.contact.last_name ?? "");
             return name.toLowerCase().indexOf(search.toLowerCase()) !== -1;
         }
 
@@ -38,19 +40,13 @@ function ContactsList({ contacts, search }: ContactListProps) {
                             <TableHead className={`${headClass}`}>
                                 <div className="flex items-center justify-start gap-2">
                                     <FaUser />
-                                    Name <span className="text-xs text-accent font-semibold">({contacts.length})</span>
+                                    Name <span className="text-xs text-accent font-semibold">({submissions.length})</span>
                                 </div>
                             </TableHead>
                             <TableHead className={`${headClass} text-center`}>
                                 <div className="flex items-center gap-2">
                                     <FaEnvelope />
                                     Email
-                                </div>
-                            </TableHead>
-                            <TableHead className={`${headClass} text-center`}>
-                                <div className="flex items-center gap-2">
-                                    <FaPhone />
-                                    Phone
                                 </div>
                             </TableHead>
                             <TableHead className={`${headClass} text-center`}>
@@ -65,11 +61,11 @@ function ContactsList({ contacts, search }: ContactListProps) {
                     <TableBody>
                         {
                             contactsList.sort((a, b) => {
-                                const aName = (a.first_name && a.last_name) ? a.first_name + " " + a.last_name : "";
-                                const bName = (b.first_name && b.last_name) ? b.first_name + " " + b.last_name : "";
+                                const aName = (a.contact.first_name && a.contact.last_name) ? a.contact.first_name + " " + a.contact.last_name : "";
+                                const bName = (b.contact.first_name && b.contact.last_name) ? b.contact.first_name + " " + b.contact.last_name : "";
                                 return aName.localeCompare(bName)
-                            }).map((contact) => (
-                                <ContactListItem key={contact.id} contact={contact} />
+                            }).map((submission) => (
+                                <NewsletterListItem key={submission.id} submission={submission} />
                             ))
                         }
                     </TableBody>
@@ -79,5 +75,5 @@ function ContactsList({ contacts, search }: ContactListProps) {
     );
 };
 
-export default ContactsList;
+export default NewsletterList;
   

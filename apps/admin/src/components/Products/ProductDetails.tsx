@@ -1,8 +1,6 @@
-import type { ProductDetails as Details } from '@repo/supabase';
+import type { ProductDetails as Details, ProductDetailsStatus } from '@repo/supabase';
 
-import posthog from 'posthog-js';
 import { FaShop, FaCartShopping, FaDollarSign } from 'react-icons/fa6';
-import { usePathname } from 'next/navigation';
 import { createSlateEditor, PlateStatic } from 'platejs';
 import {
   BlockquotePlugin,
@@ -20,17 +18,16 @@ import {
     H2Element,
     H3Element,
 } from '@repo/ui';
+import StatusBadge from './StatusBadge';
 
 interface ProductDetailsProps {
-    id: string,
     name: string,
     description?: string,
     details: Details
 };
 
-function ProductDetails({ id, name, description, details }: ProductDetailsProps) {
+function ProductDetails({ name, description, details }: ProductDetailsProps) {
 
-    const pathname = usePathname();
     const editor = createSlateEditor({
         plugins: [
             BoldPlugin, 
@@ -48,7 +45,9 @@ function ProductDetails({ id, name, description, details }: ProductDetailsProps)
 
     return(
         <div className="flex flex-col gap-10 pb-20 md:pb-0">
-            <h1 className="text-4xl font-bold text-center md:text-left">{name}</h1>
+            <h1 className="text-4xl font-bold text-center md:text-left flex flex-col md:flex-row items-center gap-5">
+                {name} <StatusBadge status={details.status as ProductDetailsStatus} size="md" />
+            </h1>
             <div className="flex gap-0 md:gap-10">
                 <div className="flex flex-col md:flex-row items-center pb-2 font-bold text-lg gap-3 md:gap-2 flex-1">
                     <FaShop className="text-2xl md:text-lg" />
@@ -70,14 +69,7 @@ function ProductDetails({ id, name, description, details }: ProductDetailsProps)
             {
                 (details.etsy_listing && details.etsy_listing !== "") ?
                 <div className="flex justify-center md:justify-start">
-                    <a 
-                        href={details.etsy_listing} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        onClick={() => {
-                            posthog.capture("product etsy link click", { productId: id, productName: name, location: pathname });
-                        }}
-                    >
+                    <a href={details.etsy_listing} target="_blank" rel="noopener noreferrer">
                         <Button className="text-text">
                             Shop on Etsy
                         </Button>

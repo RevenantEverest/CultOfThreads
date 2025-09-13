@@ -1,4 +1,8 @@
-import type { Contact } from '@repo/supabase';
+import type { ContactFormSubmission } from '@repo/supabase';
+
+import { FaCalendar, FaEnvelope, FaUser } from 'react-icons/fa6';
+import { GrStatusGoodSmall } from 'react-icons/gr';
+
 import { Card, CardContent } from '@repo/ui';
 import {
     Table,
@@ -7,21 +11,20 @@ import {
     TableHeader,
     TableRow,
 } from '@repo/ui';
-import ContactListItem from './ContactListItem';
-import { FaCalendar, FaEnvelope, FaPhone, FaUser } from 'react-icons/fa6';
+import ContactFormSubmissionListItem from './ContactFormSubmissionListItem';
 
-interface ContactListProps {
-    contacts: Contact[],
+interface ContactFormSubmissionListProps {
+    submissions: ContactFormSubmission[],
     search: string
 };
 
-function ContactsList({ contacts, search }: ContactListProps) {
+function ContactFormSubmissionList({ submissions, search }: ContactFormSubmissionListProps) {
 
     const headClass = "bg-card-light font-semibold";
 
-    const contactsList = contacts.filter((el) => {
+    const contactsList = submissions.filter((el) => {
         if(search) {
-            const name = (el.first_name ?? "") + " " + (el.last_name ?? "");
+            const name = el.first_name + " " + el.last_name;
             return name.toLowerCase().indexOf(search.toLowerCase()) !== -1;
         }
 
@@ -38,7 +41,7 @@ function ContactsList({ contacts, search }: ContactListProps) {
                             <TableHead className={`${headClass}`}>
                                 <div className="flex items-center justify-start gap-2">
                                     <FaUser />
-                                    Name <span className="text-xs text-accent font-semibold">({contacts.length})</span>
+                                    Name <span className="text-xs text-accent font-semibold">({submissions.length})</span>
                                 </div>
                             </TableHead>
                             <TableHead className={`${headClass} text-center`}>
@@ -49,8 +52,8 @@ function ContactsList({ contacts, search }: ContactListProps) {
                             </TableHead>
                             <TableHead className={`${headClass} text-center`}>
                                 <div className="flex items-center gap-2">
-                                    <FaPhone />
-                                    Phone
+                                    <GrStatusGoodSmall />
+                                    Status
                                 </div>
                             </TableHead>
                             <TableHead className={`${headClass} text-center`}>
@@ -65,11 +68,11 @@ function ContactsList({ contacts, search }: ContactListProps) {
                     <TableBody>
                         {
                             contactsList.sort((a, b) => {
-                                const aName = (a.first_name && a.last_name) ? a.first_name + " " + a.last_name : "";
-                                const bName = (b.first_name && b.last_name) ? b.first_name + " " + b.last_name : "";
+                                const aName = a.first_name + " " + a.last_name;
+                                const bName = b.first_name + " " + b.last_name;
                                 return aName.localeCompare(bName)
-                            }).map((contact) => (
-                                <ContactListItem key={contact.id} contact={contact} />
+                            }).map((submission) => (
+                                <ContactFormSubmissionListItem key={submission.id} submission={submission} />
                             ))
                         }
                     </TableBody>
@@ -79,5 +82,5 @@ function ContactsList({ contacts, search }: ContactListProps) {
     );
 };
 
-export default ContactsList;
+export default ContactFormSubmissionList;
   

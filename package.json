@@ -34,6 +34,7 @@
     "lucide-react": "^0.539.0",
     "motion": "^11.18.2",
     "platejs": "^49.1.5",
+    "posthog-js": "^1.265.0",
     "react": "^19.1.1",
     "react-day-picker": "^9.9.0",
     "react-dom": "^19.1.1",
