@@ -50,7 +50,7 @@ function ProductImages({ images }: ProductImages) {
                 >
                     <img
                         alt={'Product Image'}
-                        src={URLS.supabaseStorageUrl + image.media_url}
+                        src={URLS.SUPABASE_STORAGE + image.media_url}
                     />
                 </button>
             );
@@ -69,7 +69,7 @@ function ProductImages({ images }: ProductImages) {
                 }
                 <img
                     className="rounded-xl border-muted border-4 hover:cursor-zoom-in"
-                    src={URLS.supabaseStorageUrl + (images[imageIndex] && images[imageIndex].media_url)} 
+                    src={URLS.SUPABASE_STORAGE + (images[imageIndex] && images[imageIndex].media_url)} 
                     alt={`featured`}
                 />
                 {

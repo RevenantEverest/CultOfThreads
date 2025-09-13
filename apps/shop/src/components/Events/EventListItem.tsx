@@ -33,7 +33,7 @@ function EventListItem({ event }: EventListItemProps) {
     const [open, setOpen] = useState(false);
     const copier = useCopyToClipboard();
 
-    const flyerUrl = URLS.supabaseStorageUrl + event.flyer_url;
+    const flyerUrl = URLS.SUPABASE_STORAGE + event.flyer_url;
 
     const dateFromDate = dayjs(event.date_from).tz(dayjs.tz.guess()).format("MMMM Do, YYYY");
     const dateFromTime = dayjs(event.date_from).tz(dayjs.tz.guess()).format("h:mm A");

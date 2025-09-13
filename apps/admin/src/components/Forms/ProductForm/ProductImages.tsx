@@ -15,7 +15,7 @@ function ProductImages({ images, onRemoveImage }: ProductImagesProps) {
             <Image
                 key={`product-image-${index}`}
                 className={`!w-23 !h-23`}
-                url={`${URLS.supabaseStorageUrl}/${image.media_url ?? ""}`}
+                url={`${URLS.SUPABASE_STORAGE}/${image.media_url ?? ""}`}
                 alt={`product image ${index}`}
                 onRemoveImage={() => onRemoveImage(image)}
             />
@@ -24,7 +24,7 @@ function ProductImages({ images, onRemoveImage }: ProductImagesProps) {
         return(
             <div className="flex flex-col md:flex-row items-center gap-4">
                 <Image
-                    url={`${URLS.supabaseStorageUrl}/${images?.[0]?.media_url ?? ""}`}
+                    url={`${URLS.SUPABASE_STORAGE}/${images?.[0]?.media_url ?? ""}`}
                     onRemoveImage={() => images[0] && onRemoveImage(images[0])}
                     alt={`featured product image`}
                 />

@@ -28,7 +28,7 @@ function ProductListItem({ product }: ProductListItemProps) {
                         (product.media && product.media[0]) &&
                         <img 
                             className="shrink-0 relative object-cover w-full h-full rounded-lg"
-                            src={`${URLS.supabaseStorageUrl}/${product.media[0].media_url}`} 
+                            src={`${URLS.SUPABASE_STORAGE}/${product.media[0].media_url}`} 
                             alt={product.name}
                         />
                     }

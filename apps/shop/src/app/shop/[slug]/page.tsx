@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
             openGraph: {
                 siteName: "Cult of Threads",
                 url: `https://cultofthreads.com/shop/${slug}`,
-                images: [URLS.supabaseStorageUrl + data.media?.[0]?.media_url]
+                images: [URLS.SUPABASE_STORAGE + data.media?.[0]?.media_url]
             }
         };
     }

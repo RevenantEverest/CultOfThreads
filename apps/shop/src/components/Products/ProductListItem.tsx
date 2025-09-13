@@ -48,7 +48,7 @@ function ProductListItem({ product }: ProductListItemProps) {
                                 height={500}
                                 width={500}
                                 loading="eager"
-                                src={URLS.supabaseStorageUrl + (featuredImage ? featuredImage.media_url : "")} 
+                                src={URLS.SUPABASE_STORAGE + (featuredImage ? featuredImage.media_url : "")} 
                                 alt={product.name}
                             />
                         }

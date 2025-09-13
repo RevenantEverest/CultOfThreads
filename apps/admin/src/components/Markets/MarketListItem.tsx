@@ -27,7 +27,7 @@ function MarketListItem({ market }: MarketListItemProps) {
                         market.details?.logo_url &&
                         <img 
                             className="shrink-0 relative object-cover w-full h-full rounded-lg"
-                            src={`${URLS.supabaseStorageUrl}/${market.details.logo_url}`} 
+                            src={`${URLS.SUPABASE_STORAGE}/${market.details.logo_url}`} 
                             alt={market.name}
                         />
                     }

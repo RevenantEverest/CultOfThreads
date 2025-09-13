@@ -8,7 +8,7 @@ import { useAppForm } from '@repo/ui/hooks';
 
 import { DateTimePicker, FileUpload} from '@@admin/components/Common';
 import { EventHourDifference } from '@@admin/components/Events';
-import { supabaseStorageUrl } from '@@admin/constants/urls';
+import { URLS } from '@@admin/constants';
 import { MarketSelect } from '@@admin/components/Markets';
 
 import { useThemeStore } from '@@admin/store/theme';
@@ -72,7 +72,7 @@ function EventForm({ type, markets, initialValues, flyerUrl, onSubmit }: EventFo
                                 <div className="h-35 w-35 overflow-hidden">
                                     <img 
                                         className="relative object-cover w-full h-full rounded-lg border-card-light border-4"
-                                        src={`${supabaseStorageUrl}/${flyerUrl}`} 
+                                        src={`${URLS.SUPABASE_STORAGE}/${flyerUrl}`} 
                                         alt="event flyer"
                                     />
                                 </div>

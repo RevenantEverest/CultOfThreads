@@ -36,7 +36,7 @@ function EventListItem({ event }: EventListItemProps) {
                     event.market.details?.logo_url &&
                     <img 
                         className="shrink-0 relative object-cover w-full h-full rounded-lg"
-                        src={`${URLS.supabaseStorageUrl}/${event.flyer_url}`} 
+                        src={`${URLS.SUPABASE_STORAGE}/${event.flyer_url}`} 
                         alt={event.market.name}
                     />
                 }
