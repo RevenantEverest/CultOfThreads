@@ -69,8 +69,9 @@ export async function fetchActiveListings(): Promise<ProductListing[]> {
                 )
             )
         `)
-        .eq('details.status', "ACTIVE")
-    ).limit(1, { foreignTable: "product_media" });
+        .filter('details.status', "eq", "ACTIVE")
+        .limit(1, { foreignTable: "product_media" })
+    );
 
     if(error) {
         throw error;
