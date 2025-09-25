@@ -31,3 +31,8 @@ export interface ProductListingWithTag extends ProductDetails {
     categories: ProductCategoryFull[] | null,
     tags: ProductTagFull
 };
+
+export interface ProductWithDetailsAndMedia extends Product {
+    details: ProductDetails | null,
+    media: ProductMedia[] | null
+};
