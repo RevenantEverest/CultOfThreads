@@ -12,6 +12,8 @@ import { IMAGE_RESOURCES } from '@repo/ui';
 
 import { productApi } from '@repo/supabase';
 
+export const revalidate = 60;
+
 export const viewport: Viewport = {
     themeColor: "#FB5377"
 };
