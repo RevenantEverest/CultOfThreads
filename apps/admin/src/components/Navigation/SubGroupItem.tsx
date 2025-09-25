@@ -38,8 +38,7 @@ function SubGroupItem({ title, icon, subRoutes }: SidebarGroupItem) {
     };
     
     return(
-        <Collapsible 
-            defaultOpen 
+        <Collapsible
             key={title}
             className="group/collapsible rounded-xl duration-150"
             onOpenChange={setOpen}
