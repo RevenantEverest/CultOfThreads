@@ -16,12 +16,8 @@ import SaleForm from '@@admin/components/Forms/SaleForm';
 import { eventsApi, productApi, saleApi } from '@repo/supabase';
 import { useSuspenseQueries } from '@tanstack/react-query';
 
-interface AddSaleSearchParams {
-    productId: string
-};
-
 export const Route = createFileRoute('/dashboard/sales/add')({
-    validateSearch: (search: Record<string, unknown>): AddSaleSearchParams => {
+    validateSearch: (search: Record<string, unknown>) => {
         return {
             productId: (search?.productId as string) ?? "",
         }
