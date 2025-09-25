@@ -15,6 +15,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './routes/__root'
 import { Route as DashboardLayoutImport } from './routes/dashboard/_layout'
 import { Route as DashboardSalesAddImport } from './routes/dashboard/sales/add'
+import { Route as DashboardSalesEditSaleIdImport } from './routes/dashboard/sales/edit.$saleId'
 import { Route as DashboardProductsItemProductIdImport } from './routes/dashboard/products/item.$productId'
 import { Route as DashboardProductsEditProductIdImport } from './routes/dashboard/products/edit.$productId'
 import { Route as DashboardMarketsEditMarketIdImport } from './routes/dashboard/markets/edit.$marketId'
@@ -221,6 +222,12 @@ const DashboardAnalyticsTrafficIndexLazyRoute =
     ),
   )
 
+const DashboardSalesEditSaleIdRoute = DashboardSalesEditSaleIdImport.update({
+  id: '/sales/edit/$saleId',
+  path: '/sales/edit/$saleId',
+  getParentRoute: () => DashboardLayoutRoute,
+} as any)
+
 const DashboardProductsItemProductIdRoute =
   DashboardProductsItemProductIdImport.update({
     id: '/products/item/$productId',
@@ -415,6 +422,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardProductsItemProductIdImport
       parentRoute: typeof DashboardLayoutImport
     }
+    '/dashboard/sales/edit/$saleId': {
+      id: '/dashboard/sales/edit/$saleId'
+      path: '/sales/edit/$saleId'
+      fullPath: '/dashboard/sales/edit/$saleId'
+      preLoaderRoute: typeof DashboardSalesEditSaleIdImport
+      parentRoute: typeof DashboardLayoutImport
+    }
     '/dashboard/analytics/traffic/': {
       id: '/dashboard/analytics/traffic/'
       path: '/analytics/traffic'
@@ -467,6 +481,7 @@ interface DashboardLayoutRouteChildren {
   DashboardMarketsEditMarketIdRoute: typeof DashboardMarketsEditMarketIdRoute
   DashboardProductsEditProductIdRoute: typeof DashboardProductsEditProductIdRoute
   DashboardProductsItemProductIdRoute: typeof DashboardProductsItemProductIdRoute
+  DashboardSalesEditSaleIdRoute: typeof DashboardSalesEditSaleIdRoute
   DashboardAnalyticsTrafficIndexLazyRoute: typeof DashboardAnalyticsTrafficIndexLazyRoute
   DashboardContactsFormIndexLazyRoute: typeof DashboardContactsFormIndexLazyRoute
   DashboardProductsSettingsIndexLazyRoute: typeof DashboardProductsSettingsIndexLazyRoute
@@ -492,6 +507,7 @@ const DashboardLayoutRouteChildren: DashboardLayoutRouteChildren = {
   DashboardMarketsEditMarketIdRoute: DashboardMarketsEditMarketIdRoute,
   DashboardProductsEditProductIdRoute: DashboardProductsEditProductIdRoute,
   DashboardProductsItemProductIdRoute: DashboardProductsItemProductIdRoute,
+  DashboardSalesEditSaleIdRoute: DashboardSalesEditSaleIdRoute,
   DashboardAnalyticsTrafficIndexLazyRoute:
     DashboardAnalyticsTrafficIndexLazyRoute,
   DashboardContactsFormIndexLazyRoute: DashboardContactsFormIndexLazyRoute,
@@ -527,6 +543,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/markets/edit/$marketId': typeof DashboardMarketsEditMarketIdRoute
   '/dashboard/products/edit/$productId': typeof DashboardProductsEditProductIdRoute
   '/dashboard/products/item/$productId': typeof DashboardProductsItemProductIdRoute
+  '/dashboard/sales/edit/$saleId': typeof DashboardSalesEditSaleIdRoute
   '/dashboard/analytics/traffic': typeof DashboardAnalyticsTrafficIndexLazyRoute
   '/dashboard/contacts/form': typeof DashboardContactsFormIndexLazyRoute
   '/dashboard/products/settings': typeof DashboardProductsSettingsIndexLazyRoute
@@ -554,6 +571,7 @@ export interface FileRoutesByTo {
   '/dashboard/markets/edit/$marketId': typeof DashboardMarketsEditMarketIdRoute
   '/dashboard/products/edit/$productId': typeof DashboardProductsEditProductIdRoute
   '/dashboard/products/item/$productId': typeof DashboardProductsItemProductIdRoute
+  '/dashboard/sales/edit/$saleId': typeof DashboardSalesEditSaleIdRoute
   '/dashboard/analytics/traffic': typeof DashboardAnalyticsTrafficIndexLazyRoute
   '/dashboard/contacts/form': typeof DashboardContactsFormIndexLazyRoute
   '/dashboard/products/settings': typeof DashboardProductsSettingsIndexLazyRoute
@@ -583,6 +601,7 @@ export interface FileRoutesById {
   '/dashboard/markets/edit/$marketId': typeof DashboardMarketsEditMarketIdRoute
   '/dashboard/products/edit/$productId': typeof DashboardProductsEditProductIdRoute
   '/dashboard/products/item/$productId': typeof DashboardProductsItemProductIdRoute
+  '/dashboard/sales/edit/$saleId': typeof DashboardSalesEditSaleIdRoute
   '/dashboard/analytics/traffic/': typeof DashboardAnalyticsTrafficIndexLazyRoute
   '/dashboard/contacts/form/': typeof DashboardContactsFormIndexLazyRoute
   '/dashboard/products/settings/': typeof DashboardProductsSettingsIndexLazyRoute
@@ -613,6 +632,7 @@ export interface FileRouteTypes {
     | '/dashboard/markets/edit/$marketId'
     | '/dashboard/products/edit/$productId'
     | '/dashboard/products/item/$productId'
+    | '/dashboard/sales/edit/$saleId'
     | '/dashboard/analytics/traffic'
     | '/dashboard/contacts/form'
     | '/dashboard/products/settings'
@@ -639,6 +659,7 @@ export interface FileRouteTypes {
     | '/dashboard/markets/edit/$marketId'
     | '/dashboard/products/edit/$productId'
     | '/dashboard/products/item/$productId'
+    | '/dashboard/sales/edit/$saleId'
     | '/dashboard/analytics/traffic'
     | '/dashboard/contacts/form'
     | '/dashboard/products/settings'
@@ -666,6 +687,7 @@ export interface FileRouteTypes {
     | '/dashboard/markets/edit/$marketId'
     | '/dashboard/products/edit/$productId'
     | '/dashboard/products/item/$productId'
+    | '/dashboard/sales/edit/$saleId'
     | '/dashboard/analytics/traffic/'
     | '/dashboard/contacts/form/'
     | '/dashboard/products/settings/'
@@ -724,6 +746,7 @@ export const routeTree = rootRoute
         "/dashboard/markets/edit/$marketId",
         "/dashboard/products/edit/$productId",
         "/dashboard/products/item/$productId",
+        "/dashboard/sales/edit/$saleId",
         "/dashboard/analytics/traffic/",
         "/dashboard/contacts/form/",
         "/dashboard/products/settings/",
@@ -803,6 +826,10 @@ export const routeTree = rootRoute
     },
     "/dashboard/products/item/$productId": {
       "filePath": "dashboard/products/item.$productId.tsx",
+      "parent": "/dashboard"
+    },
+    "/dashboard/sales/edit/$saleId": {
+      "filePath": "dashboard/sales/edit.$saleId.tsx",
       "parent": "/dashboard"
     },
     "/dashboard/analytics/traffic/": {
