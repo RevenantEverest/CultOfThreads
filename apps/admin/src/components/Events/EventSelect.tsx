@@ -18,12 +18,12 @@ interface EventSelectProps {
 function EventSelect({ value, events, onChange }: EventSelectProps) {
 
     const renderMarkets = () => {
-        return events.sort((a, b) => a.market.name.localeCompare(b.market.name)).map((event) => {
+        return events.sort((a, b) => a.market.name.localeCompare(b.market.name)).map((event, index) => {
             
             const eventDate = dayjs(event.date_from).format("MMMM D, YYYY");
 
             return(
-                <SelectItem key={`event-select-${event.market.name}`} value={event.id}>
+                <SelectItem key={`event-select-${event.market.name}-${index}`} value={event.id}>
                     {event.market.name} - <span className="text-primary">{eventDate}</span>
                 </SelectItem>
             );
