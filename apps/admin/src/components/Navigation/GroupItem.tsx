@@ -1,17 +1,12 @@
-import type { IconType } from 'react-icons';
+import type { SidebarGroupItem } from '@@admin/types/sidebar';
+
 import { Link } from '@tanstack/react-router';
 import { 
     SidebarMenuButton,
     SidebarMenuItem
 } from '@repo/ui';
 
-interface GroupItemProps {
-    title: string,
-    url: string,
-    icon: IconType
-};
-
-function GroupItem({ title, url, icon }: GroupItemProps) {
+function GroupItem({ title, url, icon }: SidebarGroupItem) {
 
     const Icon = icon;
 

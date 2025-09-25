@@ -39,7 +39,7 @@ function Root() {
                 }}    
             />
             {
-                (ENV.SHOW_ROUTER_DEV_TOOLS && ENV.NODE_ENV !== "production") && 
+                (ENV.SHOW_ROUTER_DEV_TOOLS && process.env.NODE_ENV !== "production") && 
                 <TanStackRouterDevtools />
             }
         </React.Fragment>

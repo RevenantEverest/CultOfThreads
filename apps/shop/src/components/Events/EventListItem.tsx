@@ -4,8 +4,10 @@ import type { EventWithMarket } from '@repo/supabase';
 
 import { useState } from 'react';
 import Image from 'next/image';
+import posthog from 'posthog-js';
 import { Button, Card, CardContent, CardHeader } from '@repo/ui';
 import { useCopyToClipboard } from '@repo/ui/hooks';
+import { usePathname } from 'next/navigation';
 import { FaClock, FaLocationDot } from 'react-icons/fa6';
 
 import dayjs from 'dayjs';
@@ -31,7 +33,7 @@ function EventListItem({ event }: EventListItemProps) {
     const [open, setOpen] = useState(false);
     const copier = useCopyToClipboard();
 
-    const flyerUrl = URLS.supabaseStorageUrl + event.flyer_url;
+    const flyerUrl = URLS.SUPABASE_STORAGE + event.flyer_url;
 
     const dateFromDate = dayjs(event.date_from).tz(dayjs.tz.guess()).format("MMMM Do, YYYY");
     const dateFromTime = dayjs(event.date_from).tz(dayjs.tz.guess()).format("h:mm A");
@@ -39,6 +41,8 @@ function EventListItem({ event }: EventListItemProps) {
 
     const isPast = dayjs(event.date_to).isBefore(dayjs());
     const isToday = dayjs(dayjs(event.date_from).format("M/D/YYYY")).isSame(dayjs(dayjs().format("M/D/YYYY")));
+
+    const pathname = usePathname();
 
     return(
         <>
@@ -90,13 +94,22 @@ function EventListItem({ event }: EventListItemProps) {
                     </div>
                 </div>
                 <div className="flex gap-3 absolute bottom-6">
-                    <Button disabled={isPast} onClick={() => setOpen(true)}>
+                    <Button 
+                        disabled={isPast} 
+                        onClick={() => {
+                            posthog.capture("event flyer button", { eventId: event.id, marketName: event.market.name, locationUrl: pathname });
+                            setOpen(true);
+                        }}
+                    >
                         View Flyer
                     </Button>
                     <Button 
                         disabled={isPast} 
                         variant="outline"
-                        onClick={() => copier.copy(event.address, "Address copied to clipboard!")}
+                        onClick={() => {
+                            posthog.capture("event address button", { eventId: event.id, marketName: event.market.name, locationUrl: pathname });
+                            copier.copy(event.address, "Address copied to clipboard!");
+                        }}
                     >
                         Copy Address
                     </Button>

@@ -12,6 +12,8 @@ function Dashboard() {
             <div className="flex flex-col gap-3">
                 <h1 className="text-4xl font-bold">Dashboard</h1>
             </div>
+            <div className="mt-15 flex flex-col gap-5">
+            </div>
         </Layout>
     );
 };

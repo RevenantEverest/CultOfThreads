@@ -29,6 +29,7 @@ function Product({ slug }: ProductProps) {
                 {
                     (query.data && query.data.details) &&
                     <ProductDetails 
+                        id={query.data.id}
                         name={query.data.name} 
                         description={query.data.description?.toString()}
                         details={query.data.details}

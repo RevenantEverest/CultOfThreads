@@ -1,7 +1,11 @@
+"use client"
+
 import type { ProductListing } from '@repo/supabase';
 
 import Link from 'next/link';
 import Image from 'next/image';
+import posthog from 'posthog-js';
+import { usePathname } from 'next/navigation';
 import { FaDollarSign } from 'react-icons/fa6';
 import { motion } from 'motion/react';
 import { MotionHover } from '@repo/ui';
@@ -9,6 +13,7 @@ import { MotionHover } from '@repo/ui';
 import ProductTags from './ProductTags';
 
 import { URLS } from '@@shop/constants';
+
 
 interface ProductListItemProps {
     product: ProductListing,
@@ -18,9 +23,18 @@ interface ProductListItemProps {
 function ProductListItem({ product }: ProductListItemProps) {
 
     const featuredImage = product.media && product.media[0];
+    const pathname = usePathname();
 
     return(
-        <Link href={`/shop/${product.id}`}>
+        <Link 
+            href={`/shop/${product.id}`} 
+            onClick={() => 
+                posthog.capture(
+                    "product listing click", 
+                    { productId: product.id, productName: product.name, locationUrl: pathname }
+                )
+            }
+        >
             <MotionHover>
                 <motion.div
                     className="flex flex-col gap-3"
@@ -34,7 +48,7 @@ function ProductListItem({ product }: ProductListItemProps) {
                                 height={500}
                                 width={500}
                                 loading="eager"
-                                src={URLS.supabaseStorageUrl + (featuredImage ? featuredImage.media_url : "")} 
+                                src={URLS.SUPABASE_STORAGE + (featuredImage ? featuredImage.media_url : "")} 
                                 alt={product.name}
                             />
                         }

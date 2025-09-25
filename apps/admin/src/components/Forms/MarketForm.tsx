@@ -5,7 +5,7 @@ import { useAppForm } from '@repo/ui/hooks';
 import { FileUpload, StateSelect } from '@@admin/components/Common';
 
 import { useThemeStore } from '@@admin/store/theme';
-import { supabaseStorageUrl } from '@@admin/constants/urls';
+import { URLS } from '@@admin/constants';
 
 type MarketFormType = "create" | "update";
 
@@ -65,7 +65,7 @@ function MarketForm({ type, initialValues, logoUrl, onSubmit }: MarketFormProps)
                             <div className="h-35 w-35 overflow-hidden">
                                 <img 
                                     className="relative object-cover w-full h-full rounded-lg border-card-light border-4"
-                                    src={`${supabaseStorageUrl}/${logoUrl}`} 
+                                    src={`${URLS.SUPABASE_STORAGE}/${logoUrl}`} 
                                     alt={initialValues.name}
                                 />
                             </div>

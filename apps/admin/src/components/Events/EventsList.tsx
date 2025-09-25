@@ -16,7 +16,7 @@ interface EventListProps {
     events: EventWithMarket[]
 };
 
-function MarketList({ search, events }: EventListProps) {
+function EventList({ search, events }: EventListProps) {
 
     const headClass = "bg-card-light font-semibold";
 
@@ -35,7 +35,9 @@ function MarketList({ search, events }: EventListProps) {
                     <TableHeader>
                         <TableRow className="font-bold border-b-muted hover:!bg-transparent">
                             <TableHead className={`${headClass} font-bold w-1/10 rounded-tl-lg`}></TableHead>
-                            <TableHead className={`${headClass}`}>Market</TableHead>
+                            <TableHead className={`${headClass}`}>
+                                Market <span className="text-xs text-accent font-semibold">({events.length})</span>
+                            </TableHead>
                             <TableHead className={`${headClass} text-center`}>Address</TableHead>
                             <TableHead className={`${headClass} text-center`}>Date From</TableHead>
                             <TableHead className={`${headClass} text-center`}>Date To</TableHead>
@@ -53,4 +55,4 @@ function MarketList({ search, events }: EventListProps) {
     );
 };
 
-export default MarketList;
+export default EventList;

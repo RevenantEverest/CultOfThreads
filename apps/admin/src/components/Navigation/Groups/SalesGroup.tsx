@@ -1,3 +1,5 @@
+import type { SidebarGroupItem } from '@@admin/types/sidebar';
+
 import { 
     SidebarGroup,
     SidebarGroupContent,
@@ -9,7 +11,7 @@ import GroupItem from '../GroupItem';
 import { FaBoxesPacking, FaCashRegister } from 'react-icons/fa6';
 
 // Menu items.
-const items = [
+const items: SidebarGroupItem[] = [
     {
       title: "Products",
       url: "/dashboard/products",

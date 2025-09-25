@@ -38,6 +38,9 @@ export * from './types/products.js';
 export * as productTagApi from './queries/productTags.js';
 export * from './types/productTags.js';
 
+export * as saleApi from './queries/sales.js';
+export * from './types/sales.js';
+
 export * as tagApi from './queries/tags.js';
 export * from './types/tags.js';
 

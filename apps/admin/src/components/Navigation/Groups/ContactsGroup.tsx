@@ -1,3 +1,4 @@
+import type { SidebarGroupItem } from '@@admin/types/sidebar';
 import { 
     SidebarGroup,
     SidebarGroupContent,
@@ -8,12 +9,23 @@ import {
 import GroupItem from '../GroupItem';
 
 import { MdPermContactCalendar } from 'react-icons/md';
+import { FaEnvelopeOpenText, FaNewspaper } from 'react-icons/fa6';
 
-const items = [
+const items: SidebarGroupItem[] = [
     {
-      title: "Contacts List",
+      title: "Contacts",
       url: "/dashboard/contacts",
       icon: MdPermContactCalendar,
+    },
+    {
+      title: "Contact Form",
+      url: "/dashboard/contacts/form",
+      icon: FaEnvelopeOpenText,
+    },
+    {
+        title: "Newsletter",
+        url: "/dashboard/newsletter",
+        icon: FaNewspaper
     }
 ]
 

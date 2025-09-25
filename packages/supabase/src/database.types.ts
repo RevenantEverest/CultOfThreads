@@ -393,6 +393,63 @@ export type Database = {
         }
         Relationships: []
       }
+      sales: {
+        Row: {
+          created_at: string
+          event_id: string | null
+          id: string
+          market_name: string | null
+          notes: Json | null
+          original_product_price: number
+          product_id: string | null
+          product_name: string
+          purchase_date: string
+          sale_price: number
+          sale_type: string
+        }
+        Insert: {
+          created_at?: string
+          event_id?: string | null
+          id?: string
+          market_name?: string | null
+          notes?: Json | null
+          original_product_price: number
+          product_id?: string | null
+          product_name: string
+          purchase_date: string
+          sale_price: number
+          sale_type: string
+        }
+        Update: {
+          created_at?: string
+          event_id?: string | null
+          id?: string
+          market_name?: string | null
+          notes?: Json | null
+          original_product_price?: number
+          product_id?: string | null
+          product_name?: string
+          purchase_date?: string
+          sale_price?: number
+          sale_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sales_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sales_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       tags: {
         Row: {
           created_at: string

@@ -15,7 +15,7 @@ function SubscribeButton({ label, theme, ...rest }: SubscribeButtonProps) {
     return (
         <form.Subscribe selector={(state) => ([state.canSubmit, state.isSubmitting])}>
             {([canSubmit, isSubmitting]) => (
-                <Button disabled={isSubmitting || !canSubmit} {...rest}>
+                <Button type="submit" disabled={isSubmitting || !canSubmit} {...rest}>
                     {isSubmitting ? <BeatLoader color={theme.colors.muted} size="11" /> : label }
                 </Button>
             )}

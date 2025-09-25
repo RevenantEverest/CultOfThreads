@@ -1,3 +1,5 @@
+import type { SidebarGroupItem } from '@@admin/types/sidebar';
+
 import { 
     SidebarGroup,
     SidebarGroupContent,
@@ -8,27 +10,42 @@ import GroupItem from '../GroupItem';
 
 import { FaTachometerAlt } from 'react-icons/fa';
 import { FaChartLine } from 'react-icons/fa6';
+import SubGroupItem from '../SubGroupItem';
 
 // Menu items.
-const items = [
+const items: SidebarGroupItem[] = [
     {
-      title: "Dashboard",
-      url: "/dashboard",
-      icon: FaTachometerAlt,
+        title: "Dashboard",
+        url: "/dashboard",
+        icon: FaTachometerAlt,
     },
     {
-      title: "Analytics",
-      url: "/dashboard/analytics",
-      icon: FaChartLine,
+        title: "Analytics",
+        url: "/dashboard/analytics",
+        icon: FaChartLine,
+        subRoutes: [
+            {
+                title: "Overview",
+                url: "/dashboard/analytics"
+            },
+            {
+                title: "Traffic",
+                url: "/dashboard/analytics/traffic",
+            }
+        ]
     }
 ]
 
 function OverviewGroup() {
 
     const renderMenu = () => {
-        return items.map((item) => (
-            <GroupItem key={item.title} {...item} />
-        ));
+        return items.map((item) => {
+            if(!item.subRoutes) {
+                return(<GroupItem key={item.title} {...item} />);
+            }
+
+            return(<SubGroupItem key={item.title} {...item} />);
+        });
     };
 
     return(

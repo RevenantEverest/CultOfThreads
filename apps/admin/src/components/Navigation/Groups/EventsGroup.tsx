@@ -1,3 +1,5 @@
+import type { SidebarGroupItem } from '@@admin/types/sidebar';
+
 import { 
     SidebarGroup,
     SidebarGroupContent,
@@ -10,7 +12,7 @@ import GroupItem from '../GroupItem';
 import { FaCalendarAlt } from 'react-icons/fa';
 import { FaStore } from 'react-icons/fa6';
 
-const items = [
+const items: SidebarGroupItem[] = [
     {
       title: "Markets",
       url: "/dashboard/markets",

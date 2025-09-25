@@ -55,7 +55,7 @@ export interface ButtonProps extends React.ComponentProps<"button">, VariantProp
     disableAnimation?: boolean
 };
 
-function Button({ className, variant, size, colorScheme, asChild=false, ...props }: ButtonProps) {
+function Button({ className, variant, size, colorScheme, asChild=false, type="button", ...props }: ButtonProps) {
 
     const Comp = asChild ? Slot : "button";
 
@@ -75,6 +75,7 @@ function Button({ className, variant, size, colorScheme, asChild=false, ...props
                         )
                     }))
                 }
+                type={type}
                 {...props}
             />
         </MotionHover>

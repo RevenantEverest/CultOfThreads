@@ -55,7 +55,7 @@ function ProductImages({ images }: ProductImages) {
                         alt={'Product Image'}
                         height={400}
                         width={400}
-                        src={URLS.supabaseStorageUrl + image.media_url}
+                        src={URLS.SUPABASE_STORAGE + image.media_url}
                     />
                 </button>
             );
@@ -77,7 +77,7 @@ function ProductImages({ images }: ProductImages) {
                     height={1080}
                     width={1080}
                     loading="eager"
-                    src={URLS.supabaseStorageUrl + (images[imageIndex] && images[imageIndex].media_url)} 
+                    src={URLS.SUPABASE_STORAGE + (images[imageIndex] && images[imageIndex].media_url)} 
                     alt={`featured`}
                     onClick={() => setOpen(true)}
                 />
@@ -96,7 +96,7 @@ function ProductImages({ images }: ProductImages) {
                 open={open} 
                 setOpen={setOpen} 
                 index={imageIndex}
-                images={images.map((image) => URLS.supabaseStorageUrl + image.media_url)}
+                images={images.map((image) => URLS.SUPABASE_STORAGE + image.media_url)}
             />
         </div>
     );
