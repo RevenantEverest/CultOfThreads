@@ -2,10 +2,9 @@ import type { Metadata, Viewport } from 'next';
 
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 
 import { Button } from '@repo/ui';
-import { PageHeader, Layout, ScrollToSeeMore } from '@@shop/components/Common';
+import { PageHeader, Layout, ScrollToSeeMore, Image } from '@@shop/components/Common';
 import { FAQ } from '@@shop/components/FAQ';
 import { UpcomingEvents } from '@@shop/components/Events';
 import Newsletter from '@@shop/components/Newsletter';

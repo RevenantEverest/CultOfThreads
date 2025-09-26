@@ -1,8 +1,9 @@
 "use client"
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { motion } from 'motion/react';
+
+import { Image } from '@@shop/components/Common';
 
 interface HighlightItemProps {
     imageSrc: string,

@@ -3,13 +3,13 @@
 import type { ProductListing } from '@repo/supabase';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import posthog from 'posthog-js';
 import { usePathname } from 'next/navigation';
 import { FaDollarSign } from 'react-icons/fa6';
 import { motion } from 'motion/react';
 import { MotionHover } from '@repo/ui';
 
+import { Image } from '@@shop/components/Common';
 import ProductTags from './ProductTags';
 
 import { URLS } from '@@shop/constants';

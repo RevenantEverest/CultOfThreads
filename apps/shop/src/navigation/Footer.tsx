@@ -5,10 +5,10 @@ import { FaEtsy, FaFacebookF, FaInstagram, FaTiktok } from 'react-icons/fa6';
 import { useThemeStore } from '@@shop/store/theme';
 
 import { SocialIcon, WaveDivider } from '@repo/ui';
+import { Image } from '@@shop/components/Common';
 import { FooterRoutes } from '@@shop/components/Navigation';
 
 import { SOCIAL_LINKS, IMAGE_RESOURCES } from '@repo/ui';
-import Image from 'next/image';
 
 export interface FooterMenu {
     title: string,

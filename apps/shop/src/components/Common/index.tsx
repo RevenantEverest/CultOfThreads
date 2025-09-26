@@ -6,4 +6,5 @@ export { default as ScrollToSeeMore } from './ScrollToSeeMore';
 export { default as Dropdown } from './Dropdown/Dropdown';
 export { default as DropdownItem } from './Dropdown/DropdownItem';
 
+export { default as Image } from './Image';
 export { default as Sparkle } from './Sparkle';
