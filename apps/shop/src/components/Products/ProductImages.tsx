@@ -3,10 +3,10 @@
 import type { ProductMedia } from '@repo/supabase';
 
 import { useState } from 'react';
-import Image from 'next/image';
 import { FaChevronCircleRight, FaChevronCircleLeft } from 'react-icons/fa';
+import { Lightbox, Image } from '@@shop/components/Common';
+
 import { URLS } from '@@shop/constants';
-import { Lightbox } from '../Common';
 
 interface ProductImages {
     images: ProductMedia[]

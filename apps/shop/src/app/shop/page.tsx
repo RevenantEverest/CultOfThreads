@@ -1,10 +1,9 @@
 import type { Metadata, Viewport } from 'next';
 
-import Image from 'next/image';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 
 import { ProductList } from '@@shop/components/Products';
-import { Layout, PageHeader, ScrollToSeeMore } from '@@shop/components/Common';
+import { Layout, PageHeader, ScrollToSeeMore, Image } from '@@shop/components/Common';
 import { UpcomingEvents } from '@@shop/components/Events';
 import Newsletter from '@@shop/components/Newsletter';
 

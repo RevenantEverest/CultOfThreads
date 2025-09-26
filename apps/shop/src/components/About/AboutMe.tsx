@@ -1,7 +1,8 @@
-import { Button, Card, CardContent } from '@repo/ui';
-import Image from 'next/image';
-import SocialsBar from '../SocialsBar';
 import { FaLongArrowAltRight } from 'react-icons/fa';
+
+import { Button, Card, CardContent } from '@repo/ui';
+import { Image } from '@@shop/components/Common';
+import SocialsBar from '@@shop/components/SocialsBar';
 import Link from 'next/link';
 
 function AboutMe() {
