@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 
+import { Suspense } from 'react';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 
 import { ProductList } from '@@shop/components/Products';
@@ -60,7 +61,9 @@ async function Shop() {
                             </p>
                         </div>
                     </div>
-                    <ProductList />
+                    <Suspense>
+                        <ProductList />
+                    </Suspense>
                 </div>
                 <UpcomingEvents />
             </Layout>
