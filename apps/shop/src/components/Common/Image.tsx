@@ -2,7 +2,7 @@ import NextImage, { type ImageProps as NextImageProps } from 'next/image';
 
 import { ENV } from '@@shop/constants';
 
-function Image({ className, height, width, src, alt, ...rest }: NextImageProps) {
+function Image({ className, height, width, src, alt, onClick, ...rest }: NextImageProps) {
 
     const renderNextImage = () => {
         return(
@@ -23,7 +23,7 @@ function Image({ className, height, width, src, alt, ...rest }: NextImageProps) 
         }
 
         return(
-            <img className={className} src={src} alt={alt} /> //eslint-disable-line
+            <img className={className} src={src} alt={alt} onClick={onClick} /> //eslint-disable-line
         );
     };
 
