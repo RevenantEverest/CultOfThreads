@@ -3,6 +3,7 @@
 import type { ProductListing } from '@repo/supabase';
 
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 
 import { 
     Select, 
@@ -23,6 +24,7 @@ interface ProductSortProps {
 
 function ProductSort({ products, displayedProducts, setProducts }: ProductSortProps) {
 
+    const searchParams = useSearchParams();
     const [search, setSearch] = useState("");
     
     useEffect(() => {
@@ -38,65 +40,17 @@ function ProductSort({ products, displayedProducts, setProducts }: ProductSortPr
     }, [search, products, setProducts]);
 
     const handleSortChange = (value: SortType) => {
-
-        let updatedProducts = [...products].sort((a, b) => a.name.localeCompare(b.name));
-
-        switch(value) {
-            case "Price ASC":
-                updatedProducts = updatedProducts.sort((a, b) => (b.details?.online_price ?? 0) - (a.details?.online_price ?? 0));
-                break;
-            case "Price DSC": 
-                updatedProducts = updatedProducts.sort((a, b) => (a.details?.online_price ?? 0) - (b.details?.online_price ?? 0));
-                break;
-            case "Best Sellers":
-                updatedProducts = updatedProducts.sort((a, b) => {
-                    const isBestSeller = (product: ProductListing) => 
-                        product.tags?.map(tag => tag.tag.name).includes("Best Seller");
-
-                    const aIsBestSeller = isBestSeller(a);
-                    const bIsBestSeller = isBestSeller(b);
-
-                    if (aIsBestSeller && !bIsBestSeller) {
-                        return -1;
-                    }
-
-                    if (!aIsBestSeller && bIsBestSeller) {
-                        return 1;
-                    }
-
-                    return 0;
-                });
-                break;
-            case "New":
-                updatedProducts = updatedProducts.sort((a, b) => {
-                    const isBestSeller = (product: ProductListing) => 
-                        product.tags?.map(tag => tag.tag.name).includes("New");
-
-                    const aIsBestSeller = isBestSeller(a);
-                    const bIsBestSeller = isBestSeller(b);
-
-                    if (aIsBestSeller && !bIsBestSeller) {
-                        return -1;
-                    }
-
-                    if (!aIsBestSeller && bIsBestSeller) {
-                        return 1;
-                    }
-
-                    return 0;
-                });
-                break;
-        };
-
-        setProducts(updatedProducts);
+        const params = new URLSearchParams(searchParams.toString());
+        params.set("sort", value);
+        window.history.pushState(null, "", `?${params.toString()}`);
     };
 
     return(
-        <div className="flex items-center justify-center">
-            <div className="w-4/12">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-start md:justify-center gap-10">
+            <div className="w-full md:w-4/12">
                 <Search setSearch={setSearch} />
             </div>
-            <div className="flex items-center justify-end flex-1 gap-5 relative">
+            <div className="flex items-center justify-start md:justify-end flex-1 gap-5 relative">
                 <div>
                     <p className="font-bold text-sm absolute -top-7">Sort By:</p>
                     <Select 
