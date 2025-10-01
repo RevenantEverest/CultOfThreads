@@ -1,4 +1,4 @@
-import type { ProductDetails as Details } from '@repo/supabase';
+import type { ProductDetails as Details, ProductTagFull } from '@repo/supabase';
 
 import posthog from 'posthog-js';
 import { FaShop, FaCartShopping, FaDollarSign } from 'react-icons/fa6';
@@ -21,14 +21,17 @@ import {
     H3Element,
 } from '@repo/ui';
 
+import ProductTags from './ProductTags';
+
 interface ProductDetailsProps {
     id: string,
     name: string,
     description?: string,
-    details: Details
+    details: Details,
+    tags: ProductTagFull[] | null
 };
 
-function ProductDetails({ id, name, description, details }: ProductDetailsProps) {
+function ProductDetails({ id, name, description, details, tags }: ProductDetailsProps) {
 
     const pathname = usePathname();
     const editor = createSlateEditor({
@@ -48,9 +51,12 @@ function ProductDetails({ id, name, description, details }: ProductDetailsProps)
 
     return(
         <div className="flex flex-col gap-10 pb-20 md:pb-0">
-            <h1 className="text-4xl font-bold text-center md:text-left">{name}</h1>
-            <div className="flex gap-0 md:gap-10">
-                <div className="flex flex-col md:flex-row items-center pb-2 font-bold text-lg gap-3 md:gap-2 flex-1">
+            <div className="flex flex-col gap-4">
+                <h1 className="text-4xl font-bold text-center md:text-left">{name}</h1>
+                {tags && <ProductTags tags={tags} />}
+            </div>
+            <div className="flex gap-0 lg:gap-10">
+                <div className="flex flex-col lg:flex-row items-center pb-2 font-bold text-lg gap-3 md:gap-2 flex-1">
                     <FaShop className="text-2xl md:text-lg" />
                     <p>Market Price:</p>
                     <div className="bg-card-light flex items-center px-5 py-1 rounded-full">
@@ -58,7 +64,7 @@ function ProductDetails({ id, name, description, details }: ProductDetailsProps)
                         <p>{details.market_price?.toLocaleString()}</p>
                     </div>
                 </div>
-                <div className="flex flex-col md:flex-row items-center pb-2 font-bold text-lg gap-3 md:gap-2 flex-1">
+                <div className="flex flex-col lg:flex-row items-center pb-2 font-bold text-lg gap-3 md:gap-2 flex-1">
                     <FaCartShopping className="text-2xl md:text-lg" />
                     <p>Online Price:</p>
                     <div className="bg-card-light flex items-center px-5 py-1 rounded-full">

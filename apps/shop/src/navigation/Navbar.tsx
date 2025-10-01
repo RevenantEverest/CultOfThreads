@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 
 import { useThemeStore } from '@@shop/store/theme';
@@ -12,6 +11,7 @@ import { useScrollPosition } from '@repo/ui/hooks';
 
 import { FaBars } from 'react-icons/fa6';
 import { ThemeChanger } from '@repo/ui';
+import { Image } from '@@shop/components/Common';
 import MobileNavbar from './MobileNavbar';
 
 import { IMAGE_RESOURCES } from '@repo/ui';

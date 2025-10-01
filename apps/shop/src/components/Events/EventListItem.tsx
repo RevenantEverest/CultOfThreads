@@ -3,7 +3,6 @@
 import type { EventWithMarket } from '@repo/supabase';
 
 import { useState } from 'react';
-import Image from 'next/image';
 import posthog from 'posthog-js';
 import { Button, Card, CardContent, CardHeader } from '@repo/ui';
 import { useCopyToClipboard } from '@repo/ui/hooks';
@@ -15,7 +14,7 @@ import advancedFormat from 'dayjs/plugin/advancedFormat';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 
-import { Lightbox } from '@@shop/components/Common';
+import { Lightbox, Image } from '@@shop/components/Common';
 
 import { URLS } from '@@shop/constants';
 import EventBadges from './EventBadges';

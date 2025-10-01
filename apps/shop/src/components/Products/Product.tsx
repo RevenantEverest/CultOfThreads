@@ -33,6 +33,7 @@ function Product({ slug }: ProductProps) {
                         name={query.data.name} 
                         description={query.data.description?.toString()}
                         details={query.data.details}
+                        tags={query.data.tags}
                     />
                 }
             </div>
