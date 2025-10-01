@@ -73,7 +73,7 @@ function ProductImages({ images }: ProductImages) {
                     />
                 }
                 <Image 
-                    className="rounded-xl border-muted border-4 hover:cursor-zoom-in"
+                    className="rounded-xl border-muted border-4 hover:cursor-zoom-in w-full"
                     height={1080}
                     width={1080}
                     loading="eager"
