@@ -86,7 +86,7 @@ function StateSelect({ value, onChange }: StateSelectProps) {
                 value={value ?? undefined} 
                 onValueChange={(value) => onChange(value)}
             >
-                <SelectTrigger className="bg-card-light px-2.5 py-2.5 rounded-md font-semibold text-sm w-40">
+                <SelectTrigger className="bg-card-light px-2.5 py-2.5 rounded-md font-semibold text-sm w-full">
                     <SelectValue placeholder="Choose A State" />
                 </SelectTrigger>
                 <SelectContent className="font-semibold">

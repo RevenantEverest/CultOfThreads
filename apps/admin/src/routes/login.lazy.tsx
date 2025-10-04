@@ -11,7 +11,7 @@ function Login() {
     return(
         <Layout main className="mt-40">
             <div className="flex items-center justify-center">
-            <LoginForm className="w-8/12" />
+            <LoginForm className="w-full lg:w-8/12" />
             </div>
         </Layout>
     );

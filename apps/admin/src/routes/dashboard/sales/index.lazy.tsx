@@ -65,7 +65,7 @@ function Sales() {
                         color={theme.colors.primary}
                     />
                     :
-                    <div className="flex gap-3">
+                    <div className="flex flex-col lg:flex-row gap-3">
                         <TotalRevenue sales={query.data} />
                         <EventSales sales={query.data.filter((sale) => sale.sale_type === ("EVENT" as SaleType))} />
                         <OnlineSales sales={query.data.filter((sale) => sale.sale_type === ("ONLINE" as SaleType))} />
