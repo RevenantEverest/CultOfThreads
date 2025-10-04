@@ -101,7 +101,7 @@ function SaleForm({ type, products, events, initialValues, onSubmit }: SaleFormP
             <form.AppForm>
                 <Card>
                     <CardContent className="py-8 flex flex-col gap-5">
-                        <div className="flex gap-5">
+                        <div className="flex flex-col lg:flex-row gap-5">
                             <div className="flex-1 flex gap-2 items-end">
                                 {
                                     !customProduct ?
@@ -158,7 +158,16 @@ function SaleForm({ type, products, events, initialValues, onSubmit }: SaleFormP
                                                 )
                                             }}
                                             children={(field) => (
-                                                <EventSelect value={field.state.value} events={events} onChange={(value) => field.handleChange(value)} />
+                                                <EventSelect 
+                                                    value={field.state.value} 
+                                                    events={events} 
+                                                    onChange={(value) => {
+                                                        const eventDate = events.filter((item) => item.id === value)[0];
+                                                        if(eventDate) {
+                                                            form.setFieldValue("purchase_date", eventDate.date_from);
+                                                        }
+                                                        field.handleChange(value);
+                                                    }} />
                                             )}
                                         />
                                     </div>

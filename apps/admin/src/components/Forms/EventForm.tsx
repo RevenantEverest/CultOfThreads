@@ -66,7 +66,7 @@ function EventForm({ type, markets, initialValues, flyerUrl, onSubmit }: EventFo
             <form.AppForm>
                 <Card>
                     <CardContent className="py-8 flex flex-col gap-15">
-                        <div className="flex gap-5">
+                        <div className="flex flex-col lg:flex-row gap-5">
                             {
                                 flyerUrl && 
                                 <div className="h-35 w-35 overflow-hidden">
@@ -90,7 +90,7 @@ function EventForm({ type, markets, initialValues, flyerUrl, onSubmit }: EventFo
                                     )}
                                 />
                             </div>
-                            <div className="">
+                            <div className="w-full lg:w-90">
                                 <form.Field
                                     name="market_id"
                                     validators={{
@@ -104,7 +104,7 @@ function EventForm({ type, markets, initialValues, flyerUrl, onSubmit }: EventFo
                                 />
                             </div>
                         </div>
-                        <div className="flex gap-20 items-center">
+                        <div className="flex flex-col lg:flex-row gap-20 items-center">
                             <div className="flex flex-col flex-1 items-end">
                                 <div className="flex flex-col gap-1.5">
                                     <p className="font-bold">Date From</p>

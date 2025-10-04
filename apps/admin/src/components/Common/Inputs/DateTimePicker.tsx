@@ -60,7 +60,7 @@ function DateTimePicker({ value, onChange, separateTime, nowButton }: DateTimePi
     }, [value]);
 
     return(
-        <div className="flex gap-4">
+        <div className="flex flex-col lg:flex-row gap-4">
             <div className="flex flex-col gap-3">
                 <Label htmlFor="date-picker" className="px-1 font-semibold">
                     Date
@@ -96,7 +96,7 @@ function DateTimePicker({ value, onChange, separateTime, nowButton }: DateTimePi
                 <Label htmlFor="time-picker" className="px-1 font-semibold">
                     Time
                 </Label>
-                <div className="flex gap-3">
+                <div className="flex flex-col lg:flex-row gap-3">
                 {   separateTime ?
                     <SeparatedTimePicker value={dateTime.time} onChange={handleDateTimeChange} /> 
                     : 

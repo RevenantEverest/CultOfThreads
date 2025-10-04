@@ -59,7 +59,7 @@ function MarketForm({ type, initialValues, logoUrl, onSubmit }: MarketFormProps)
         >
             <form.AppForm>
                 <Card>
-                    <CardContent className="py-8 flex gap-5">
+                    <CardContent className="py-8 flex flex-col lg:flex-row gap-5">
                         {
                             logoUrl && 
                             <div className="h-35 w-35 overflow-hidden">
@@ -83,7 +83,7 @@ function MarketForm({ type, initialValues, logoUrl, onSubmit }: MarketFormProps)
                                 )}
                             />
                         </div>
-                        <div className="">
+                        <div className="w-full lg:w-50">
                             <form.Field
                                 name="state"
                                 validators={{
