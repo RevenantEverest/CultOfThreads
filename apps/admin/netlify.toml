@@ -4,3 +4,8 @@
   command = "bun run build --filter=...admin"
 
   publish = "apps/admin/dist"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
