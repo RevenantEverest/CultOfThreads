@@ -43,7 +43,7 @@ function EventListItem({ event }: EventListItemProps) {
                 </div>
             </TableCell>
             <TableCell className={`${cellClass}`}>
-                <Link to="/dashboard/events/edit/$eventId" params={{ eventId: event.id.toString() }}>
+                <Link to="/dashboard/events/item/$eventId" params={{ eventId: event.id.toString() }}>
                     <p className="hover:cursor-pointer hover:underline">{event.market.name}</p>
                 </Link>
             </TableCell>
