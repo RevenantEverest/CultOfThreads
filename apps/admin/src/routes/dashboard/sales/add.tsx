@@ -1,7 +1,8 @@
 import type { CreateSale, ProductWithDetails, SaleType } from '@repo/supabase';
-import type { SaleFormValues } from '@@admin/components/Forms/SaleForm';
+import type { ExtraValues, SaleFormValues } from '@@admin/components/Forms/SaleForm';
 
 import { createFileRoute, useSearch } from '@tanstack/react-router';
+import { useSuspenseQueries } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from '@tanstack/react-router';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -14,7 +15,6 @@ import { Layout, Breadcrumb } from '@@admin/components/Common';
 import SaleForm from '@@admin/components/Forms/SaleForm';
 
 import { eventsApi, productApi, saleApi } from '@repo/supabase';
-import { useSuspenseQueries } from '@tanstack/react-query';
 
 export const Route = createFileRoute('/dashboard/sales/add')({
     validateSearch: (search: Record<string, unknown>) => {
@@ -56,7 +56,7 @@ function AddSale() {
         ]
     });
 
-    const initialValues: SaleFormValues = {
+    const initialValues: SaleFormValues & Partial<ExtraValues> = {
         product_id: searchParams.productId,
         sale_type: "",
         event_id: "",
@@ -81,23 +81,23 @@ function AddSale() {
         };
     };
 
-    const onSubmit = async (values: SaleFormValues) => {
+    const onSubmit = async (values: SaleFormValues & Partial<ExtraValues>) => {
 
         const eventData = events.data.filter((e) => e.id === values.event_id);
         const productData = products.data.filter((p) => p.id === values.product_id);
 
-        try {
-            if(!productData[0]) {
-                throw new Error("Product doesn't exist");
-            }
+        if(!productData[0] && !values.product_name) {
+            throw new Error("Either product or product name is required");
+        }
 
-            const originalPrice = getProductPrice(productData[0], values.sale_type as SaleType);
+        try {
+            const originalPrice = productData[0] ? getProductPrice(productData[0], values.sale_type as SaleType) : Number(values.sale_price);
 
             const saleData: CreateSale = {
-                product_id: values.product_id,
-                event_id: values.event_id,
-                market_name: eventData[0] && eventData[0].market.name,
-                product_name: productData[0].name,
+                product_id: productData[0] ? values.product_id : null,
+                event_id: eventData[0] ? values.event_id : null,
+                market_name: eventData[0] ? eventData[0].market.name : (values.market_name ? values.market_name : null),
+                product_name: productData[0] ? productData[0].name : values.product_name as string, // type checked in above if statement
                 original_product_price: originalPrice,
                 sale_price: Number(values.sale_price),
                 sale_type: values.sale_type,
