@@ -70,7 +70,7 @@ function Navbar() {
                     href={route.pathname}
                     key={`navbar-route-${route.title}-${index}`} 
                     className={`
-                        hover:bg-primary hover:cursor-pointer w-20 rounded-md text-center py-1
+                        hover:bg-primary hover:cursor-pointer w-20 rounded-md text-center py-1 duration-300
                         ${isActiveLink && " bg-primary"}
                     `}
                 >
@@ -106,7 +106,7 @@ function Navbar() {
                     </motion.div>
                 }
                 </AnimatePresence>
-                <div className="flex items-center justify-center py-4 w-11/12 md:w-8/12 z-10">
+                <div className="flex items-center justify-center py-4 w-11/12 xl:w-8/12 z-10">
                     <Link href="/" className="flex-1 flex justify-start items-center gap-1">
                         <Image className="!relative !w-10 mr-1" fill src={IMAGE_RESOURCES.LOGO_CIRCLE} alt="logo" />
                         <h1 className="font-bold text-lg">Cult of Threads</h1>
