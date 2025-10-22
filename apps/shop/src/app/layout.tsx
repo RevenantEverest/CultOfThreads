@@ -51,7 +51,8 @@ export default function RootLayout({ children, }: Readonly<{
                             count={100}
                             minSize={5}
                             maxSize={15}
-                            fadeOutSpeed={2}
+                            fadeOutSpeed={0.5}
+                            flickerSpeed="slowest"
                         />
                     </div>
                     <AnimatePresence mode="popLayout">
