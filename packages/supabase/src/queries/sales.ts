@@ -76,6 +76,40 @@ export async function fetchById(id: string): Promise<SaleFull> {
     return data[0];
 };
 
+export async function fetchByEventId(id: string): Promise<SaleFull[]> {
+    const { data, error } = await (
+        supabase.from("sales")
+        .select(`
+            *,
+            product:product_id (
+                *,
+                details:product_details!inner (
+                    *
+                ),
+                media:product_media (
+                    *
+                )
+            ),
+            event:event_id (
+                *,
+                market:market_id (
+                    *,
+                    details:market_details (
+                        *
+                    )
+                )
+            )
+        `)
+        .eq("event_id", id)
+    );
+
+    if(error) {
+        throw error;
+    }
+
+    return data ?? [];
+};
+
 export async function create(sale: CreateSale): Promise<Sale> {
     const { data, error } = await (
         supabase.from("sales").insert({
