@@ -13,8 +13,6 @@ function Navbar() {
 
     const sidebarWidth = isMobile ? "0rem" : (open ? "16rem" : "3rem"); // adjust to your widths
 
-    console.log("Sidebar Open => ", open);
-
     return(
         <div 
             className="fixed top-0 z-30 bg-card py-4 border-b-1 border-muted transition-all duration-300 ease-in-out"
