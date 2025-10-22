@@ -15,14 +15,40 @@ import { productApi } from '@repo/supabase';
 import ProductSort from './ProductSort';
 
 import { productSort } from '@@shop/utils';
+import { useBreakpoints } from '@repo/ui/hooks';
+import { MotionFadeIn } from '@repo/ui';
 
 function ProductList() {
 
+    const breakpoint = useBreakpoints();
     const searchParams = useSearchParams();
     const query = useQuery({
         queryKey: ["products"],
         queryFn: productApi.fetchActiveListings
     });
+
+    const [itemsInRow, setItemsInRow] = useState<number | null>(null);
+    const listKey = searchParams.toString();
+
+    useEffect(() => {
+        switch(breakpoint) {
+            case "XXL":
+                setItemsInRow(4);
+                break;
+            case "XL": 
+                setItemsInRow(4);
+                break;
+            case "LG":
+                setItemsInRow(4);
+                break;
+            case "MD":
+                setItemsInRow(3);
+                break;
+            case "SM": 
+                setItemsInRow(1);
+                break;
+        }
+    }, [breakpoint]);
 
     const getInitialProducts = useCallback((): ProductListing[] => {
         if(!query.data) return [];
@@ -60,9 +86,34 @@ function ProductList() {
     }, [searchParams, getInitialProducts]);
 
     const renderProducts = (products: ProductListing[]) => {
-        return products.map((item, index) => (
-            <ProductListItem key={`product-list-${item.name}`} product={item} index={index} />
-        ));
+        if(!itemsInRow) {
+            return;
+        }
+
+        const ROW_STAGGER_TIME = 0.1;
+        const COLUMN_STAGGER_TIME = 0.1;
+
+        return products.map((item, index) => {            
+            const rowIndex = Math.floor(index / itemsInRow);
+            const colIndex = index % itemsInRow;
+
+            const rowDelay = rowIndex * ROW_STAGGER_TIME;
+            const colDelay = colIndex * COLUMN_STAGGER_TIME;
+            const staggerDelay = rowDelay + colDelay;
+
+            return(
+                <MotionFadeIn
+                    key={`product-list-${item.id}-${index}`}
+                    fadeDelay={staggerDelay}
+                    posYDelay={staggerDelay}
+                >
+                    <ProductListItem  
+                        index={index}
+                        product={item}  
+                    />
+                </MotionFadeIn>
+            );
+        });
     };
 
     return(
@@ -74,8 +125,13 @@ function ProductList() {
             ]} />
             <div className="w-full flex flex-col gap-10">
                 <ProductSort products={products} displayedProducts={displayedProducts} setProducts={setDisplayedProducts} />
-                <div className="flex justify-center flex-wrap gap-5 gap-y-20 pb-20">
-                    {renderProducts(displayedProducts)}
+                <div className="flex items-center justify-center">
+                    <div 
+                        key={listKey}
+                        className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 justify-center items-center gap-5 gap-y-20 pb-20"
+                    >
+                        {itemsInRow && renderProducts(displayedProducts)}
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,7 +1,7 @@
 import type { FAQItem } from './FAQItem';
 
 import Link from 'next/link';
-import { Accordion, Button, Card, CardContent } from '@repo/ui';
+import { Accordion, Button, Card, CardContent, MotionFadeIn } from '@repo/ui';
 import FAQContent from './FAQItem';
 import React from 'react';
 
@@ -68,36 +68,47 @@ function FAQ({ className, ...rest }: React.HTMLAttributes<HTMLDivElement>) {
             const isLast = index === (faqContent.length - 1);
 
             return(
-                <FAQContent 
-                    key={`faq-${item.question}`} 
-                    item={item}
-                    isFirst={isFirst}
-                    isLast={isLast}
-                />
+                <MotionFadeIn
+                    key={`faq-${item.question}`}
+                    fadeDelay={index * 0.1}
+                    posYDelay={index * 0.1}
+                >
+                    <FAQContent 
+                        item={item}
+                        isFirst={isFirst}
+                        isLast={isLast}
+                    />
+                </MotionFadeIn>
             );
         });
     };
 
     return(
         <div className={`flex flex-col items-center justify-center gap-10 w-full ${className}`} {...rest}>
-            <h1 className="font-beach text-3xl md:text-6xl text-center">
-                FAQ&apos;s
-            </h1>
-            <Card className="w-full">
-                <CardContent className="p-0">
-                    <Accordion type="single" collapsible>
-                        {renderContent()}
-                    </Accordion>
-                </CardContent>
-            </Card>
-            <div className="flex items-center justify-center gap-5">
-                <p className="font-semibold text-primary text-lg">Still have questions?</p>
-                <Link href="/contact">
-                    <Button>
-                        Contact Us!
-                    </Button>
-                </Link>
-            </div>
+            <MotionFadeIn>
+                <h1 className="font-beach text-3xl md:text-6xl text-center">
+                    FAQ&apos;s
+                </h1>
+            </MotionFadeIn>
+            <MotionFadeIn className="w-full">
+                <Card className="w-full">
+                    <CardContent className="p-0">
+                        <Accordion type="single" collapsible>
+                            {renderContent()}
+                        </Accordion>
+                    </CardContent>
+                </Card>
+            </MotionFadeIn>
+            <MotionFadeIn>
+                <div className="flex items-center justify-center gap-5">
+                    <p className="font-semibold text-primary text-lg">Still have questions?</p>
+                    <Link href="/contact">
+                        <Button>
+                            Contact Us!
+                        </Button>
+                    </Link>
+                </div>
+            </MotionFadeIn>
         </div>
     );
 };
