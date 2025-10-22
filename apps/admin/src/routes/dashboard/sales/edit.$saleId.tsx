@@ -41,8 +41,6 @@ function EditSale() {
             { queryKey: ["products"], queryFn: productApi.fetchAll },
             { queryKey: ["events"], queryFn: eventsApi.fetchAll },
         ]
-        // queryKey: ["sales", params.saleId],
-        // queryFn: () => saleApi.fetchById(params.saleId)
     });
 
     const queryClient = useQueryClient();
