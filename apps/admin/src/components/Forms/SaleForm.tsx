@@ -61,7 +61,7 @@ interface SaleFormProps {
     products: ProductWithDetails[],
     events: EventWithMarket[],
     initialValues: SaleFormValues & Partial<ExtraValues>,
-    onSubmit: (value: SaleFormValues) => Promise<void>
+    onSubmit: (value: SaleFormValues & Partial<ExtraValues>) => Promise<void>
 };
 
 function SaleForm({ type, products, events, initialValues, onSubmit }: SaleFormProps) {
@@ -152,11 +152,6 @@ function SaleForm({ type, products, events, initialValues, onSubmit }: SaleFormP
                                     <div className="flex-1">
                                         <form.Field
                                             name="event_id"
-                                            validators={{
-                                                onChange: ({ value }) => (
-                                                    value === "" ? "Field is Required" : undefined
-                                                )
-                                            }}
                                             children={(field) => (
                                                 <EventSelect 
                                                     value={field.state.value} 
