@@ -41,12 +41,6 @@ const faqContent: FAQItem[] = [
         `
     },
     {
-        question: "Do they come to life?",
-        answer: `
-            Not that I know of but I can't say for sure. 👀
-        `
-    },
-    {
         question: "What are they made out of?",
         answer: `
             My plushies are made from chenille yarn, polyfill stuffing, acrylic safety eyes.
@@ -57,7 +51,13 @@ const faqContent: FAQItem[] = [
         answer: `
             I would recommend using a wet wipe first and foremost, but absolute worst case if you put it in the wash make sure to wash on delicate.
         `
-    }
+    },
+    {
+        question: "Do they come to life?",
+        answer: `
+            Not that I know of but I can't say for sure. 👀
+        `
+    },
 ];
 
 function FAQ({ className, ...rest }: React.HTMLAttributes<HTMLDivElement>) {
