@@ -1,4 +1,5 @@
 export { default as AddEvent } from './AddEvent';
+export { default as Event } from './Event';
 export { default as EventHourDifference } from './EventHourDifference';
 export { default as EventListItem } from './EventListItem';
 export { default as EventSelect } from './EventSelect';

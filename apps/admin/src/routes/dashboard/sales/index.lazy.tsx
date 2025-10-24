@@ -14,11 +14,11 @@ import Search from '@@admin/components/Search';
 import { Layout, Breadcrumb } from '@@admin/components/Common';
 import { 
     AddSale, 
-    EventSales, 
-    OnlineSales, 
+    EventSalesCard, 
+    OnlineSalesCard, 
     SalesList, 
-    TotalRevenue, 
-    OtherSales
+    TotalRevenueCard, 
+    OtherSalesCard
 } from '@@admin/components/Sales';
 import { saleApi, SaleType } from '@repo/supabase';
 
@@ -66,10 +66,10 @@ function Sales() {
                     />
                     :
                     <div className="flex flex-col lg:flex-row gap-3">
-                        <TotalRevenue sales={query.data} />
-                        <EventSales sales={query.data.filter((sale) => sale.sale_type === ("EVENT" as SaleType))} />
-                        <OnlineSales sales={query.data.filter((sale) => sale.sale_type === ("ONLINE" as SaleType))} />
-                        <OtherSales sales={query.data.filter((sale) => !(["ONLINE", "EVENT"] as SaleType[]).includes(sale.sale_type as SaleType))} />
+                        <TotalRevenueCard sales={query.data} />
+                        <EventSalesCard sales={query.data.filter((sale) => sale.sale_type === ("EVENT" as SaleType))} />
+                        <OnlineSalesCard sales={query.data.filter((sale) => sale.sale_type === ("ONLINE" as SaleType))} />
+                        <OtherSalesCard sales={query.data.filter((sale) => !(["ONLINE", "EVENT"] as SaleType[]).includes(sale.sale_type as SaleType))} />
                     </div>
                 }
                 <div className="flex flex-col gap-5">

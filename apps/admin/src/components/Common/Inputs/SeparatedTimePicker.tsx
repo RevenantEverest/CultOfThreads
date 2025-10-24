@@ -53,7 +53,6 @@ function SeparatedTimePicker({ value, onChange }: SeparatedTimePickerProps) {
     };
 
     useEffect(() => {
-        console.log("Updating Time => ");
         setTimeValue({
             hour, minute, meridiemIndicator 
         });

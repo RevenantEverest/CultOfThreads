@@ -1,6 +1,7 @@
-import type { Theme, ThemeName } from '@repo/ui';
+import { type Theme, type ThemeName } from '@repo/ui';
 
 import ThemeIcon from './ThemeIcon';
+import MotionHover from '../motion/MotionHover';
 
 import * as themes from '../../themes';
 
@@ -28,19 +29,19 @@ function ThemeChanger({ currentTheme, setTheme }: ThemeChangerProps) {
         return Object.keys(allThemes).map((key: string, index: number) => {
             const singleTheme = allThemes[key as ThemeName];
             return(
-                <div 
+                <MotionHover 
                     key={`theme-${singleTheme!.name}-${index}`}
-                    className="flex gap-5 bg-card md:bg-transparent rounded-full pr-5 md:pr-0" 
+                    className="flex gap-5 bg-card md:bg-transparent rounded-full pr-5 md:pr-0 hover:cursor-pointer"
+                    onClick={() => {
+                        setTheme(singleTheme as Theme);
+                    }}
                 >
                     <ThemeIcon 
                         theme={singleTheme as Theme} 
                         currentTheme={currentTheme}
-                        onClick={() => {
-                            setTheme(singleTheme as Theme);
-                        }}
                     />
                     <p className="md:hidden">{generateDisplayName(singleTheme as Theme)}</p>
-                </div>
+                </MotionHover>
             );
         });
     };

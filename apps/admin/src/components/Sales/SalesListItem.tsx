@@ -68,7 +68,14 @@ function SalesListItem({ sale }: SalesListItemProps) {
             </TableCell>
             <TableCell className={`${cellClass}`}>
                 <div className="flex items-center gap-1 justify-center">
-                    <p>{sale.event?.market.name ?? sale.market_name}</p>
+                    {
+                        sale.event?.id ?
+                        <Link className="hover:underline" to={`/dashboard/events/item/$eventId`} params={{ eventId: sale.event.id }}>
+                            {sale.event.market.name}
+                        </Link>
+                        :
+                        <p className="text-muted">{sale.market_name}</p>
+                    }
                 </div>
             </TableCell>
             <TableCell className={`${cellClass}`}>

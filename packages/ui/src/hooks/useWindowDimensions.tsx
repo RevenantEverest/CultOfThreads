@@ -10,13 +10,13 @@
 
 import { useEffect, useState } from 'react';
 
-interface Dimensions {
+export interface Dimensions {
     width: number,
     height: number
 };
 
-function useWindowDimensions(): Dimensions {
-    const [dimensions, setDimension] = useState<Dimensions>({ width: 0, height: 0 });
+function useWindowDimensions(): Dimensions | undefined {
+    const [dimensions, setDimension] = useState<Dimensions | undefined>();
 
     useEffect(() => {
         const updateDimensions = () => {

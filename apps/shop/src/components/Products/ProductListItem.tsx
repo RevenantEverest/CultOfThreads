@@ -17,7 +17,7 @@ import { URLS } from '@@shop/constants';
 
 interface ProductListItemProps {
     product: ProductListing,
-    index: number
+    index: number,
 };
 
 function ProductListItem({ product }: ProductListItemProps) {
@@ -37,20 +37,28 @@ function ProductListItem({ product }: ProductListItemProps) {
         >
             <MotionHover>
                 <motion.div
-                    className="flex flex-col gap-3"
-                    viewport={{ once: true }}
+                    initial={{ scale: 1 }}
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ type: "spring", stiffness: 120 }}
                 >
-                    <div className="flex justify-center items-center w-80 border-secondary border-6 rounded-xl">
+                <div className="flex flex-col gap-3">
+                    <div className="flex justify-center items-center h-80 w-80 border-secondary border-6 rounded-xl overflow-hidden bg-secondary">
                         {
-                            product.media &&
-                            <Image 
-                                className="rounded-xl"
-                                height={500}
-                                width={500}
-                                loading="eager"
-                                src={URLS.SUPABASE_STORAGE + (featuredImage ? featuredImage.media_url : "")} 
-                                alt={product.name}
-                            />
+                            product.media &&                            
+                                <motion.div
+                                    initial={{ scale: 1 }}
+                                    whileHover={{ scale: 1.05 }}
+                                    transition={{ type: "spring", stiffness: 120 }}
+                                >
+                                    <Image 
+                                        className="rounded-xl"
+                                        height={500}
+                                        width={500}
+                                        loading="eager"
+                                        src={URLS.SUPABASE_STORAGE + (featuredImage ? featuredImage.media_url : "")} 
+                                        alt={product.name}
+                                    />
+                                </motion.div>
                         }
                     </div>
                     <div className="flex flex-col gap-2 px-2">
@@ -63,6 +71,7 @@ function ProductListItem({ product }: ProductListItemProps) {
                             </p>
                         </div>
                     </div>
+                </div>
                 </motion.div>
             </MotionHover>
         </Link>

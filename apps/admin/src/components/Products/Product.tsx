@@ -1,10 +1,13 @@
 import type { ProductListing } from '@repo/supabase';
-import { Button } from '@repo/ui';
-import ProductDetails from './ProductDetails';
-import ProductImages from './ProductImages';
+
 import { Link } from '@tanstack/react-router';
 import { FaCashRegister } from 'react-icons/fa6';
 import { FaEdit, FaLongArrowAltLeft } from 'react-icons/fa';
+
+import { Button } from '@repo/ui';
+
+import ProductDetails from './ProductDetails';
+import ProductImages from './ProductImages';
 
 interface ProductProps {
     product: ProductListing

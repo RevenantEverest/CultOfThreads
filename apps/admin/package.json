@@ -19,6 +19,7 @@
   "devDependencies": {
     "@repo/tailwind-config": "workspace:*",
     "@tanstack/react-router-devtools": "^1.120.15",
-    "@tanstack/router-vite-plugin": "^1.120.15"
+    "@tanstack/router-vite-plugin": "^1.120.15",
+    "@vitejs/plugin-react-swc": "^4.1.0"
   }
 }

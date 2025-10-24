@@ -31,7 +31,7 @@ function WaveDivider({ className, bgColor }: WaveDividerProps) {
                 backgroundImage, 
                 backgroundSize: 'cover', 
                 backgroundPosition: 'center', 
-                WebkitBackgroundSize: (dimensions.width < BREAKPOINTS.MD) ? "140% 133px" : ""
+                WebkitBackgroundSize: (dimensions && dimensions.width < BREAKPOINTS.MD) ? "140% 133px" : ""
             }}
         />
     );

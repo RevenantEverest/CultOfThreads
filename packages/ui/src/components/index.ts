@@ -17,11 +17,17 @@ export { default as WaveDivider } from './SVG/WaveDivider';
 
 /* Motion */
 export { default as MotionHover } from './motion/MotionHover';
+export { default as MotionFadeIn } from './motion/MotionFadeIn';
+export { default as MotionSlideIn } from './motion/MotionSlideIn';
 
 /* Theme Changer */
 export { default as ThemeChanger } from './themeChanger/ThemeChanger';
 export { default as ThemeIcon } from './themeChanger/ThemeIcon';
 export { default as ThemeValidator } from './themeChanger/ThemeValidator';
+
+/* Scroll Elements */
+export { default as ScrollElement } from './ScrollElement';
+export { default as ScrollLink } from './ScrollLink';
 
 /* ShadCN UI */
 export { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './shadcn/accordion';
@@ -196,3 +202,24 @@ export { CodeLeaf } from './plate/code-node';
 export { CodeLeafStatic } from './plate/code-node-static';
 export { BlockquoteElement } from './plate/blockquote-node';
 export { BlockquoteElementStatic } from './plate/blockquote-node-static';
+
+/* REACT BITS: Animations */
+export { default as GradualBlur } from './reactbits/animations/GradualBlur';
+
+/* REACT BITS: Backgrounds */
+export { default as Aurora } from './reactbits/backgrounds/Aurora';
+export { default as DotGrid } from './reactbits/backgrounds/DotGrid';
+export { default as GradientBlinds } from './reactbits/backgrounds/GradientBlinds';
+export { default as LiquidEther } from './reactbits/backgrounds/LiquidEther';
+export { default as Silk } from './reactbits/backgrounds/Silk';
+export { default as Squares } from './reactbits/backgrounds/Squares';
+
+/* REACT BITS: Components */
+export { default as CardSwap, Card as CardSwapCard } from './reactbits/components/CardSwap';
+export { default as GlassSurface } from './reactbits/components/GlassSurface';
+export { default as ScrollStack, ScrollStackItem } from './reactbits/components/ScrollStack';
+
+/* REACT BITS: Text */
+export { default as Count } from './reactbits/text/Count';
+export { default as GradientText } from './reactbits/text/GradientText';
+export { default as RotatingText } from './reactbits/text/RotatingText';
