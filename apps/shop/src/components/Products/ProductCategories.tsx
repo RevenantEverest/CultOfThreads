@@ -3,7 +3,7 @@
 import { Category, categoryApi } from '@repo/supabase';
 import { useQuery } from '@tanstack/react-query';
 
-import { MotionHover } from '@repo/ui';
+import { MotionHover, ScrollLink } from '@repo/ui';
 import { useSearchParams } from 'next/navigation';
 
 function ProductCategories() {
@@ -21,7 +21,9 @@ function ProductCategories() {
         return categories.sort((a, b) => a.name.localeCompare(b.name)).map((category, index) => {
             return(
                 <MotionHover key={`categories-${category.name}-${index}`}>
-                    <div 
+                    <ScrollLink
+                        to="product-listings"
+                        padding={120}
                         className={`text-center w-60 rounded-xl py-2 hover:cursor-pointer ${categorySearch === category.name ? "bg-primary" : "bg-card-light"}`}
                         onClick={() => {
                             const params = new URLSearchParams(searchParams.toString());
@@ -30,7 +32,7 @@ function ProductCategories() {
                         }}
                     >
                         <p className={`font-bold text-xl`}>{category.name}</p>
-                    </div>
+                    </ScrollLink>
                 </MotionHover>
             );
         });
