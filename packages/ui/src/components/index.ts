@@ -25,6 +25,10 @@ export { default as ThemeChanger } from './themeChanger/ThemeChanger';
 export { default as ThemeIcon } from './themeChanger/ThemeIcon';
 export { default as ThemeValidator } from './themeChanger/ThemeValidator';
 
+/* Scroll Elements */
+export { default as ScrollElement } from './ScrollElement';
+export { default as ScrollLink } from './ScrollLink';
+
 /* ShadCN UI */
 export { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './shadcn/accordion';
 export { Avatar, AvatarImage, AvatarFallback } from './shadcn/avatar';
