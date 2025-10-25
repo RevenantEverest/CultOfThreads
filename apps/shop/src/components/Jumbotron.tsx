@@ -6,19 +6,12 @@ import Link from 'next/link';
 import { Button, GlassSurface, MotionHover, MotionSlideIn, RotatingText, BubbleDivider } from '@repo/ui';
 import { Image, Sparkle } from '@@shop/components/Common';
 
-import { useBreakpoints } from '@repo/ui/hooks';
-
 import { IMAGE_RESOURCES } from '@repo/ui';
 import { useThemeStore } from '@@shop/store/theme';
 
 function Jumbotron() {
 
     const theme = useThemeStore((state) => state.theme);
-    const breakpoint = useBreakpoints();
-
-    if(!breakpoint) {
-        return;
-    }
 
     const glassSurfaceProps = {
         width: 150,
