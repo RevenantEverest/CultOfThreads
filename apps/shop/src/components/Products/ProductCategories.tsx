@@ -9,8 +9,9 @@ import { useSearchParams } from 'next/navigation';
 function ProductCategories() {
 
     const searchParams = useSearchParams();
-
     const categorySearch = searchParams.get("category");
+
+    const scrollToId = "product-listings";
 
     const query = useQuery({
         queryKey: ["categories"],
@@ -22,7 +23,7 @@ function ProductCategories() {
             return(
                 <MotionHover key={`categories-${category.name}-${index}`}>
                     <ScrollLink
-                        to="product-listings"
+                        to={scrollToId}
                         padding={120}
                         className={`text-center w-60 rounded-xl py-2 hover:cursor-pointer ${categorySearch === category.name ? "bg-primary" : "bg-card-light"}`}
                         onClick={() => {
@@ -41,14 +42,16 @@ function ProductCategories() {
     return(
         <div className="flex flex-col md:flex-row gap-5 items-center justify-center">
             <MotionHover key={`categories-all`}>
-                <div 
+                <ScrollLink
+                    to={scrollToId}
+                    padding={120}
                     className={`text-center w-60 rounded-xl py-2 hover:cursor-pointer ${!categorySearch ? "bg-primary" : "bg-card-light"}`}
                     onClick={() => {
                         window.history.pushState(null, "", "?");
                     }}
                 >
                     <p className={`font-bold text-xl`}>All</p>
-                </div>
+                </ScrollLink>
             </MotionHover>
             {query.data && renderCategories(query.data)}
         </div>
