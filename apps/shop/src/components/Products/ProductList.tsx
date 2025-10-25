@@ -128,7 +128,7 @@ function ProductList() {
                 <ScrollElement id="product-listings" className="flex items-center justify-center">
                     <div 
                         key={listKey}
-                        className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 justify-center items-center gap-5 gap-y-20 pb-20"
+                        className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 justify-center items-center gap-5 gap-y-10 md:gap-y-20 pb-20"
                     >
                         {itemsInRow && renderProducts(displayedProducts)}
                     </div>
