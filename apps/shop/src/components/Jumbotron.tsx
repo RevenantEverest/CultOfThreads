@@ -34,7 +34,7 @@ function Jumbotron() {
     };
 
     const renderContentLeft = () => (
-        <div className="flex flex-col gap-5 justify-center items-center lg:items-start text-center lg:text-start w-full">
+        <div className="flex flex-col gap-2 justify-center items-center lg:items-start text-center lg:text-start w-full">
             <GlassSurface 
                 className=""
                 {...glassSurfaceProps}
@@ -91,7 +91,7 @@ function Jumbotron() {
 
     const renderContentRight = () => (
         <div className="md:flex-1 flex items-center justify-center">
-            <div className="w-60 h-50 md:w-80 md:h-70 lg:w-100 lg:h-90 xl:w-140 xl:h-120 flex overflow-hidden">
+            <div className="w-50 h-40 md:w-80 md:h-70 lg:w-100 lg:h-90 xl:w-140 xl:h-120 flex overflow-hidden">
                 <Image 
                     width={800} 
                     height={800} 
@@ -118,7 +118,7 @@ function Jumbotron() {
             <div
                 className={`
                     absolute z-10 h-11/12 top-0 w-screen px-10 lg:px-30 xl:px-56
-                    flex flex-col lg:flex-row gap-5 md:gap-0 items-center justify-center 
+                    flex flex-col lg:flex-row gap-0 md:gap-0 items-center justify-center 
                 `}
             >
                 <MotionSlideIn
@@ -126,7 +126,7 @@ function Jumbotron() {
                     className="flex lg:flex-1 order-2 lg:order-1"
                     fadeDelay={0.5}
                     posXDelay={0.5}
-                    posXInitial={breakpoint === "SM" ? "-100dvw" : "-100%"}
+                    posXInitial={"-100%"}
                 >
                     {renderContentLeft()}
                 </MotionSlideIn>
@@ -141,7 +141,7 @@ function Jumbotron() {
                 </MotionSlideIn>
             </div>
             <div className="absolute w-full bottom-0">
-                <BubbleDivider bgColor={theme.colors.background} className="z-30 h-27 w-full relative" />
+                <BubbleDivider bgColor={theme.colors.background} className="z-30 w-full relative" />
             </div>
         </div>
     );
