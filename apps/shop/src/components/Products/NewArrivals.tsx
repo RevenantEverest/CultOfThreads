@@ -35,7 +35,7 @@ function NewArrivals() {
                 setItemsInRow(3);
                 break;
             case "MD":
-                setItemsInRow(3);
+                setItemsInRow(2);
                 break;
             case "SM": 
                 setItemsInRow(1);
@@ -92,7 +92,9 @@ function NewArrivals() {
             </div>
             </MotionFadeIn>
             <div className="flex items-center justify-center">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-5 gap-y-10 md:gap-y-20 pb-20">
+                <div className={`
+                    grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 gap-y-10 md:gap-y-20 pb-20
+                `}>
                     {query.data && itemsInRow && renderProducts(query.data)}
                 </div>
             </div>

@@ -111,14 +111,14 @@ function Navbar() {
                         <Image className="!relative !w-10 mr-1" fill src={IMAGE_RESOURCES.LOGO_CIRCLE} alt="logo" />
                         <h1 className="font-bold text-lg">Cult of Threads</h1>
                     </Link>
-                    <div className="flex-1 hidden md:flex gap-2 items-center justify-center">
+                    <div className="flex-1 hidden lg:flex gap-2 items-center justify-center">
                         {renderRoutes()}
                     </div>
-                    <div className="flex-1 hidden md:flex items-center justify-end gap-5">
+                    <div className="flex-1 hidden lg:flex items-center justify-end gap-5">
                         <ThemeChanger currentTheme={theme} setTheme={setTheme} />
                     </div>
-                    <div className="md:flex-1 flex items-center justify-end md:hidden">
-                        <div className="ml-4 mr-4 flex md:hidden justify-center content-center items-center" onClick={() => setIsMobileOpen(!isMobileOpen)}>
+                    <div className="md:flex-1 flex items-center justify-end lg:hidden">
+                        <div className="ml-4 mr-4 flex lg:hidden justify-center content-center items-center" onClick={() => setIsMobileOpen(!isMobileOpen)}>
                             <FaBars className="text-2xl text-text" />
                         </div>
                     </div>

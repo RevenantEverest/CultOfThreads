@@ -8,8 +8,8 @@ import Link from 'next/link';
 function AboutMe() {
 
     return(
-        <div className="flex flex-col md:flex-row items-center justify-center relative gap-5">
-            <div className="w-90 h-80 lg:w-150 lg:h-180 flex overflow-hidden p-1 relative border-card-light border-4 bg-card-light rounded-lg">
+        <div className="flex flex-col xl:flex-row items-center justify-center relative gap-5">
+            <div className="w-90 h-80 md:!w-140 xl:w-150 xl:h-180 flex overflow-hidden p-1 relative border-card-light border-4 bg-card-light rounded-lg">
                 <Image
                     className="shrink-0 relative object-cover w-full h-full rounded-lg"
                     height={2000}
