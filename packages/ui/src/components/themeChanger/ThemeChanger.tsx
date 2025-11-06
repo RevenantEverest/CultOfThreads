@@ -31,7 +31,7 @@ function ThemeChanger({ currentTheme, setTheme }: ThemeChangerProps) {
             return(
                 <MotionHover 
                     key={`theme-${singleTheme!.name}-${index}`}
-                    className="flex gap-5 bg-card md:bg-transparent rounded-full pr-5 md:pr-0 hover:cursor-pointer"
+                    className="flex gap-5 bg-card lg:bg-transparent rounded-full pr-5 md:pr-0 hover:cursor-pointer"
                     onClick={() => {
                         setTheme(singleTheme as Theme);
                     }}
@@ -40,14 +40,14 @@ function ThemeChanger({ currentTheme, setTheme }: ThemeChangerProps) {
                         theme={singleTheme as Theme} 
                         currentTheme={currentTheme}
                     />
-                    <p className="md:hidden">{generateDisplayName(singleTheme as Theme)}</p>
+                    <p className="lg:hidden">{generateDisplayName(singleTheme as Theme)}</p>
                 </MotionHover>
             );
         });
     };
 
     return(
-        <div className="flex gap-5 justify-center md:gap-1 flex-col md:flex-row">
+        <div className="flex gap-5 justify-center lg:gap-1 flex-col lg:flex-row">
             {renderThemes()}
         </div>
     );

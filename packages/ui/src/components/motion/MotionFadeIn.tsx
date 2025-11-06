@@ -16,7 +16,7 @@ function MotionFadeIn({ fadeDelay=0, posYDelay=0, children, ...rest }: React.Pro
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ delay: fadeDelay, duration: .5 }}
+            transition={{ delay: fadeDelay, duration: .3 }}
             {...rest}
         >
             <motion.div
@@ -24,7 +24,7 @@ function MotionFadeIn({ fadeDelay=0, posYDelay=0, children, ...rest }: React.Pro
                 initial={{ y: "10dvh" }}
                 whileInView={{ y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: posYDelay, duration: .3, stiffness: 120, type: "spring" }}
+                transition={{ delay: posYDelay, duration: .1, stiffness: 120, type: "spring" }}
             >
                 {children}
             </motion.div>

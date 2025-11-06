@@ -39,7 +39,7 @@ function UpcomingEvents({ amount, isEventsPage }: UpcomingEventsProps) {
                 setItemsInRow(3);
                 break;
             case "MD":
-                setItemsInRow(3);
+                setItemsInRow(2);
                 break;
             case "SM": 
                 setItemsInRow(1);
@@ -70,6 +70,7 @@ function UpcomingEvents({ amount, isEventsPage }: UpcomingEventsProps) {
                     key={`event-${item.id}`}
                     fadeDelay={staggerDelay}
                     posYDelay={staggerDelay}
+                    className="w-full"
                 >
                     <EventListItem event={item} />
                 </MotionFadeIn>
@@ -78,8 +79,8 @@ function UpcomingEvents({ amount, isEventsPage }: UpcomingEventsProps) {
     };
 
     return(
-        <div className="flex flex-col items-center justify-center gap-5">
-            <MotionFadeIn>
+        <div className="flex flex-col items-center justify-center gap-5 w-full">
+            <MotionFadeIn className="w-full">
                 <div className="text-center pb-20">
                     <p className="text-md md:text-2xl text-muted mb-2 uppercase font-semibold">See where we&apos;ll be popping up next!</p>
                     <h1 className="text-4xl md:text-6xl font-bold font-beach">

@@ -32,10 +32,10 @@ async function Events() {
     return(
         <HydrationBoundary>
             <PageHeader>
-                <div className="flex sm:flex-col md:flex-row md:gap-5 items-center justify-center md:px-72 h-[90dvh] relative">
-                    <div className="order-2 md:order-1 md:flex-1 flex flex-col text-center md:text-left items-center md:items-start justify-center">
+                <div className="flex sm:flex-col xl:flex-row xl:gap-5 items-center justify-center lg:px-72 h-[90dvh] relative">
+                    <div className="flex-1 flex flex-col text-center xl:text-left items-center xl:items-start justify-center">
                         <h1 className="text-4xl md:text-6xl text-text font-bold mb-4">Upcoming Events</h1>
-                        <p className="text-md text-text/60 font-semibold mb-5 md:mb-10 w-11/12 md:w-4/6">
+                        <p className="text-md text-text/60 font-semibold mb-5 md:mb-10 w-11/12 xl:w-4/6">
                             We love meeting fellow horror fans in person! See our full calendar below to find out where we&apos;ll be next. Come by, 
                             browse our latest plushies, and let&apos;s geek out about all things creepy and cute!
                         </p>
@@ -51,7 +51,7 @@ async function Events() {
                 </div>
                 <EventList />
             </Layout>
-            <Newsletter className="w-full bg-card z-20 relative py-20 md:px-56" />
+            <Newsletter className="w-full bg-card z-20 relative py-20 xl:px-56" />
         </HydrationBoundary>
     );
 };

@@ -43,7 +43,7 @@ function Home() {
                 <UpcomingEvents />
                 <FAQ className="md:!w-10/12" />
             </Layout>
-            <Newsletter className="w-full bg-card z-20 relative py-20 md:px-56" />
+            <Newsletter className="w-full bg-card z-20 relative py-20 lg:px-56" />
         </React.Fragment>
     );
 };

@@ -1,8 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 
 import React from 'react';
-import { PageHeader, Layout, ScrollToSeeMore } from '@@shop/components/Common';
-import { FaEnvelope } from 'react-icons/fa6';
+import { Layout } from '@@shop/components/Common';
 
 import { ContactContainer } from '@@shop/containers';
 import { FAQ } from '@@shop/components/FAQ';
@@ -35,19 +34,7 @@ function Contact() {
 
     return(
         <React.Fragment>
-            <PageHeader>
-                <div 
-                    className={`
-                        flex flex-col md:gap-5 items-center justify-center md:px-72 h-[90dvh]
-                        text-secondary/80 font-bold
-                    `}
-                >
-                        <FaEnvelope className="text-8xl" />
-                        <h1 className="text-4xl md:text-8xl uppercase">Contact</h1>
-                        <ScrollToSeeMore />
-                </div>
-            </PageHeader>
-            <Layout main transparent className="gap-50 mb-40">
+            <Layout main transparent className="gap-50 mb-40 pt-40">
                 <div className="flex flex-col w-full items-center justify-center gap-10">
                     <h1 className="text-5xl font-bold font-beach">Contact Us</h1>
                     <ContactContainer />
@@ -56,7 +43,7 @@ function Contact() {
                 <div className="bg-accent/50 rounded-full h-1 w-full" />
                 <FAQ />
             </Layout>
-            <Newsletter className="w-full bg-card z-20 relative py-20 md:px-56" />
+            <Newsletter className="w-full bg-card z-20 relative py-20 xl:px-56" />
         </React.Fragment>
     );
 };

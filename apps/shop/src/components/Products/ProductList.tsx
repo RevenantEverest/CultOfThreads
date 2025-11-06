@@ -39,10 +39,10 @@ function ProductList() {
                 setItemsInRow(4);
                 break;
             case "LG":
-                setItemsInRow(4);
+                setItemsInRow(3);
                 break;
             case "MD":
-                setItemsInRow(3);
+                setItemsInRow(2);
                 break;
             case "SM": 
                 setItemsInRow(1);
@@ -128,7 +128,10 @@ function ProductList() {
                 <ScrollElement id="product-listings" className="flex items-center justify-center">
                     <div 
                         key={listKey}
-                        className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 justify-center items-center gap-5 gap-y-10 md:gap-y-20 pb-20"
+                        className={`
+                            grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 
+                            justify-center items-center gap-5 gap-y-10 lg:gap-y-20 pb-20
+                        `}
                     >
                         {itemsInRow && renderProducts(displayedProducts)}
                     </div>

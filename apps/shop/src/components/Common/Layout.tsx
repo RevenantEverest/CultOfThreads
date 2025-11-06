@@ -18,7 +18,7 @@ function Layout({ className, main, transparent, children, ...rest }: React.Props
                 w-full
                 relative 
                 !px-5
-                md:!px-10
+                lg:!px-10
                 xl:!px-64
                 pt-20 
                 pointer-events-auto 
