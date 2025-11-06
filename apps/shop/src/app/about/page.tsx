@@ -41,7 +41,7 @@ function About() {
                 <FAQ />
                 <UpcomingEvents />
             </Layout>
-            <Newsletter className="w-full bg-card z-20 relative py-20 md:px-56" />
+            <Newsletter className="w-full bg-card z-20 relative py-20 xl:px-56" />
         </React.Fragment>
     );
 };
