@@ -120,7 +120,7 @@ function ContactForm({ onSubmit }: ContactFormProps) {
                                 />
                             </div>
                         </div>
-                        <form.SubscribeField theme={theme} label="Send" className="w-full !text-card" />
+                        <form.SubscribeField theme={theme} label="Send" className="w-full text-card!" />
                     </form.AppForm>
                 </form>
             </CardContent>
