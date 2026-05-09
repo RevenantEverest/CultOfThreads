@@ -7,7 +7,6 @@
       }
     ],
     "rootDir": ".",
-    "baseUrl": ".",
     "paths": {
       "@@shop/*": ["./src/*"]
     },
