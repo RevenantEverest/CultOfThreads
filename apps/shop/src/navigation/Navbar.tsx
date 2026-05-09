@@ -12,6 +12,7 @@ import { useScrollPosition } from '@repo/ui/hooks';
 import { FaBars } from 'react-icons/fa6';
 import { ThemeChanger } from '@repo/ui';
 import { Image } from '@@shop/components/Common';
+import { CartToggle } from '@@shop/components/Cart';
 import MobileNavbar from './MobileNavbar';
 
 import { IMAGE_RESOURCES } from '@repo/ui';
@@ -116,6 +117,9 @@ function Navbar() {
                     </div>
                     <div className="flex-1 hidden lg:flex items-center justify-end gap-5">
                         <ThemeChanger currentTheme={theme} setTheme={setTheme} />
+                        <div>
+                            <CartToggle />
+                        </div>
                     </div>
                     <div className="md:flex-1 flex items-center justify-end lg:hidden">
                         <div className="ml-4 mr-4 flex lg:hidden justify-center content-center items-center" onClick={() => setIsMobileOpen(!isMobileOpen)}>

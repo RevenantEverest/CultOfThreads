@@ -6,6 +6,7 @@ import { useThemeStore } from '@@shop/store/theme';
 
 import { ThemeChanger } from '@repo/ui';
 import _Routes from './_Routes';
+import { CartToggle } from '@@shop/components/Cart';
 
 interface MobileNavbarProps {
     isOpen: boolean,
@@ -61,6 +62,9 @@ function MobileNavbar({ isOpen, setIsOpen }: MobileNavbarProps) {
         >
             <div className="flex flex-col px-5 mt-10 items-center justify-center">
                 {renderRoutes()}
+            </div>
+            <div className="flex-1 flex items-center justify-center pt-10 px-8">
+                <CartToggle />
             </div>
             <div className="flex flex-col gap-6 w-3/6 pl-5 pt-10">
                 <p className="font-semibold">Themes:</p>
