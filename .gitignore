@@ -20,4 +20,13 @@
 *.log
 *.local
 *.cache
+**/signing_keys.json
 
+# Supabase
+.branches
+.temp
+
+# dotenvx
+.env.keys
+.env.local
+.env.*.local
