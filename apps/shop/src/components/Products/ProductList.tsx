@@ -15,40 +15,24 @@ import { productApi } from '@repo/supabase';
 import ProductSort from './ProductSort';
 
 import { productSort } from '@@shop/utils';
-import { useBreakpoints } from '@repo/ui/hooks';
 import { MotionFadeIn, ScrollElement } from '@repo/ui';
+import { useBreakpointGrid } from '@@shop/hooks';
 
 function ProductList() {
 
-    const breakpoint = useBreakpoints();
+    const breakpointGrid = useBreakpointGrid({ 
+        overrides: {
+            LG: 2, 
+            XL: 4
+        }
+    });
     const searchParams = useSearchParams();
     const query = useQuery({
         queryKey: ["products"],
         queryFn: productApi.fetchActiveListings
     });
 
-    const [itemsInRow, setItemsInRow] = useState<number | null>(null);
     const listKey = searchParams.toString();
-
-    useEffect(() => {
-        switch(breakpoint) {
-            case "XXL":
-                setItemsInRow(4);
-                break;
-            case "XL": 
-                setItemsInRow(4);
-                break;
-            case "LG":
-                setItemsInRow(3);
-                break;
-            case "MD":
-                setItemsInRow(2);
-                break;
-            case "SM": 
-                setItemsInRow(1);
-                break;
-        }
-    }, [breakpoint]);
 
     const getInitialProducts = useCallback((): ProductListing[] => {
         if(!query.data) return [];
@@ -86,20 +70,15 @@ function ProductList() {
     }, [searchParams, getInitialProducts]);
 
     const renderProducts = (products: ProductListing[]) => {
-        if(!itemsInRow) {
+        const itemsPerRow = breakpointGrid.itemsPerRow;
+
+        if(!itemsPerRow) {
             return;
         }
 
-        const ROW_STAGGER_TIME = 0.1;
-        const COLUMN_STAGGER_TIME = 0.1;
 
         return products.map((item, index) => {            
-            const rowIndex = Math.floor(index / itemsInRow);
-            const colIndex = index % itemsInRow;
-
-            const rowDelay = rowIndex * ROW_STAGGER_TIME;
-            const colDelay = colIndex * COLUMN_STAGGER_TIME;
-            const staggerDelay = rowDelay + colDelay;
+            const staggerDelay = breakpointGrid.getAnimationStaggerValues(index, itemsPerRow);
 
             return(
                 <MotionFadeIn
@@ -129,11 +108,11 @@ function ProductList() {
                     <div 
                         key={listKey}
                         className={`
-                            grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 
+                            ${breakpointGrid.gridClasses} 
                             justify-center items-center gap-5 gap-y-10 lg:gap-y-20 pb-20
                         `}
                     >
-                        {itemsInRow && renderProducts(displayedProducts)}
+                        {breakpointGrid.itemsPerRow && renderProducts(displayedProducts)}
                     </div>
                 </ScrollElement>
             </div>
