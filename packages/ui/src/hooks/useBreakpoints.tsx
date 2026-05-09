@@ -1,13 +1,13 @@
 "use client"
 
 import type { Dimensions } from './useWindowDimensions';
+import type { Breakpoint } from '../types/breakpoints';
 
 import { useEffect, useState } from 'react';
 import useWindowDimensions from './useWindowDimensions';
 
 import { BREAKPOINTS } from '../constants';
 
-export type Breakpoint = keyof typeof BREAKPOINTS;
 
 function calculateBreakpoint(dimensions: Dimensions): Breakpoint {
     let bp: keyof typeof BREAKPOINTS = "SM";
