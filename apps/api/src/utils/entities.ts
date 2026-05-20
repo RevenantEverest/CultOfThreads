@@ -1,6 +1,6 @@
 import type { IndexOptions } from '~/types/entities';
 import type { PromiseTuple } from '~/types/promises';
-import type { 
+import { 
     BaseEntity, 
     EntityTarget, 
     DeepPartial, 
@@ -220,4 +220,17 @@ export async function save<T extends BaseEntity>(entity: Target<T>, data: Data<T
 
 export async function update<T extends BaseEntity>(entity: Target<T>, data: Data<T>): PromiseTuple<T> {
     return await save<T>(entity, data);
+};
+
+/* Common Error */
+export function isDuplicateKeyError(error: unknown | QueryFailedError): boolean {
+    if(error instanceof QueryFailedError) {
+        const driverError = error.driverError;
+
+        if(driverError.code === "23505") {
+            return true;
+        }
+    }
+
+    return false;
 };
