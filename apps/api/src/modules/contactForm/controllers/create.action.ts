@@ -8,20 +8,20 @@ import ContactForm from '../contactForm.entity';
 import { Contact } from '~/modules/contact';
 import { createSchema } from '~/modules/contactForm/schema';
 
-import { entities } from '~/utils';
+import { entities, logs } from '~/utils';
 
 type Body = z.infer<typeof createSchema>;
 
 export default async function create(req: Request<Body>, res: Response) {
 
-    const validatedBody = createSchema.safeParse(req.body);
+    const validatedBody = await createSchema.safeParseAsync(req.body);
 
     if(!validatedBody.success) {
         return res.status(StatusCodes.BAD_REQUEST).json({
             error: true,
             message: "Invalid Body",
             issues: z.treeifyError(validatedBody.error)
-        })
+        });
     }
 
     const [submission, err] = await entities.insert<ContactForm>(ContactForm, {
@@ -53,12 +53,12 @@ export default async function create(req: Request<Body>, res: Response) {
     const [_, contactErr] = await entities.findOrSave<Contact>(Contact, findOptions, {
         firstName: submission.firstName,
         lastName: submission.lastName,
-        email: submission.lastName
+        email: submission.lastName.toLocaleLowerCase()
     });
 
     if(contactErr) {
-        console.error("Error creating contact => ", contactErr);
+        logs.error({ type: "DB", err: contactErr, message: contactErr.message });
     }
 
-    return res.json({ results: submission });
+    return res.status(StatusCodes.CREATED).json({ results: submission });
 };
