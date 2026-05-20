@@ -2,7 +2,8 @@ import type {
     ProductWithDetails, 
     CreateProductParams, 
     UpdateProductParams, 
-    ProductListing
+    ProductListing,
+    ProductWithDetailsAndMedia
 } from '../types/products.js';
 
 import { supabase } from '../supabaseClient.js';
@@ -117,6 +118,30 @@ export async function fetchActiveListingById(id: string): Promise<ProductListing
     }
 
     return data[0];
+};
+
+export async function fetchCartProducts(productIds: string[]): Promise<ProductWithDetailsAndMedia[]> {
+    const { data, error } = await (
+        supabase.from('products')
+        .select(`
+            *,
+            details:product_details!inner (
+                *
+            ),
+            media:product_media (
+                *
+            )
+        `)
+        .in('id', productIds)
+        .filter('details.status', "eq", "ACTIVE")
+        .limit(1, { foreignTable: "product_media" })
+    );
+
+    if(error) {
+        throw error;
+    }
+
+    return data ?? [];
 };
 
 export async function fetchListings(): Promise<ProductListing[]> {
