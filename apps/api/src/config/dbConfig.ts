@@ -7,7 +7,7 @@ const dbConfig: DataSourceOptions = {
     type: "postgres",
     url: ENV.DATABASE_URL,
     synchronize: false,
-    logging: true,
+    logging: false,
     namingStrategy: new SnakeNamingStrategy(),
     entities: [
         "src/modules/**/*.entity.ts"
