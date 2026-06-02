@@ -1,15 +1,15 @@
-import type { ContactFormSubmissionStatus } from '@repo/supabase';
+import type { ContactForm } from '@repo/entities';
 
 type SubmissionStatusBadgeSize = "sm" | "md" | "lg";
 
 interface SubmissionStatusBadgeProps {
-    status: ContactFormSubmissionStatus,
+    status: ContactForm["status"],
     size?: SubmissionStatusBadgeSize
 };
 
 function SubmissionStatusBadge({ status, size="sm" }: SubmissionStatusBadgeProps) {
 
-    const statusColor: Record<ContactFormSubmissionStatus, string> = {
+    const statusColor: Record<ContactForm["status"], string> = {
         "PENDING": "bg-amber-600",
         "RESOLVED": "bg-green-600"
     };
@@ -21,7 +21,12 @@ function SubmissionStatusBadge({ status, size="sm" }: SubmissionStatusBadgeProps
     };
 
     return(
-        <div className={`${statusColor[status]} ${sizeClass[size]} rounded-full flex items-center justify-center`}>
+        <div 
+            className={`
+                ${statusColor[status]} ${sizeClass[size]} 
+                rounded-full flex items-center justify-center
+            `}
+        >
             <p className="font-bold">{status.toUpperCase()}</p>
         </div>
     );

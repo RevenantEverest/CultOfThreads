@@ -1,17 +1,16 @@
-import type { NewsletterWithContact } from '@repo/supabase';
+import type { Newsletter } from '@repo/entities';
 
 import dayjs from 'dayjs';
-
 import { TableCell, TableRow } from '@repo/ui';
 
-interface NewsletterListItemProps {
-    submission: NewsletterWithContact
+interface SignUpsRowProps {
+    item: Newsletter
 };
 
-function NewsletterListItem({ submission }: NewsletterListItemProps) {
+function SignUpsRow({ item }: SignUpsRowProps) {
 
     const cellClass = "py-4";
-    const createdAt = dayjs(submission.created_at).format("MMMM D, YYYY");
+    const createdAt = dayjs(item.createdAt).format("MMMM D, YYYY");
 
     return(
         <TableRow className="border-b-muted font-semibold">
@@ -19,11 +18,11 @@ function NewsletterListItem({ submission }: NewsletterListItemProps) {
             </TableCell>
             <TableCell className={`${cellClass}`}>
                 <p className="hover:cursor-pointer">
-                    {(submission.contact.first_name ?? "") + " " + (submission.contact.last_name ?? "")}
+                    {(item.contact.firstName ?? "") + " " + (item.contact.lastName ?? "")}
                 </p>
             </TableCell>
             <TableCell className={`${cellClass}`}>
-                <p>{submission.contact.email}</p>
+                <p>{item.contact.email}</p>
             </TableCell>
             <TableCell className={`${cellClass}`}>
                 <p>{createdAt}</p>
@@ -36,4 +35,4 @@ function NewsletterListItem({ submission }: NewsletterListItemProps) {
     );
 };
 
-export default NewsletterListItem;
+export default SignUpsRow;

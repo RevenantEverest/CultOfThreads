@@ -1,9 +1,11 @@
 import { Layout } from '@@admin/components/Common';
 import LoginForm from '@@admin/components/Forms/LoginForm';
-import { createLazyFileRoute } from '@tanstack/react-router';
+import { auth } from '@@admin/utils';
+import { createFileRoute } from '@tanstack/react-router';
 
-export const Route = createLazyFileRoute('/login')({
+export const Route = createFileRoute('/login')({
     component: Login,
+    beforeLoad: auth.guestGuard
 });
 
 function Login() {

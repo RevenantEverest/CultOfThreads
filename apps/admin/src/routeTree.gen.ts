@@ -11,6 +11,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as DashboardLayoutRouteImport } from './routes/dashboard/_layout'
 import { Route as DashboardSalesAddRouteImport } from './routes/dashboard/sales/add'
 import { Route as DashboardSalesEditSaleIdRouteImport } from './routes/dashboard/sales/edit.$saleId'
@@ -22,7 +23,6 @@ import { Route as DashboardEventsEditEventIdRouteImport } from './routes/dashboa
 import { Route as DashboardContactsEditContactIdRouteImport } from './routes/dashboard/contacts/edit.$contactId'
 import { Route as DashboardContactsFormItemSubmissionIdRouteImport } from './routes/dashboard/contacts/form/item.$submissionId'
 
-const LoginLazyRouteImport = createFileRoute('/login')()
 const IndexLazyRouteImport = createFileRoute('/')()
 const DashboardIndexLazyRouteImport = createFileRoute('/dashboard/')()
 const DashboardSalesIndexLazyRouteImport =
@@ -66,11 +66,11 @@ const DashboardAnalyticsTrafficIndexLazyRouteImport = createFileRoute(
   '/dashboard/analytics/traffic/',
 )()
 
-const LoginLazyRoute = LoginLazyRouteImport.update({
+const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
   getParentRoute: () => rootRouteImport,
-} as any).lazy(() => import('./routes/login.lazy').then((d) => d.Route))
+} as any)
 const DashboardLayoutRoute = DashboardLayoutRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -258,7 +258,7 @@ const DashboardContactsFormItemSubmissionIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
   '/dashboard': typeof DashboardLayoutRouteWithChildren
-  '/login': typeof LoginLazyRoute
+  '/login': typeof LoginRoute
   '/dashboard/': typeof DashboardIndexLazyRoute
   '/dashboard/sales/add': typeof DashboardSalesAddRoute
   '/dashboard/contacts/add': typeof DashboardContactsAddLazyRoute
@@ -286,7 +286,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
-  '/login': typeof LoginLazyRoute
+  '/login': typeof LoginRoute
   '/dashboard': typeof DashboardIndexLazyRoute
   '/dashboard/sales/add': typeof DashboardSalesAddRoute
   '/dashboard/contacts/add': typeof DashboardContactsAddLazyRoute
@@ -316,7 +316,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexLazyRoute
   '/dashboard': typeof DashboardLayoutRouteWithChildren
-  '/login': typeof LoginLazyRoute
+  '/login': typeof LoginRoute
   '/dashboard/': typeof DashboardIndexLazyRoute
   '/dashboard/sales/add': typeof DashboardSalesAddRoute
   '/dashboard/contacts/add': typeof DashboardContactsAddLazyRoute
@@ -434,7 +434,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
   DashboardLayoutRoute: typeof DashboardLayoutRouteWithChildren
-  LoginLazyRoute: typeof LoginLazyRoute
+  LoginRoute: typeof LoginRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -443,7 +443,7 @@ declare module '@tanstack/react-router' {
       id: '/login'
       path: '/login'
       fullPath: '/login'
-      preLoaderRoute: typeof LoginLazyRouteImport
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
@@ -695,7 +695,7 @@ const DashboardLayoutRouteWithChildren = DashboardLayoutRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
   DashboardLayoutRoute: DashboardLayoutRouteWithChildren,
-  LoginLazyRoute: LoginLazyRoute,
+  LoginRoute: LoginRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -10,6 +10,8 @@
     "lint": "eslint . --max-warnings 0"
   },
   "dependencies": {
+    "@repo/entities": "workspace:*",
+    "@repo/queries": "workspace:*",
     "@repo/ui": "workspace:*",
     "@repo/supabase": "workspace:*",
     "@tanstack/react-router": "^1.168.18",

@@ -1,4 +1,4 @@
-import type { ContactFormSubmissionStatus, ContactFormSubmission as ContactFormSubmissionType } from '@repo/supabase';
+import type { ContactForm } from '@repo/entities';
 
 import { Link } from '@tanstack/react-router';
 import { Card, CardContent, Button } from '@repo/ui';
@@ -7,13 +7,13 @@ import dayjs from 'dayjs';
 import { FaLongArrowAltLeft } from 'react-icons/fa';
 import SubmissionStatusBadge from './SubmissionStatusBadge';
 
-interface ContactFormSubmissionProps {
-    submission: ContactFormSubmissionType
+interface SubmissionProps {
+    submission: ContactForm
 };
 
-function ContactFormSubmission({ submission }: ContactFormSubmissionProps) {
+function Submission({ submission }: SubmissionProps) {
 
-    const createdAt = dayjs(submission.created_at).format("MMMM D, YYYY");
+    const createdAt = dayjs(submission.createdAt).format("MMMM D, YYYY");
 
     return(
         <div className="flex flex-col gap-5">
@@ -27,7 +27,7 @@ function ContactFormSubmission({ submission }: ContactFormSubmissionProps) {
                 <CardContent className="flex flex-col md:flex-row items-start md:items-center gap-5 pb-0 py-5">
                     <div className="flex flex-col gap-2 order-2 md:order-1">
                         <div>
-                            <p className="text-xl font-bold">{submission.first_name + " " + submission.last_name}</p>
+                            <p className="text-xl font-bold">{submission.firstName + " " + submission.lastName}</p>
                         </div>
                         <div className="flex gap-2 items-center">
                             <FaEnvelope />
@@ -36,7 +36,7 @@ function ContactFormSubmission({ submission }: ContactFormSubmissionProps) {
                     </div>
                     <div className="flex-1 flex flex-col items-start md:items-end gap-2 order-1 md:order-2 text-sm">
                         <div className="flex justify-start">
-                            <SubmissionStatusBadge status={submission.status as ContactFormSubmissionStatus} size="sm" />
+                            <SubmissionStatusBadge status={submission.status} size="sm" />
                         </div>
                         <div className="flex items-center gap-2">
                             <FaClock className="block md:hidden mt-0.5" />
@@ -59,4 +59,4 @@ function ContactFormSubmission({ submission }: ContactFormSubmissionProps) {
     );
 };
 
-export default ContactFormSubmission;
+export default Submission;

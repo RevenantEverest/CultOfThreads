@@ -1,3 +1,4 @@
+import { useNavigate } from '@tanstack/react-router';
 import {
     BadgeCheck,
     Bell,
@@ -30,6 +31,7 @@ export function SidebarUser() {
 
     const { isMobile } = useSidebar();
     const authStore = useAuthStore((state) => state);
+    const navigate = useNavigate();
 
     const user = {
         avatar: "https://wowvendor.com/app/uploads/2024/10/Episode-Revenant-guide.jpg",
@@ -104,7 +106,10 @@ export function SidebarUser() {
 
                 <DropdownMenuSeparator />
                 
-                <DropdownMenuItem onClick={() => authStore.signout()}>
+                <DropdownMenuItem onClick={() => {
+                    authStore.signout();
+                    navigate({ to: "/" });
+                }}>
                     <LogOut />
                     Log out
                 </DropdownMenuItem>

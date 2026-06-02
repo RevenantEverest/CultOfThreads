@@ -1,16 +1,21 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { useSuspenseQuery } from '@tanstack/react-query';
 
-import { Layout, Breadcrumb } from '@@admin/components/Common';
-import { contactFormApi } from '@repo/supabase';
-import { ContactFormSubmission } from '@@admin/components/Contacts';
+import { Layout, Breadcrumb, Spinner } from '@@admin/components/Common';
+import { Submission } from '@@admin/components/ContactFormSubmissions';
+
+import { contactForm } from '@repo/queries';
+import { useAuthStore } from '@@admin/store/auth';
 
 export const Route = createFileRoute('/dashboard/contacts/form/item/$submissionId')({
     loader: ({ context, params }) => {
-        context.queryClient.prefetchQuery({
-            queryKey: ["contact_form_submissions", params.submissionId],
-            queryFn: () => contactFormApi.fetchById(params.submissionId)
-        })
+        const authToken = useAuthStore.getState().auth.session;
+        
+        if(!authToken?.accessToken) return;
+
+        contactForm.hooks.usePrefetchGetOne(context.queryClient, {
+            id: params.submissionId,
+            authToken: authToken.accessToken
+        });
     },
     component: ContactFormItem,
 });
@@ -18,10 +23,11 @@ export const Route = createFileRoute('/dashboard/contacts/form/item/$submissionI
 function ContactFormItem() {
 
     const params = Route.useParams();
+    const auth = useAuthStore((state) => state.auth);
 
-    const { data } = useSuspenseQuery({ 
-        queryKey: ["contact_form_submissions", params.submissionId],
-        queryFn: () => contactFormApi.fetchById(params.submissionId)
+    const query = contactForm.hooks.useGetOne({
+        id: params.submissionId, 
+        authToken: auth.session?.accessToken ?? ""
     });
 
     return(
@@ -38,7 +44,11 @@ function ContactFormItem() {
                 />
             </div>
             <div className="mt-15 flex flex-col gap-5">
-                <ContactFormSubmission submission={data} />
+                {
+                    query.isLoading || !query.data ?
+                    <Spinner /> :
+                    <Submission submission={query.data.results} />
+                }
             </div>
         </Layout>
     );

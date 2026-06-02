@@ -33,7 +33,7 @@ function ContactsList({ contacts, search }: ContactListProps) {
             <CardContent className="py-8">
                 <Table>
                     <TableHeader>
-                        <TableRow className="font-bold border-b-muted hover:!bg-transparent">
+                        <TableRow className="font-bold border-b-muted hover:bg-transparent!">
                             <TableHead className={`${headClass} font-bold w-1/10 rounded-tl-lg`}></TableHead>
                             <TableHead className={`${headClass}`}>
                                 <div className="flex items-center justify-start gap-2">

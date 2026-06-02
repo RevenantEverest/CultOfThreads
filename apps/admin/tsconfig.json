@@ -5,6 +5,7 @@
         "target": "es2024",
         "paths": {
             "@@admin/*": ["./src/*"]
-        }
+        },
+        "types": ["node"]
     }
 }
