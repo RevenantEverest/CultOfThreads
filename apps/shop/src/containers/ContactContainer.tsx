@@ -7,11 +7,11 @@ import { toast } from 'react-hot-toast'
 import { ToastError, ToastSuccess } from '@repo/ui';
 import ContactForm from '@@shop/components/Forms/ContactForm';
 
-import { useCreateContactFormSubmission } from '@@shop/api';
+import { contactForm } from '@repo/queries';
 
 function ContactContainer() {
 
-    const { mutateAsync } = useCreateContactFormSubmission();
+    const { mutateAsync } = contactForm.hooks.useCreateSubmission();
 
     const onSubmit = async (values: ContactFormValues) => {
         try {
