@@ -29,6 +29,10 @@ export { default as ThemeValidator } from './themeChanger/ThemeValidator';
 export { default as ScrollElement } from './ScrollElement';
 export { default as ScrollLink } from './ScrollLink';
 
+/* Lists */
+export { default as FlatList } from './flatLists/FlatList';
+export { default as TableFlatList } from './flatLists/TableFlatList';
+
 /* ShadCN UI */
 export { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './shadcn/accordion';
 export { Avatar, AvatarImage, AvatarFallback } from './shadcn/avatar';
