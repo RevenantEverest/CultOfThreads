@@ -4,8 +4,7 @@ import type { FindOneOptions } from 'typeorm';
 import { z } from 'zod';
 import { StatusCodes } from 'http-status-codes';
 
-import ContactForm from '../contactForm.entity';
-import { Contact } from '~/modules/contact';
+import { Contact, ContactForm } from '@repo/entities';
 import { createSchema } from '~/modules/contactForm/schema';
 
 import { entities, logs } from '~/utils';

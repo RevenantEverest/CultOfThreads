@@ -3,7 +3,7 @@ import "reflect-metadata";
 import initializeApp from '~/app';
 import AppDataSource from '~/db/dataSource';
 import waitForPostgres from '~/db/waitForPostgres';
-import * as Entities from '~/entities';
+import * as Entities from '@repo/entities';
 
 import { ENV } from '~/constants';
 import { logs } from '~/utils';

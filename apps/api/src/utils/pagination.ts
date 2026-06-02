@@ -5,7 +5,7 @@ import { ENV } from '~/constants';
 
 export function paginateResponse<T>(req: Request, res: Response<"pagination">, results: [T[], number]): PaginatedResponse<T> {
 
-    const baseUrl = ENV.IS_DEV ? `${ENV.BASE_URL}:${ENV.API_PORT}` : ENV.BASE_URL;
+    const baseUrl = ENV.API_URL;
 
     const { page, limit } = res.locals.pagination;
     const regEx: RegExp = /(?=\?)(.*)/gi;

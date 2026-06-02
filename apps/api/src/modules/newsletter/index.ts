@@ -1,1 +1,1 @@
-export { default as Newsletter } from './newsletter.entity';
+export { default as newsletterRoutes } from './newsletter.routes';

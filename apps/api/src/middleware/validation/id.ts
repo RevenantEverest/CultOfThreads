@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from '~/types/express';
 
-import { z } from 'zod';
+import { number, z } from 'zod';
 import { StatusCodes } from 'http-status-codes';
 
 import { common } from '~/utils';
@@ -31,6 +31,9 @@ async function id(req: Request<unknown, { [key: string]: string }>, res: Respons
         return handleError();
     }
 
+    const uuidSchema = z.uuid();
+    const numberSchema = z.coerce.number().int();
+
     for(let i = 0; i < paramKeys.length; i++) {
         const key: string | undefined = paramKeys[i];
 
@@ -40,11 +43,14 @@ async function id(req: Request<unknown, { [key: string]: string }>, res: Respons
 
         const id: string | number = req.params[key];
 
-        if(!z.uuid(id) || !z.number(id)) {
+        const isUuid = uuidSchema.safeParse(id).success;
+        const isNumber = numberSchema.safeParse(id).success;
+
+        if(!isUuid && !isNumber) {
             return handleError();
         }
 
-        res.locals.params[key] = z.number(id) ? Number(id) : id;
+        res.locals.params[key] = isNumber ? Number(id) : id;
     }
 
     next();

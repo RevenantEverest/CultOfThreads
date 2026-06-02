@@ -2,7 +2,7 @@ import type { Request, Response, NextFunction } from '~/types/express';
 import type { AuthPayload } from '~/types/auth';
 
 import { StatusCodes } from 'http-status-codes';
-import { jwtVerify, createRemoteJWKSet } from 'jose';
+import { jwtVerify, createRemoteJWKSet, errors } from 'jose';
 
 import { ENV } from '~/constants';
 import { logs } from '~/utils';
@@ -51,8 +51,15 @@ export default async function verifyToken(req: Request, res: Response<"auth">, n
         next();
     }
     catch(err) {
-        const error = err as Error;
-        logs.error({ err: error });
+        if(err instanceof errors.JWTExpired) {
+            return res.status(StatusCodes.UNAUTHORIZED).json({ message: "Token has expired" });
+        }
+
+        if(err instanceof errors.JWTInvalid || err instanceof errors.JWSSignatureVerificationFailed) {
+            return res.status(StatusCodes.UNAUTHORIZED).json({ message: "Invalid token" });
+        }
+
+        logs.error({ err: err as Error });
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Internal Server Error" });
     }
 };

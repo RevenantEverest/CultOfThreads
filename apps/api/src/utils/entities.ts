@@ -44,7 +44,7 @@ export async function destroy<T extends BaseEntity>(entity: Target<T>, data: Dat
     }
 };
 
-export async function find<T extends BaseEntity>(entity: Target<T>, findOptions: FindOneOptions<T>, options?: IndexOptions): PromiseTuple<T[]> {
+export async function find<T extends BaseEntity>(entity: Target<T>, findOptions: FindOneOptions<T>, options?: IndexOptions<T>): PromiseTuple<T[]> {
 
     const repository = AppDataSource.getRepository(entity);
 
@@ -67,7 +67,7 @@ export async function find<T extends BaseEntity>(entity: Target<T>, findOptions:
     return [res, undefined];
 };
 
-export async function findAndCount<T extends BaseEntity>(entity: Target<T>, findOptions: FindOneOptions<T>, options?: IndexOptions): PromiseTuple<[T[], number]> {
+export async function findAndCount<T extends BaseEntity>(entity: Target<T>, findOptions: FindOneOptions<T>, options?: IndexOptions<T>): PromiseTuple<[T[], number]> {
 
     const repository = AppDataSource.getRepository(entity);
 
@@ -159,7 +159,7 @@ export async function findOrSave<T extends BaseEntity>(entity: Target<T>, findOp
     return [entityObj, undefined];
 };
 
-export async function index<T extends BaseEntity>(entity: Target<T>, options: IndexOptions): PromiseTuple<T[]> {
+export async function index<T extends BaseEntity>(entity: Target<T>, options: IndexOptions<T>): PromiseTuple<T[]> {
 
     const repository = AppDataSource.getRepository(entity);
 
@@ -176,13 +176,15 @@ export async function index<T extends BaseEntity>(entity: Target<T>, options: In
     return [res, undefined];
 };
 
-export async function indexAndCount<T extends BaseEntity>(entity: Target<T>, options: IndexOptions): PromiseTuple<[T[], number]> {
+export async function indexAndCount<T extends BaseEntity>(entity: Target<T>, options: IndexOptions<T>): PromiseTuple<[T[], number]> {
 
     const repository = AppDataSource.getRepository(entity);
+    const { limit, offset, count, withoutPagination, select, ...rest } = options;
 
     const promise = repository.findAndCount({
-        skip: options.offset ?? 0,
-        take: options.limit ?? DEFAULTS.PAGINATION.LIMIT
+        skip: offset ?? 0,
+        take: limit ?? DEFAULTS.PAGINATION.LIMIT,
+        ...rest
     });
     const [res, err] = await promises.handle<[T[], number]>(promise);
 

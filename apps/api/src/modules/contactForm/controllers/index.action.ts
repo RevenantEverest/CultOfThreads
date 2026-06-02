@@ -1,7 +1,7 @@
 import type { Request, Response } from '~/types/express';
 
 import { StatusCodes } from 'http-status-codes';
-import ContactForm from '../contactForm.entity';
+import { ContactForm } from '@repo/entities';
 
 import { entities, logs, pagination } from '~/utils';
 
@@ -10,8 +10,8 @@ export default async function index(req: Request, res: Response<["pagination", "
     const { limit, offset } = res.locals.pagination;
 
     const [submissions, err] = await entities.indexAndCount<ContactForm>(ContactForm, {
-        limit, offset, order: {
-            
+        limit, offset, order: { 
+            createdAt: "DESC"
         }
     });
 
@@ -30,5 +30,5 @@ export default async function index(req: Request, res: Response<["pagination", "
 
     const paginatedResponse = pagination.paginateResponse<ContactForm>(req, res, submissions);
 
-    return res.json({ paginatedResponse });
+    return res.json(paginatedResponse);
 };

@@ -14,8 +14,8 @@ export default async function isValidRequestUrl(req: Request, res: Response, nex
 
     if(!isAllowed) {
         return res.status(StatusCodes.UNAUTHORIZED).json({
-            error: true, message: StatusCodes.UNAUTHORIZED.toString()
-        })
+            error: true, message: "Unauthorized"
+        });
     }
 
     next();

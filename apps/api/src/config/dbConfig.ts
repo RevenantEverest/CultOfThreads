@@ -1,5 +1,6 @@
 import { type DataSourceOptions } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+import * as Entities from '@repo/entities';
 
 import { ENV } from '~/constants';
 
@@ -9,9 +10,7 @@ const dbConfig: DataSourceOptions = {
     synchronize: false,
     logging: false,
     namingStrategy: new SnakeNamingStrategy(),
-    entities: [
-        "src/modules/**/*.entity.ts"
-    ],
+    entities: Entities,
     migrations: [
         "src/migrations/*.ts"
     ],

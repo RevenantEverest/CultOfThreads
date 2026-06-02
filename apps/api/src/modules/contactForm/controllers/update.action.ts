@@ -3,7 +3,7 @@ import type { Request, Response } from '~/types/express';
 import { z } from 'zod';
 import { StatusCodes } from 'http-status-codes';
 
-import ContactForm from '../contactForm.entity';
+import { ContactForm } from '@repo/entities';
 import { updateSchema } from '~/modules/contactForm/schema';
 
 import { entities, logs } from '~/utils';

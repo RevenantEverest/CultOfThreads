@@ -3,8 +3,7 @@ import morgan from 'morgan';
 import cors from 'cors';
 
 import { contactFormRoutes } from '~/modules/contactForm';
-
-import { permissions, auth } from '~/middleware';
+import { newsletterRoutes } from '~/modules/newsletter';
 
 function initializeApp(): Application {
 
@@ -19,6 +18,7 @@ function initializeApp(): Application {
     app.set("trust proxy", "loopback");
 
     app.use("/contact-form", contactFormRoutes);
+    app.use("/newsletter", newsletterRoutes);
 
     return app;
 };
