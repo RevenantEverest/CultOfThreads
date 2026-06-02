@@ -1,0 +1,30 @@
+{
+    "name": "@repo/entities",
+    "version": "0.0.0",
+    "type": "module",    
+    "private": true,
+    "exports": {
+        ".": {
+            "import": "./dist/src/index.js",
+            "types": "./dist/src/index.d.ts"
+        }
+    },
+    "scripts": {
+        "build:entities": "tsc && tsc-alias",
+        "dev:entities": "concurrently --kill-others \"tsc -w\" \"tsc-alias -w\"",
+        "lint": "eslint . --max-warnings 0",
+        "check-types": "tsc --noEmit"
+    },
+    "dependencies": {
+        "typeorm": "^0.3.28"
+    },
+    "devDependencies": {
+        "@repo/eslint-config": "workspace:*",
+        "@repo/typescript-config": "workspace:*",
+        "@tailwindcss/cli": "^4.2.2",
+        "@types/node": "^25.9.1",
+        "concurrently": "^10.0.0",
+        "eslint": "^9.39.4",
+        "tsc-alias": "^1.8.17"
+    }
+}
