@@ -1,1 +1,1 @@
-export { default as NewsletterList } from './NewsletterList';
+export { default as SignUpsTable } from './SignUpsTable';

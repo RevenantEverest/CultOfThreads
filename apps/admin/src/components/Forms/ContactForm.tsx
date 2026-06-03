@@ -1,4 +1,4 @@
-import type { Contact } from '@repo/supabase';
+import type { Contact } from '@repo/entities';
 
 import { FaEnvelope, FaLocationDot, FaPhone, FaUser } from 'react-icons/fa6';
 import validator from 'validator';
@@ -15,8 +15,8 @@ export type ContactFormValues = (
         keyof(
             Pick<
                 Contact,
-                "first_name" |
-                "last_name" |
+                "firstName" |
+                "lastName" |
                 "email" |
                 "phone" |
                 "address"
@@ -59,7 +59,7 @@ function ContactForm({ type, initialValues, onSubmit }: ContactFormProps) {
                         <div className="flex gap-3">
                             <div className="w-full flex-1">
                                 <form.AppField
-                                    name="first_name"
+                                    name="firstName"
                                     children={(field) => (
                                         <field.TextField label="First Name" type="text" icon={FaUser} theme={theme} />
                                     )}
@@ -67,7 +67,7 @@ function ContactForm({ type, initialValues, onSubmit }: ContactFormProps) {
                             </div>
                             <div className="w-full flex-1">
                                 <form.AppField
-                                    name="last_name"
+                                    name="lastName"
                                     children={(field) => (
                                         <field.TextField label="Last Name" type="text" icon={FaUser} theme={theme} />
                                     )}

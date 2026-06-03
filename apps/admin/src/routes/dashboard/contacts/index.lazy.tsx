@@ -1,18 +1,14 @@
 import { createLazyFileRoute } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
-
-import { BeatLoader } from 'react-spinners';
-import { useQuery } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 
 import { ToastError } from '@repo/ui';
 import { Layout, Breadcrumb } from '@@admin/components/Common';
-import { AddContact, ContactsList } from '@@admin/components/Contacts';
+import { AddContact, ContactsTable } from '@@admin/components/Contacts';
 import Search from '@@admin/components/Search';
 
-import { useThemeStore } from '@@admin/store/theme';
-
-import { contactApi } from '@repo/supabase';
+import { contacts } from '@repo/queries';
+import { useAuthStore } from '@@admin/store/auth';
 
 export const Route = createLazyFileRoute('/dashboard/contacts/')({
     component: Contacts,
@@ -20,13 +16,15 @@ export const Route = createLazyFileRoute('/dashboard/contacts/')({
 
 function Contacts() {
 
-    const theme = useThemeStore((state) => state.theme);
-
-    const query = useQuery({
-        queryKey: ["contacts"],
-        queryFn: contactApi.fetchAll
-    });
+    const auth = useAuthStore((state) => state.auth);
     const [search, setSearch] = useState("");
+
+    const query = contacts.hooks.useIndex({
+        authToken: auth.session?.accessToken ?? "",
+        pagination: {
+            limit: 10
+        }
+    });
 
     useEffect(() => {
         if(!query.isError) return;
@@ -36,6 +34,12 @@ function Contacts() {
             <ToastError toast={t} message={"Error fetching products"} />
         ));
     }, [query.isError, query.error]);
+
+    const nextPage = () => {
+        if(!query.hasNextPage) return;
+
+        query.fetchNextPage();
+    };
 
     return (
         <Layout className="">
@@ -48,7 +52,7 @@ function Contacts() {
                     ]}
                 />
             </div>
-            <div className="mt-15 flex flex-col gap-5">
+            <div className="mt-15 flex flex-col gap-5 pb-20">
                 <div className="flex">
                     <div className="w-full">
                         <Search setSearch={setSearch} />
@@ -57,16 +61,15 @@ function Contacts() {
                         <AddContact />
                     </div>
                 </div>
-                {
-                    query.isLoading ?
-                    <BeatLoader
-                        className="flex flex-1 items-center justify-center mt-10"
-                        size={15}
-                        color={theme.colors.primary}
-                    />
-                    :
-                    <ContactsList search={search} contacts={query.data ?? []} />
-                }
+                <ContactsTable
+                    contacts={
+                        query.data?.pages.flatMap((page) => page.results) ?? []
+                    } 
+                    dataAmount={query.data?.pages[0] && query.data.pages[0].count}
+                    search={search} 
+                    isLoading={query.isLoading || query.isFetching || !query.data}
+                    nextPage={nextPage}
+                />
             </div>
         </Layout>
     )

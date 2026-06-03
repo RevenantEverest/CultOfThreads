@@ -1,20 +1,20 @@
-import type { Contact } from '@repo/supabase';
+import type { Contact } from '@repo/entities';
 
 import { Link } from '@tanstack/react-router';
 import { FaPencil } from 'react-icons/fa6';
 import dayjs from 'dayjs';
 
-import { Button, TableCell, TableRow } from '@repo/ui';
+import { TableCell, TableRow, Button } from '@repo/ui';
 import RemoveContact from './RemoveContact';
 
-interface ContactListItemProps {
+interface ContactsRowProps {
     contact: Contact
 };
 
-function ContactListItem({ contact }: ContactListItemProps) {
+function ContactsRow({ contact }: ContactsRowProps) {
 
     const cellClass = "py-4";
-    const createdAt = dayjs(contact.created_at).format("MMMM D, YYYY");
+    const createdAt = dayjs(contact.createdAt).format("MMMM D, YYYY");
 
     const renderPhone = (phone: string): string => {
         return `( ${phone.substring(0, 3)} )` + " " + `${phone.substring(3, 6)} - ${phone.substring(6, 10)}`; 
@@ -27,7 +27,7 @@ function ContactListItem({ contact }: ContactListItemProps) {
             <TableCell className={`${cellClass}`}>
                 <Link to="/dashboard/contacts/edit/$contactId" params={{ contactId: contact.id }}>
                     <p className="hover:cursor-pointer hover:underline">
-                        {(contact.first_name ?? "") + " " + (contact.last_name ?? "")}
+                        {(contact.firstName ?? "") + " " + (contact.lastName ?? "")}
                     </p>
                 </Link>
             </TableCell>
@@ -54,4 +54,4 @@ function ContactListItem({ contact }: ContactListItemProps) {
     );
 };
 
-export default ContactListItem;
+export default ContactsRow;
