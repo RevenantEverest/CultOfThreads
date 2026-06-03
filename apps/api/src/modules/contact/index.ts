@@ -1,1 +1,1 @@
-export * as schemas from './schemas';
+export { default as contactRoutes } from './contact.routes';

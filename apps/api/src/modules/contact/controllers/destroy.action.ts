@@ -1,9 +1,7 @@
 import type { Request, Response } from '~/types/express';
 
-import { z } from 'zod';
 import { StatusCodes } from 'http-status-codes';
-
-import { ContactForm } from '@repo/entities';
+import { Contact } from '@repo/entities';
 
 import { entities, logs } from '~/utils';
 
@@ -13,7 +11,7 @@ interface Params {
 
 export default async function destroy(req: Request, res: Response<["auth", "params"], Params>) {
 
-    const [submission, err] = await entities.findOne<ContactForm>(ContactForm, {
+    const [contact, err] = await entities.findOne<Contact>(Contact, {
         where: {
             id: res.locals.params.id
         }
@@ -22,30 +20,30 @@ export default async function destroy(req: Request, res: Response<["auth", "para
     if(err) {
         logs.error({ err });
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            error: true, message: "Error finding contact form submission"
+            error: true, message: "Error finding contact"
         });
     }
 
-    if(!submission) {
+    if(!contact) {
         return res.status(StatusCodes.NOT_FOUND).json({
-            error: true, message: "Unable to find contact form submission"
+            error: true, message: "Unable to find contact"
         });
     }
 
-    const [deletedSubmission, deleteErr] = await entities.destroy<ContactForm>(ContactForm, submission);
+    const [deletedEntity, deleteErr] = await entities.destroy<Contact>(Contact, contact);
 
     if(deleteErr) {
         logs.error({ err: deleteErr });
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            error: true, message: "Error deleting contact form submission"
-        });
+            error: true, message: "Error deleting contact"
+        })
     }
 
-    if(!deletedSubmission) {
+    if(!deletedEntity) {
         return res.status(StatusCodes.NOT_FOUND).json({
-            error: true, message: "Unable to delete contact form submission"
+            error: true, message: "Unable to delete contact"
         });
     }
 
-    return res.json({ results: deletedSubmission });
+    return res.json({ results: deletedEntity });
 };

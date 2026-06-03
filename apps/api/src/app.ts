@@ -2,6 +2,7 @@ import express, { Application } from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 
+import { contactRoutes } from '~/modules/contact';
 import { contactFormRoutes } from '~/modules/contactForm';
 import { newsletterRoutes } from '~/modules/newsletter';
 
@@ -17,6 +18,7 @@ function initializeApp(): Application {
     app.set("trust proxy", true);
     app.set("trust proxy", "loopback");
 
+    app.use("/contacts", contactRoutes);
     app.use("/contact-form", contactFormRoutes);
     app.use("/newsletter", newsletterRoutes);
 

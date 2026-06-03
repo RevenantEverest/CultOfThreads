@@ -18,16 +18,16 @@ async function index(req: Request, res: Response<["pagination", "auth"]>) {
         }
     });
 
-    if(!newsletter) {
-        return res.status(StatusCodes.NOT_FOUND).json({
-            error: true, message: "Unable to index newsletter sign ups"
-        });
-    }
-
     if(err) {
         logs.error({ err });
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             error: true, message: "Error indexing newsletter sign ups"
+        });
+    }
+
+    if(!newsletter) {
+        return res.status(StatusCodes.NOT_FOUND).json({
+            error: true, message: "Unable to index newsletter sign ups"
         });
     }
 

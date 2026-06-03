@@ -31,15 +31,15 @@ export default async function create(req: Request<Body>, res: Response) {
         status: "PENDING"
     });
 
-    if(!submission) {
-        return res.status(StatusCodes.NOT_FOUND).json({ 
-            error: true, message: "Unable to create contact form submission" 
-        });
-    }
-
     if(err) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             error: true, message: "Error creating contact form submission"
+        });
+    }
+
+    if(!submission) {
+        return res.status(StatusCodes.NOT_FOUND).json({ 
+            error: true, message: "Unable to create contact form submission" 
         });
     }
 

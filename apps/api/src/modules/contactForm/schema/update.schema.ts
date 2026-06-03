@@ -1,7 +1,7 @@
 import type { ConstrainedZodSchemaMap } from '~/types/validation';
 
 import { z, ZodLiteral, ZodUnion } from 'zod';
-import ContactForm from '../contactForm.entity';
+import { ContactForm } from '@repo/entities';
 
 /* Update Schema */
 type UpdateContactFormProperties = keyof Pick<ContactForm, (

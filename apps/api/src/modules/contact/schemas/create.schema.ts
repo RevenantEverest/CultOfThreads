@@ -1,7 +1,7 @@
 import type { ConstrainedZodSchemaMap } from '~/types/validation';
 
 import { z, ZodEmail, ZodString, ZodOptional } from 'zod';
-import Contact from '../contact.entity';
+import { Contact } from '@repo/entities';
 
 type RequiredProperties = keyof Pick<Contact, (
     "firstName" |

@@ -6,7 +6,7 @@ import { StatusCodes } from 'http-status-codes';
 import { Newsletter } from '@repo/entities';
 import { Contact } from '@repo/entities';
 
-import { schemas as contactSchemas } from '~/modules/contact';
+import * as contactSchemas from '~/modules/contact/schemas';
 import { entities, logs } from '~/utils';
 import { FindOneOptions } from 'typeorm';
 

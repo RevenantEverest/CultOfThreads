@@ -1,7 +1,7 @@
 import type { ConstrainedZodSchemaMap } from '~/types/validation';
 
 import { z, ZodEmail, type ZodString } from 'zod';
-import ContactForm from '../contactForm.entity';
+import { ContactForm } from '@repo/entities';
 
 /* Create Schema */
 type CreateContactFormProperties = keyof Pick<ContactForm, (
