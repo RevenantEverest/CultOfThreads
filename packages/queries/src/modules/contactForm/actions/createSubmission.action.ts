@@ -1,6 +1,7 @@
+import type { HookOptions } from '~/types';
+
 import axios from 'axios';
 import { BASE_URL } from '~/modules/contactForm/__meta';
-import { HookOptions } from '~/types';
 
 export interface SubmissionPayload {
     firstName: string,

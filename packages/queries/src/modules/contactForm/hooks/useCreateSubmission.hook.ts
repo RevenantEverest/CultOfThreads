@@ -4,8 +4,8 @@ import { type SubmissionPayload, createSubmission } from '~/modules/contactForm/
 export function useCreateSubmission() {
     return useMutation({
         mutationFn: (submission: SubmissionPayload) => createSubmission({ payload: submission }),
-        onError: (error) => {
-            console.error("Error submitting form: ", error.message)
+        onError: (err) => {
+            console.error("Error in submit contact form hook: ", err);
         }
     });
 };
