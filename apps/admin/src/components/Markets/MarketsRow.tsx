@@ -1,4 +1,4 @@
-import type { MarketWithDetails } from '@repo/supabase';
+import type { Market } from '@repo/entities';
 
 import { Link } from '@tanstack/react-router';
 import { FaPencil } from 'react-icons/fa6';
@@ -11,11 +11,11 @@ import RemoveMarket from './RemoveMarket';
 
 import { URLS } from '@@admin/constants';
 
-interface MarketListItemProps {
-    market: MarketWithDetails
+interface MarketsRowProps {
+    market: Market
 };
 
-function MarketListItem({ market }: MarketListItemProps) {
+function MarketsRow({ market }: MarketsRowProps) {
 
     const cellClass = "py-4";
 
@@ -24,10 +24,10 @@ function MarketListItem({ market }: MarketListItemProps) {
             <TableCell className={`${cellClass}`}>
                 <div className="w-24 h-24 flex overflow-hidden">
                     {
-                        market.details?.logo_url &&
+                        market.details?.logoUrl &&
                         <img 
                             className="shrink-0 relative object-cover w-full h-full rounded-lg"
-                            src={`${URLS.SUPABASE_STORAGE}/${market.details.logo_url}`} 
+                            src={`${URLS.SUPABASE_STORAGE}/${market.details.logoUrl}`} 
                             alt={market.name}
                         />
                     }
@@ -57,4 +57,4 @@ function MarketListItem({ market }: MarketListItemProps) {
     );
 };
 
-export default MarketListItem;
+export default MarketsRow;

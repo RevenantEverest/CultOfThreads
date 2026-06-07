@@ -1,10 +1,9 @@
 import type { MarketFormValues } from '@@admin/components/Forms/MarketForm';
-import type { CreateMarketParams } from '@repo/supabase';
 
 import { createLazyFileRoute } from '@tanstack/react-router';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from '@tanstack/react-router';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import {
     ToastSuccess,
     ToastError
@@ -13,7 +12,9 @@ import {
 import { Layout, Breadcrumb } from '@@admin/components/Common';
 import MarketForm from '@@admin/components/Forms/MarketForm';
 
-import { marketApi } from '@repo/supabase';
+import { useAuthStore } from '@@admin/store/auth';
+
+import { markets } from '@repo/queries';
 
 export const Route = createLazyFileRoute('/dashboard/markets/add')({
     component: AddMarket,
@@ -21,15 +22,12 @@ export const Route = createLazyFileRoute('/dashboard/markets/add')({
 
 function AddMarket() {
 
+    const auth = useAuthStore((state) => state.auth);
     const navigate = useNavigate();
 
     const queryClient = useQueryClient();
-    const mutation = useMutation({
-        mutationFn: marketApi.create,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["markets"] })
-        }
-    });
+
+    const mutation = markets.hooks.useCreate(queryClient);
 
     const initialValues: MarketFormValues = {
         name: "",
@@ -37,17 +35,15 @@ function AddMarket() {
     };
 
     const onSubmit = async (values: MarketFormValues) => {
-
-        const marketData: CreateMarketParams = {
-                name: values.name,
-                details: {
-                    state: values.state,
-                },
-                image: values.image         
-            };
-
         try {
-            await mutation.mutateAsync(marketData);
+            await mutation.mutateAsync({
+                authToken: auth.session?.accessToken ?? "",
+                payload: {
+                    name: values.name,
+                    state: values.state,
+                    file: values.image
+                }
+            });
 
             toast((t) => (
                 <ToastSuccess toast={t} message={"Market Added!"} />
