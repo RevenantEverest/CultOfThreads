@@ -4,3 +4,4 @@ export * as entities from './entities';
 export * as logs from './logs';
 export * as pagination from './pagination';
 export * as promises from './promises';
+export * as supabaseStorage from './supabaseStorage';
