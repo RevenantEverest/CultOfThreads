@@ -1,5 +1,6 @@
 import {
     Entity,
+    BaseEntity,
     PrimaryGeneratedColumn,
     Column,
     CreateDateColumn,
@@ -10,7 +11,7 @@ import {
 import Market from './Market';
 
 @Entity("market_details")
-export default class MarketDetails {
+export default class MarketDetails extends BaseEntity {
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
@@ -23,7 +24,15 @@ export default class MarketDetails {
     @CreateDateColumn({ type: "timestamptz" })
     createdAt: Date;
 
-    @OneToOne(() => Market, (market) => market.details, { onDelete: "CASCADE", nullable: false})
+    @OneToOne(
+        () => Market, 
+        (market) => market.details, 
+        { 
+            onDelete: "CASCADE",
+            onUpdate: "CASCADE",
+            nullable: false
+        }
+    )
     @JoinColumn({
         foreignKeyConstraintName: "market_details_market_id_fkey"
     })

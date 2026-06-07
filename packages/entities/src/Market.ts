@@ -1,5 +1,6 @@
 import {
     Entity,
+    BaseEntity,
     PrimaryGeneratedColumn,
     Column,
     CreateDateColumn,
@@ -11,7 +12,7 @@ import MarketDetails from './MarketDetails';
 import Event from './Event';
 
 @Entity("markets")
-export default class Market {
+export default class Market extends BaseEntity {
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
@@ -21,7 +22,7 @@ export default class Market {
     @CreateDateColumn({ type: "timestamptz" })
     createdAt: Date;
 
-    @OneToOne(() => MarketDetails)
+    @OneToOne(() => MarketDetails, (details) => details.market, { cascade: true })
     details: Relation<MarketDetails>;
 
     @OneToMany(() => Event, (event) => event.market)
