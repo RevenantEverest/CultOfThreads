@@ -45,7 +45,6 @@ export async function destroy<T extends BaseEntity>(entity: Target<T>, data: Dat
 };
 
 export async function find<T extends BaseEntity>(entity: Target<T>, findOptions: FindOneOptions<T>, options?: IndexOptions<T>): PromiseTuple<T[]> {
-
     const repository = AppDataSource.getRepository(entity);
 
     const findManyOptions: FindManyOptions<T> = {
@@ -68,7 +67,6 @@ export async function find<T extends BaseEntity>(entity: Target<T>, findOptions:
 };
 
 export async function findAndCount<T extends BaseEntity>(entity: Target<T>, findOptions: FindOneOptions<T>, options?: IndexOptions<T>): PromiseTuple<[T[], number]> {
-
     const repository = AppDataSource.getRepository(entity);
 
     const findManyOptions: FindManyOptions<T> = {
@@ -91,7 +89,6 @@ export async function findAndCount<T extends BaseEntity>(entity: Target<T>, find
 };
 
 export async function findOne<T extends BaseEntity>(entity: Target<T>, findOptions: FindOneOptions<T>): PromiseTuple<T> {
-
     const repository = AppDataSource.getRepository(entity);
 
     const promise = repository.findOne(findOptions);
@@ -105,7 +102,6 @@ export async function findOne<T extends BaseEntity>(entity: Target<T>, findOptio
 };
 
 export async function findAndSaveOrUpdate<T extends BaseEntity>(entity: Target<T>, findOptions: FindOneOptions<T>, data: Data<T>): PromiseTuple<T> {
-
     const [res, err] =  await findOne<T>(entity, findOptions);
 
     if(err) {
@@ -120,7 +116,6 @@ export async function findAndSaveOrUpdate<T extends BaseEntity>(entity: Target<T
 };
 
 export async function findAndUpdate<T extends BaseEntity>(entity: Target<T>, findOptions: FindOneOptions<T>, data: Data<T>): PromiseTuple<T> {
-
     const repository = AppDataSource.getRepository(entity);
     
     const [findRes, findErr] = await findOne<T>(entity, findOptions);
@@ -142,7 +137,6 @@ export async function findAndUpdate<T extends BaseEntity>(entity: Target<T>, fin
 };
 
 export async function findOrSave<T extends BaseEntity>(entity: Target<T>, findOptions: FindOneOptions<T>, data: Data<T>): PromiseTuple<T> {
-
     const repository = AppDataSource.getRepository(entity);
 
     const [res, err] = await findOne<T>(entity, findOptions);
@@ -160,7 +154,6 @@ export async function findOrSave<T extends BaseEntity>(entity: Target<T>, findOp
 };
 
 export async function index<T extends BaseEntity>(entity: Target<T>, options: IndexOptions<T>): PromiseTuple<T[]> {
-
     const repository = AppDataSource.getRepository(entity);
 
     const promise = repository.find({
@@ -177,7 +170,6 @@ export async function index<T extends BaseEntity>(entity: Target<T>, options: In
 };
 
 export async function indexAndCount<T extends BaseEntity>(entity: Target<T>, options: IndexOptions<T>): PromiseTuple<[T[], number]> {
-
     const repository = AppDataSource.getRepository(entity);
     const { limit, offset, count, withoutPagination, select, ...rest } = options;
 
@@ -196,7 +188,6 @@ export async function indexAndCount<T extends BaseEntity>(entity: Target<T>, opt
 };
 
 export async function insert<T extends BaseEntity>(entity: Target<T>, data: Data<T>): PromiseTuple<T> {
-
     try {
         return await save<T>(entity, data);
     }
@@ -207,12 +198,25 @@ export async function insert<T extends BaseEntity>(entity: Target<T>, data: Data
 };
 
 export async function save<T extends BaseEntity>(entity: Target<T>, data: Data<T>): PromiseTuple<T> {
-
     try {
         const repository = AppDataSource.getRepository(entity);
-        const entityObject = repository.create(data);
-        const res = await entityObject.save();
-        return [res, undefined];
+        const isUpdate = "id" in data && data.id;
+
+        if(isUpdate) {
+            const entityObject = await repository.preload(data);
+            if(!entityObject) {
+                throw new Error("Entity could not be preloaded");
+            }
+
+            const res = await entityObject.save();
+            return [res, undefined];
+        }
+        else {
+            const entityObject = repository.create(data);
+            const res = await repository.save(entityObject);
+            return [res, undefined];
+        }
+        
     }
     catch(err) {
         const error = err as QueryFailedError;
