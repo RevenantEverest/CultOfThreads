@@ -1,4 +1,5 @@
 import type { Request, Response } from '~/types/express';
+import type { FindOneOptions } from 'typeorm';
 
 import { z } from 'zod';
 import { StatusCodes } from 'http-status-codes';
@@ -7,7 +8,6 @@ import { Contact } from '@repo/entities';
 import { updateSchema } from '~/modules/contact/schemas';
 
 import { entities, logs } from '~/utils';
-import { FindOneOptions } from 'typeorm';
 
 type Body = z.infer<typeof updateSchema>;
 type Params = {

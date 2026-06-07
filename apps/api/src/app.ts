@@ -4,6 +4,7 @@ import cors from 'cors';
 
 import { contactRoutes } from '~/modules/contact';
 import { contactFormRoutes } from '~/modules/contactForm';
+import { marketRoutes } from './modules/market';
 import { newsletterRoutes } from '~/modules/newsletter';
 
 function initializeApp(): Application {
@@ -20,6 +21,7 @@ function initializeApp(): Application {
 
     app.use("/contacts", contactRoutes);
     app.use("/contact-form", contactFormRoutes);
+    app.use("/markets", marketRoutes);
     app.use("/newsletter", newsletterRoutes);
 
     return app;
