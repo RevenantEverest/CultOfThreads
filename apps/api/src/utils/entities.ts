@@ -3,7 +3,7 @@ import type { PromiseTuple } from '~/types/promises';
 import { 
     BaseEntity, 
     EntityTarget, 
-    DeepPartial, 
+    DeepPartial,
     FindOneOptions, 
     FindManyOptions, 
     QueryFailedError
@@ -44,7 +44,7 @@ export async function destroy<T extends BaseEntity>(entity: Target<T>, data: Dat
     }
 };
 
-export async function find<T extends BaseEntity>(entity: Target<T>, findOptions: FindOneOptions<T>, options?: IndexOptions<T>): PromiseTuple<T[]> {
+export async function find<T extends BaseEntity>(entity: Target<T>, findOptions: FindManyOptions<T>, options?: IndexOptions<T>): PromiseTuple<T[]> {
     const repository = AppDataSource.getRepository(entity);
 
     const findManyOptions: FindManyOptions<T> = {

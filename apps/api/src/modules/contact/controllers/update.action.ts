@@ -32,8 +32,6 @@ export default async function update(req: Request<Body>, res: Response<["auth", 
         }
     };
 
-    console.log("Validated Body => ", validatedBody.data);
-
     const [contact, err] = await entities.findAndUpdate<Contact>(Contact, findOptions, {
         ...validatedBody.data
     });
