@@ -28,8 +28,6 @@ export async function update({ id, authToken, payload }: UpdateOptions): Promise
     if(payload.file) {
         formData.append("file", payload.file);
     }
-
-    console.log(payload, formData);
     
     const { data } = await axios({
         method: "PUT",
