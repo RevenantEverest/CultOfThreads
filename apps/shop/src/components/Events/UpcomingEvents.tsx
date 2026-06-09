@@ -1,22 +1,20 @@
 "use client"
 
-import type { EventWithMarket } from '@repo/supabase';
+import type { Event } from '@repo/entities';
 
-import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 
 import { Button, MotionFadeIn } from '@repo/ui';
 import EventListItem from './EventListItem';
 
-import { eventsApi } from '@repo/supabase';
 import { useBreakpointGrid } from '@@shop/hooks';
+import { events } from '@repo/queries';
 
 interface UpcomingEventsProps {
-    amount?: number,
     isEventsPage?: boolean
 };
 
-function UpcomingEvents({ amount, isEventsPage }: UpcomingEventsProps) {
+function UpcomingEvents({ isEventsPage }: UpcomingEventsProps) {
 
     const breakpointGrid = useBreakpointGrid({
         overrides: {
@@ -24,21 +22,17 @@ function UpcomingEvents({ amount, isEventsPage }: UpcomingEventsProps) {
             XXL: 3
         }
     });
-    const query = useQuery({
-        queryKey: ["upcoming_events"],
-        queryFn: () => eventsApi.fetchUpcoming({ limit: 3 })
-    });
 
-    const renderEvents = (events: EventWithMarket[]) => {
+    const query = events.hooks.useUpcoming();
+
+    const renderEvents = (events: Event[]) => {
         const itemsPerRow = breakpointGrid.itemsPerRow;
 
         if(!itemsPerRow) {
             return;
         }
 
-        const sortedEvents = events.sort((a, b) => a.date_from.localeCompare(b.date_from));
-
-        return sortedEvents.slice(0, amount ?? events.length).map((item, index) => {
+        return events.map((item, index) => {
             const staggerDelay = breakpointGrid.getAnimationStaggerValues(index, itemsPerRow);
             
             return(
@@ -73,7 +67,7 @@ function UpcomingEvents({ amount, isEventsPage }: UpcomingEventsProps) {
                     ${breakpointGrid.gridClasses} gap-5 items-center justify-center gap-y-10 md:gap-y-20 pb-20
                 `}
             >
-                {query.data && breakpointGrid.itemsPerRow && renderEvents(query.data)}
+                {query.data && breakpointGrid.itemsPerRow && renderEvents(query.data.results)}
             </div>
             {
                 !isEventsPage &&
