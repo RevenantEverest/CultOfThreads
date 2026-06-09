@@ -1,4 +1,4 @@
-import type { EventWithMarket } from '@repo/supabase';
+import type { Event } from '@repo/entities';
 
 import { Link } from '@tanstack/react-router';
 import { FaPencil } from 'react-icons/fa6';
@@ -19,24 +19,24 @@ import RemoveEvent from './RemoveEvent';
 import { URLS } from '@@admin/constants';
 
 interface EventListItemProps {
-    event: EventWithMarket
+    event: Event
 };
 
 function EventListItem({ event }: EventListItemProps) {
 
     const cellClass = "py-4";
-    const dateFrom = dayjs(event.date_from).tz(dayjs.tz.guess()).format("MMMM Do, YYYY h:mm A");
-    const dateTo = dayjs(event.date_to).tz(dayjs.tz.guess()).format("MMMM Do, YYYY h:mm A");
+    const dateFrom = dayjs(event.dateFrom).tz(dayjs.tz.guess()).format("MMMM Do, YYYY h:mm A");
+    const dateTo = dayjs(event.dateTo).tz(dayjs.tz.guess()).format("MMMM Do, YYYY h:mm A");
 
     return(
         <TableRow className="border-b-muted font-semibold">
             <TableCell className={`${cellClass}`}>
                 <div className="w-24 h-24 flex overflow-hidden">
                 {
-                    event.market.details?.logo_url &&
+                    event.market.details.logoUrl &&
                     <img 
                         className="shrink-0 relative object-cover w-full h-full rounded-lg"
-                        src={`${URLS.SUPABASE_STORAGE}/${event.flyer_url}`} 
+                        src={`${URLS.SUPABASE_STORAGE}/${event.flyerUrl}`} 
                         alt={event.market.name}
                     />
                 }
@@ -49,7 +49,7 @@ function EventListItem({ event }: EventListItemProps) {
             </TableCell>
             <TableCell className={`${cellClass}`}>
                 <div className="flex items-center gap-1 justify-center">
-                    <p>{event.market.details?.state}</p>
+                    <p>{event.market.details.state}</p>
                 </div>
             </TableCell>
             <TableCell className={`${cellClass}`}>

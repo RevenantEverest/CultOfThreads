@@ -1,28 +1,24 @@
-import type { Market } from '@repo/supabase';
+import type { Market } from '@repo/entities';
 
 import { 
+    FlatList,
     Select, 
     SelectContent, 
     SelectItem, 
     SelectTrigger, 
     SelectValue 
 } from '@repo/ui';
+import { Spinner } from '@@admin/components/Common';
 
 interface MarketSelectProps {
     value: string,
     markets: Market[],
-    onChange: (value: string) => void
+    onChange: (value: string) => void,
+    nextPage: () => void,
+    isLoading?: boolean
 };
 
-function MarketSelect({ value, markets, onChange }: MarketSelectProps) {
-
-    const renderMarkets = () => {
-        return markets.map((market) => (
-            <SelectItem key={`market-select-${market.name}`} value={market.id}>
-                {market.name}
-            </SelectItem>
-        ));
-    };
+function MarketSelect({ value, markets, onChange, nextPage, isLoading }: MarketSelectProps) {
 
     return(
         <div className="w-full">
@@ -35,7 +31,18 @@ function MarketSelect({ value, markets, onChange }: MarketSelectProps) {
                     <SelectValue placeholder="Choose A Market" />
                 </SelectTrigger>
                 <SelectContent className="font-semibold">
-                    {renderMarkets()}
+                    <FlatList
+                        keyExtractor={(item: Market) => item.id}
+                        data={markets}
+                        renderItem={(item: Market, key) => (
+                            <SelectItem key={key} value={item.id}>
+                                {item.name}
+                            </SelectItem>
+                        )}
+                        onEndReached={nextPage}
+                        renderLoading={() => <Spinner />}
+                        isLoading={isLoading}
+                    />
                 </SelectContent>
             </Select>
         </div>

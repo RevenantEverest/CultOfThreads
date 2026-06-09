@@ -41,7 +41,6 @@ function EditMarket() {
     const onSubmit = async (values: MarketFormValues) => {
 
         try {
-            console.log("Form Submit Values => ", values);
             await mutation.mutateAsync({
                 id: data?.results.id as string,
                 authToken: auth.session?.accessToken ?? "",
