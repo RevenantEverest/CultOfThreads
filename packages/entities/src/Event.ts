@@ -1,5 +1,6 @@
 import {
     Entity,
+    BaseEntity,
     PrimaryGeneratedColumn,
     Column,
     CreateDateColumn,
@@ -12,7 +13,7 @@ import Sale from './Sale';
 import Market from './Market';
 
 @Entity("events")
-export default class Event {
+export default class Event extends BaseEntity {
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
