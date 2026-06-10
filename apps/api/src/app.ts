@@ -7,6 +7,7 @@ import { contactFormRoutes } from '~/modules/contactForm';
 import { eventRoutes } from '~/modules/event';
 import { marketRoutes } from './modules/market';
 import { newsletterRoutes } from '~/modules/newsletter';
+import { trafficAnalyticRoutes } from '~/modules/trafficAnalytics';
 
 function initializeApp(): Application {
 
@@ -25,6 +26,7 @@ function initializeApp(): Application {
     app.use("/events", eventRoutes);
     app.use("/markets", marketRoutes);
     app.use("/newsletter", newsletterRoutes);
+    app.use("/analytics/traffic", trafficAnalyticRoutes);
 
     return app;
 };
