@@ -2,17 +2,18 @@ import { createLazyFileRoute } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 
 import { BeatLoader } from 'react-spinners';
-import { useQuery } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 import { FiRefreshCcw } from 'react-icons/fi';
 
 import { ToastError, Button } from '@repo/ui';
 import { Layout, Breadcrumb } from '@@admin/components/Common';
 import Search from '@@admin/components/Search';
+import { TrafficAnalyticsTable } from '@@admin/components/Analytics';
 
 import { useThemeStore } from '@@admin/store/theme';
-import { TrafficAnalyticsList } from '@@admin/components/Analytics';
-import { trafficAnalyticsApi } from '@repo/supabase';
+import { useAuthStore } from '@@admin/store/auth';
+
+import { trafficAnalytics } from '@repo/queries';
 
 export const Route = createLazyFileRoute('/dashboard/analytics/traffic/')({
     component: TrafficAnalytics,
@@ -21,13 +22,16 @@ export const Route = createLazyFileRoute('/dashboard/analytics/traffic/')({
 function TrafficAnalytics() {
 
     const theme = useThemeStore((state) => state.theme);
+    const auth = useAuthStore((state) => state.auth);
     const [search, setSearch] = useState("");
 
     const [refreshing, setRefreshing] = useState(false);
 
-    const query = useQuery({
-        queryKey: ["traffic_analytics"],
-        queryFn: trafficAnalyticsApi.fetchAll
+    const query = trafficAnalytics.hooks.useIndex({
+        authToken: auth.session?.accessToken ?? "",
+        pagination: {
+            limit: 10
+        }
     });
 
     useEffect(() => {
@@ -38,6 +42,12 @@ function TrafficAnalytics() {
             <ToastError toast={t} message={"Error fetching traffic analytics"} />
         ));
     }, [query.isError, query.error]);
+
+    const nextPage = () => {
+        if(!query.hasNextPage) return;
+
+        query.fetchNextPage();
+    };
 
     return(
         <Layout className="">
@@ -82,16 +92,15 @@ function TrafficAnalytics() {
                         </Button>
                     </div>
                 </div>
-                {
-                    query.isLoading ?
-                    <BeatLoader
-                        className="flex flex-1 items-center justify-center mt-10"
-                        size={15}
-                        color={theme.colors.primary}
-                    />
-                    :
-                    <TrafficAnalyticsList search={search} traffic={query.data ?? []} />
-                }
+                <TrafficAnalyticsTable 
+                    analytics={
+                        query.data?.pages.flatMap((page) => page.results) ?? []
+                    } 
+                    dataAmount={query.data?.pages[0] && query.data.pages[0].count}
+                    search={search} 
+                    isLoading={query.isLoading || query.isFetching || !query.data}
+                    nextPage={nextPage}
+                />
             </div>
         </Layout>
     );

@@ -1,40 +1,37 @@
 "use client"
 
-import type { CreateTrafficAnalytics } from '@repo/supabase';
-
 import { useEffect } from 'react';
-import { useMutation } from '@tanstack/react-query';
+import { QueryClient } from '@tanstack/react-query';
 import { usePathname, useSearchParams } from 'next/navigation';
 
-import { trafficAnalyticsApi } from '@repo/supabase';
+import { trafficAnalytics } from '@repo/queries';
 
 function UtmParser() {
 
     const pathname = usePathname();
     const searchParams = useSearchParams();
 
-    const mutation = useMutation({
-        mutationFn: trafficAnalyticsApi.create
-    });
+    const queryClient = new QueryClient();
+    const mutation = trafficAnalytics.hooks.useCreate(queryClient);
 
     useEffect(() => {
-        const utm_source = searchParams.get("utm_source");
+        const utmSource = searchParams.get("utm_source");
         
-        if(!utm_source) {
+        if(!utmSource) {
             return;
         }
 
-        const data: CreateTrafficAnalytics = {
-            landing_page_url: pathname,
-            utm_source,
-            utm_medium: searchParams.get("utm_medium"),
-            utm_campaign: searchParams.get("utm_campaign"),
-            utm_content: searchParams.get("utm_content"),
-            utm_term: searchParams.get("utm_term")
-        };
-
         try {
-            mutation.mutateAsync(data);
+            mutation.mutateAsync({
+                payload: {
+                    landingPageUrl: pathname,
+                    utmSource,
+                    utmMedium: searchParams.get("utm_medium") ?? undefined,
+                    utmCampaign: searchParams.get("utm_campaign") ?? undefined,
+                    utmContent: searchParams.get("utm_content") ?? undefined,
+                    utmTerm: searchParams.get("utm_term") ?? undefined
+                }
+            });
         }
         catch(error) {
             console.error(error);

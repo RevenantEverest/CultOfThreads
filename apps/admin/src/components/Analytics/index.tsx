@@ -1,1 +1,1 @@
-export { default as TrafficAnalyticsList } from './TrafficAnalyticsList';
+export { default as TrafficAnalyticsTable } from './TrafficAnalyticsTable';

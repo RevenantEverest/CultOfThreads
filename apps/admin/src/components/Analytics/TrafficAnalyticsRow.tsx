@@ -1,4 +1,4 @@
-import type { TrafficAnalytics } from '@repo/supabase';
+import type { TrafficAnalytics } from '@repo/entities';
 
 import dayjs from 'dayjs';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
@@ -13,38 +13,38 @@ import {
 } from '@repo/ui';
 
 
-interface TrafficAnalyticsListItemProps {
-    traffic: TrafficAnalytics
+interface TrafficAnalyticsRowProps {
+    analytic: TrafficAnalytics
 };
 
-function TrafficAnalyticsListItem({ traffic }: TrafficAnalyticsListItemProps) {
+function TrafficAnalyticsRow({ analytic }: TrafficAnalyticsRowProps) {
 
     const cellClass = "py-4";
-    const createdAt = dayjs(traffic.created_at).tz(dayjs.tz.guess()).format("MMMM Do, YYYY h:mm A");
+    const createdAt = dayjs(analytic.createdAt).tz(dayjs.tz.guess()).format("MMMM Do, YYYY h:mm A");
 
     return(
         <TableRow className="border-b-muted font-semibold">
             <TableCell className={`${cellClass}`}>
             </TableCell>
             <TableCell className={`${cellClass}`}>
-                <p className="hover:cursor-pointer">{traffic.utm_campaign}</p>
+                <p className="hover:cursor-pointer">{analytic.utmCampaign}</p>
             </TableCell>
             <TableCell className={`${cellClass}`}>
-                <p className="hover:cursor-pointer">{traffic.utm_source}</p>
+                <p className="hover:cursor-pointer">{analytic.utmSource}</p>
             </TableCell>
             <TableCell className={`${cellClass}`}>
                 <div className="flex items-center gap-1 justify-center">
-                    <p>{traffic.landing_page_url}</p>
+                    <p>{analytic.landingPageUrl}</p>
                 </div>
             </TableCell>
             <TableCell className={`${cellClass}`}>
                 <div className="flex items-center gap-1 justify-center">
-                    <p>{traffic.utm_medium}</p>
+                    <p>{analytic.utmMedium}</p>
                 </div>
             </TableCell>
             <TableCell className={`${cellClass}`}>
                 <div className="flex items-center gap-1 justify-center">
-                    <p>{traffic.utm_term}</p>
+                    <p>{analytic.utmTerm}</p>
                 </div>
             </TableCell>
             <TableCell className={`${cellClass}`}>
@@ -56,4 +56,4 @@ function TrafficAnalyticsListItem({ traffic }: TrafficAnalyticsListItemProps) {
     );
 };
 
-export default TrafficAnalyticsListItem;
+export default TrafficAnalyticsRow;
