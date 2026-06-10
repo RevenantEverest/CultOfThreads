@@ -1,5 +1,6 @@
 import {
     Entity,
+    BaseEntity,
     PrimaryGeneratedColumn,
     Column,
     CreateDateColumn
@@ -9,7 +10,7 @@ import {
     name: "traffic_analytics",
     comment: "A table to store information about a UTM source search param found in shop URL"
 })
-export default class TrafficAnalytics {
+export default class TrafficAnalytics extends BaseEntity {
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
