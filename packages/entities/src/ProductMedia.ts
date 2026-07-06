@@ -1,5 +1,6 @@
 import {
     Entity,
+    BaseEntity,
     PrimaryGeneratedColumn,
     Column,
     CreateDateColumn,
@@ -10,7 +11,7 @@ import {
 import Product from './Product';
 
 @Entity("product_media")
-export default class ProductMedia {
+export default class ProductMedia extends BaseEntity {
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
@@ -27,7 +28,7 @@ export default class ProductMedia {
     createdAt: Date;
 
     /* Relations */
-    @ManyToOne(() => Product, (product) => product.media, { nullable: false })
+    @ManyToOne(() => Product, (product) => product.media, { onDelete: "CASCADE", nullable: false })
     @JoinColumn({
         foreignKeyConstraintName: "product_media_product_id_fkey"
     })

@@ -4,7 +4,9 @@ import {
     PrimaryGeneratedColumn,
     Column,
     CreateDateColumn,
+    OneToMany,
 } from 'typeorm';
+import ProductCategory from './ProductCategory';
 
 @Entity("categories")
 export default class Category extends BaseEntity {
@@ -16,4 +18,8 @@ export default class Category extends BaseEntity {
 
     @CreateDateColumn({ type: "timestamptz" })
     createdAt: Date;
+
+    /* Relations */
+    @OneToMany(() => ProductCategory, (productCategories) => productCategories.category)
+    productCategories: ProductCategory[];
 };

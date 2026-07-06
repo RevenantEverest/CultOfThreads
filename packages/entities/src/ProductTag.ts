@@ -1,5 +1,6 @@
 import {
     Entity,
+    BaseEntity,
     PrimaryGeneratedColumn,
     CreateDateColumn,
     ManyToOne,
@@ -13,7 +14,7 @@ import Tag from './Tag';
 /* Custom Many-to-Many Join Table */
 @Entity("product_tags")
 @Unique("product_tags_tag_id_product_id_key", ["product", "tag"])
-export default class ProductTag {
+export default class ProductTag extends BaseEntity {
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
@@ -26,7 +27,7 @@ export default class ProductTag {
     })
     product: Relation<Product>;
 
-    @ManyToOne(() => Tag, { nullable: false, onDelete: "CASCADE" })
+    @ManyToOne(() => Tag, (tag) => tag.productTags, { nullable: false, onDelete: "CASCADE" })
     @JoinColumn({
         foreignKeyConstraintName: "product_tags_tag_id_fkey"
     })

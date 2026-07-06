@@ -1,23 +1,20 @@
 import {
     Entity,
+    BaseEntity,
     PrimaryGeneratedColumn,
     Column,
     CreateDateColumn,
     OneToOne,
-    OneToMany,
-    ManyToMany,
-    JoinTable
+    OneToMany
 } from 'typeorm';
 import ProductDetails from './ProductDetails';
 import ProductMedia from './ProductMedia';
 import Sale from './Sale';
-import Tag from './Tag';
-import Category from './Category';
 import ProductTag from './ProductTag';
 import ProductCategory from './ProductCategory';
 
 @Entity("products")
-export default class Product {
+export default class Product extends BaseEntity {
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
@@ -25,24 +22,24 @@ export default class Product {
     name: string;
 
     @Column({ type: "jsonb", nullable: true })
-    description: JSON;
+    description: string;
 
     @CreateDateColumn({ type: "timestamptz" })
     createdAt: Date;
 
     /* Relations */
-    @OneToOne(() => ProductDetails)
+    @OneToOne(() => ProductDetails, (details) => details.product, { cascade: true })
     details: ProductDetails;
 
-    @OneToMany(() => ProductMedia, (media) => media.product)
+    @OneToMany(() => ProductMedia, (media) => media.product, { cascade: true })
     media: ProductMedia[];
 
-    @OneToMany(() => Sale, (sales) => sales.product)
+    @OneToMany(() => Sale, (sales) => sales.product, { cascade: true })
     sales: Sale[];
     
-    @OneToMany(() => ProductTag, (tags) => tags.product)
+    @OneToMany(() => ProductTag, (tags) => tags.product, { cascade: true })
     tags: ProductTag[];
 
-    @OneToMany(() => ProductCategory, (categories) => categories.product)
-    categories: Category[];
+    @OneToMany(() => ProductCategory, (categories) => categories.product, { cascade: true })
+    categories: ProductCategory[];
 };

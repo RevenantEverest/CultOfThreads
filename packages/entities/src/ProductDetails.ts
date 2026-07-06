@@ -1,5 +1,6 @@
 import { 
     Entity, 
+    BaseEntity,
     PrimaryGeneratedColumn, 
     Column,
     CreateDateColumn,
@@ -12,7 +13,7 @@ import Product from './Product';
 
 @Entity("product_details")
 @Unique(["product"])
-export default class ProductDetails {
+export default class ProductDetails extends BaseEntity {
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
