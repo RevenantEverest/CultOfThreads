@@ -11,20 +11,9 @@ import { SUPABASE_STORAGE } from '~/constants';
 
 type Body = z.infer<typeof createSchema>;
 
-export default async function create(req: Request<Body>, res: Response) {
+export default async function create(req: Request<Body>, res: Response<["auth"]>) {
 
-    if(!req.file) {
-        return res.status(StatusCodes.BAD_REQUEST).json({
-            error: true, message: "Invalid Body"
-        });
-    }
-
-    const body: Body = {
-        ...req.body,
-        file: req.file
-    };
-
-    const validatedBody = await createSchema.safeParseAsync(body);
+    const validatedBody = await createSchema.safeParseAsync(req.body);
 
     if(!validatedBody.success) {
         return res.status(StatusCodes.BAD_REQUEST).json({
@@ -34,12 +23,20 @@ export default async function create(req: Request<Body>, res: Response) {
         });
     }
 
+    const file: Express.Multer.File | undefined = req.file;
+
+    if(!file) {
+        return res.status(StatusCodes.BAD_REQUEST).json({
+            error: true, message: "Missing Image File"
+        });
+    }
+
     let flyerUrl: string | undefined;
 
-    if(validatedBody.data.file) {
+    if(file) {
         const storageResponse = await supabaseStorage.create({
             rootSubPath: `${SUPABASE_STORAGE.SUB_BUCKETS.EVENTS}`,
-            file: validatedBody.data.file
+            file
         });
 
         flyerUrl = storageResponse;

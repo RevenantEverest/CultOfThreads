@@ -16,12 +16,7 @@ type Params = {
 
 export default async function update(req: Request<Body>, res: Response<["auth", "params"], Params>) {
 
-    const body = {
-        ...req.body,
-        file: req.file
-    };
-
-    const validatedBody = await updateSchema.safeDecodeAsync(body);
+    const validatedBody = await updateSchema.safeParseAsync(req.body);
 
     if(!validatedBody.success) {
         return res.status(StatusCodes.BAD_REQUEST).json({
@@ -50,9 +45,10 @@ export default async function update(req: Request<Body>, res: Response<["auth", 
         });
     }
 
+    const file: Express.Multer.File | undefined = req.file;
     let flyerUrl: string | undefined;
 
-    if(validatedBody.data.file) {
+    if(file) {
         if(event.flyerUrl) {
             await supabaseStorage.destroy({
                 fullFilePath: event.flyerUrl
@@ -61,7 +57,7 @@ export default async function update(req: Request<Body>, res: Response<["auth", 
 
         const storageResponse = await supabaseStorage.create({
             rootSubPath: `${SUPABASE_STORAGE.SUB_BUCKETS.EVENTS}`,
-            file: validatedBody.data.file
+            file: file
         });
 
         flyerUrl = storageResponse;

@@ -13,11 +13,7 @@ type Body = z.infer<typeof createSchema>;
 
 export default async function create(req: Request<Body>, res: Response) {
 
-    const body: Body = {
-        ...req.body,
-        file: req.file
-    };
-    const validatedBody = await createSchema.safeParseAsync(body);
+    const validatedBody = await createSchema.safeParseAsync(req.body);
 
     if(!validatedBody.success) {
         return res.status(StatusCodes.BAD_REQUEST).json({
@@ -44,12 +40,13 @@ export default async function create(req: Request<Body>, res: Response) {
         });
     }
 
+    const file: Express.Multer.File | undefined = req.file;
     let logoUrl: string | undefined;
 
-    if(validatedBody.data.file) {
+    if(file) {
         const storageResponse = await supabaseStorage.create({
             rootSubPath: `${SUPABASE_STORAGE.SUB_BUCKETS.MARKETS}/${market.id}`,
-            file: validatedBody.data.file
+            file
         });
 
         logoUrl = storageResponse;

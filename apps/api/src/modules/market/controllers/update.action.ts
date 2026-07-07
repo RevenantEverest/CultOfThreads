@@ -16,12 +16,7 @@ type Params = {
 
 export default async function update(req: Request<Body>, res: Response<["auth", "params"], Params>) {
 
-    const body = {
-        ...req.body,
-        file: req.file
-    };
-
-    const validatedBody = await updateSchema.safeParseAsync(body);
+    const validatedBody = await updateSchema.safeParseAsync(req.body);
 
     if(!validatedBody.success) {
         return res.status(StatusCodes.BAD_REQUEST).json({
@@ -53,9 +48,10 @@ export default async function update(req: Request<Body>, res: Response<["auth", 
         });
     }
 
+    const file: Express.Multer.File | undefined = req.file;
     let logoUrl: string | undefined;
 
-    if(validatedBody.data.file) {
+    if(file) {
         if(market.details.logoUrl) {
             await supabaseStorage.destroy({
                 fullFilePath: market.details.logoUrl
@@ -64,7 +60,7 @@ export default async function update(req: Request<Body>, res: Response<["auth", 
 
         const storageResponse = await supabaseStorage.create({
             rootSubPath: `${SUPABASE_STORAGE.SUB_BUCKETS.MARKETS}/${market.id}`,
-            file: validatedBody.data.file
+            file
         });
 
         logoUrl = storageResponse;

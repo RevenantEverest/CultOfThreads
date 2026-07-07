@@ -1,5 +1,3 @@
-import type { MulterFile } from '~/types/validation';
-
 import { v4 as uuidGenerator } from 'uuid';
 import { SUPABASE_STORAGE } from '~/constants';
 import { supabase } from '~/supabaseClient';
@@ -7,7 +5,7 @@ import { supabase } from '~/supabaseClient';
 interface CreateFileOptions {
     rootBucket?: string,
     rootSubPath: string,
-    file: MulterFile
+    file: Express.Multer.File
 };
 
 interface DestroyFileOptions {

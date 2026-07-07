@@ -1,7 +1,5 @@
 import { z } from 'zod';
 
 export const createSchema = z.object({
-    name: z.string(),
-    state: z.string()
+    name: z.string()
 });
-
