@@ -10,7 +10,8 @@ import Newsletter from '@@shop/components/Newsletter';
 
 import { IMAGE_RESOURCES } from '@repo/ui';
 
-import { categoryApi, productApi } from '@repo/supabase';
+import { categoryApi } from '@repo/supabase';
+import { products } from '@repo/queries';
 
 export const revalidate = 60;
 
@@ -36,11 +37,11 @@ export async function generateMetadata(): Promise<Metadata> {
 
 async function Shop() {
 
-
     const queryClient = new QueryClient();
-    await queryClient.prefetchQuery({
-        queryKey: ["products"],
-        queryFn: productApi.fetchActiveListings
+    products.hooks.usePrefetchIndexPublic(queryClient, {
+        pagination: {
+            limit: 10
+        }
     });
 
     await queryClient.prefetchQuery({

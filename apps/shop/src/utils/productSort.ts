@@ -1,8 +1,8 @@
-import type { ProductListing } from '@repo/supabase';
+import type { Product } from '@repo/entities';
 
 export type SortType = "Price ASC" | "Price DSC" | "Best Sellers" | "New";
 
-export function sortProducts(sortType: string, products: ProductListing[]): ProductListing[] {
+export function sortProducts(sortType: string, products: Product[]): Product[] {
 
     switch(sortType as SortType) {
         case "Price ASC":
@@ -18,27 +18,27 @@ export function sortProducts(sortType: string, products: ProductListing[]): Prod
     };
 };
 
-export function sortByPriceAsc(products: ProductListing[]): ProductListing[] {
+export function sortByPriceAsc(products: Product[]): Product[] {
     return products.sort((a, b) => {
-        const aPrice = a.details?.online_price ?? 0;
-        const bPrice = b.details?.online_price ?? 0;
+        const aPrice = a.details?.onlinePrice ?? 0;
+        const bPrice = b.details?.onlinePrice ?? 0;
 
         return bPrice - aPrice;
     });
 };
 
-export function sortByPriceDsc(products: ProductListing[]): ProductListing[] {
+export function sortByPriceDsc(products: Product[]): Product[] {
     return products.sort((a, b) => {
-        const aPrice = a.details?.online_price ?? 0;
-        const bPrice = b.details?.online_price ?? 0;
+        const aPrice = a.details?.onlinePrice ?? 0;
+        const bPrice = b.details?.onlinePrice ?? 0;
 
         return aPrice - bPrice;
     });
 };
 
-export function sortByTagName(products: ProductListing[], tagName: string): ProductListing[] {
+export function sortByTagName(products: Product[], tagName: string): Product[] {
     return products.sort((a, b) => {
-        const hasTagName = (product: ProductListing) => 
+        const hasTagName = (product: Product) => 
             product.tags?.map(tag => tag.tag.name).includes(tagName);
 
         const aProduct = hasTagName(a);

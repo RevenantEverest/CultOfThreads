@@ -1,7 +1,7 @@
-import type { ProductTagFull } from '@repo/supabase';
+import type { ProductTag } from '@repo/entities';
 
 interface ProductTagsProps {
-    tags: ProductTagFull[]
+    tags: ProductTag[]
 };
 
 function ProductTags({ tags }: ProductTagsProps) {

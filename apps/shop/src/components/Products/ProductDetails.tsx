@@ -1,4 +1,4 @@
-import type { ProductDetails as Details, ProductTagFull } from '@repo/supabase';
+import type { ProductDetails as Details, ProductTag } from '@repo/entities';
 
 import { createSlateEditor, PlateStatic } from 'platejs';
 import {
@@ -26,7 +26,7 @@ interface ProductDetailsProps {
     name: string,
     description?: string,
     details: Details,
-    tags: ProductTagFull[] | null
+    tags: ProductTag[] | null
 };
 
 function ProductDetails({ id, name, description, details, tags }: ProductDetailsProps) {
@@ -53,8 +53,8 @@ function ProductDetails({ id, name, description, details, tags }: ProductDetails
                 {tags && <ProductTags tags={tags} />}
             </div>
             <ProductPrice 
-                marketPrice={details.market_price ?? 0}
-                onlinePrice={details.online_price ?? 0}
+                marketPrice={details.marketPrice ?? 0}
+                onlinePrice={details.onlinePrice ?? 0}
             />
             <ProductPurchase productId={id} />
             <PlateStatic editor={editor} />

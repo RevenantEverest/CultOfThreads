@@ -1,22 +1,22 @@
 "use client"
 
-import type { ProductListing } from '@repo/supabase';
+import type { Product } from '@repo/entities';
 
 import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { useQuery } from '@tanstack/react-query';
 
 import { Breadcrumb } from '@@shop/components/Common';
 
 import ProductListItem from './ProductListItem';
 import ProductCategories from './ProductCategories';
 
-import { productApi } from '@repo/supabase';
 import ProductSort from './ProductSort';
 
 import { productSort } from '@@shop/utils';
 import { MotionFadeIn, ScrollElement } from '@repo/ui';
 import { useBreakpointGrid } from '@@shop/hooks';
+
+import { products as productsQueries } from '@repo/queries';
 
 function ProductList() {
 
@@ -27,23 +27,25 @@ function ProductList() {
         }
     });
     const searchParams = useSearchParams();
-    const query = useQuery({
-        queryKey: ["products"],
-        queryFn: productApi.fetchActiveListings
+
+    const { data } = productsQueries.hooks.useIndexPublic({
+        pagination: {
+            limit: 10
+        }
     });
 
     const listKey = searchParams.toString();
 
-    const getInitialProducts = useCallback((): ProductListing[] => {
-        if(!query.data) return [];
+    const getInitialProducts = useCallback((): Product[] => {
+        if(!data) return [];
 
         const searchCategory = searchParams.get("category");
         const searchSort = searchParams.get("sort");
 
-        let data = query.data;
+        let productData = data?.pages.flatMap((page) => page.results) ?? [];
 
         if(searchCategory) {
-            data = data.filter((item) => {
+            productData = productData.filter((item) => {
                 if(!item.categories) return;
 
                 const categoryNames = item.categories.map((category) => category.category.name);
@@ -53,11 +55,11 @@ function ProductList() {
         }
 
         if(searchSort) {
-            data = productSort.sortProducts(searchSort, data);
+            productData = productSort.sortProducts(searchSort, productData);
         }
 
-        return data;
-    }, [query.data, searchParams]);
+        return productData;
+    }, [data, searchParams]);
 
     const [products, setProducts] = useState(getInitialProducts());
     const [displayedProducts, setDisplayedProducts] = useState(getInitialProducts());
@@ -69,7 +71,7 @@ function ProductList() {
         setDisplayedProducts(initialProducts);
     }, [searchParams, getInitialProducts]);
 
-    const renderProducts = (products: ProductListing[]) => {
+    const renderProducts = (products: Product[]) => {
         const itemsPerRow = breakpointGrid.itemsPerRow;
 
         if(!itemsPerRow) {

@@ -1,6 +1,6 @@
 "use client"
 
-import type { ProductListing } from '@repo/supabase';
+import type { Product } from '@repo/entities';
 
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
@@ -17,9 +17,9 @@ import Search from '@@shop/components/Search';
 type SortType = "Price ASC" | "Price DSC" | "Best Sellers" | "New";
 
 interface ProductSortProps {
-    products: ProductListing[],
-    displayedProducts: ProductListing[],
-    setProducts: (value: ProductListing[]) => void 
+    products: Product[],
+    displayedProducts: Product[],
+    setProducts: (value: Product[]) => void 
 };
 
 function ProductSort({ products, displayedProducts, setProducts }: ProductSortProps) {
