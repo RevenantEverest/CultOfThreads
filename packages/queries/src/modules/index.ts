@@ -1,6 +1,9 @@
+export * as categories from './categories';
 export * as contacts from './contacts';
 export * as contactForm from './contactForm';
 export * as events from './events';
 export * as markets from './markets';
 export * as newsletter from './newsletter';
+export * as products from './products';
+export * as tags from './tags';
 export * as trafficAnalytics from './trafficAnalytics';
