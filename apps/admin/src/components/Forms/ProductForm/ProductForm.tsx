@@ -1,4 +1,4 @@
-import type { Product, ProductDetails, ProductMedia } from '@repo/supabase';
+import type { Product, ProductMedia } from '@repo/entities';
 
 import { FaShop, FaCartShopping, FaDollarSign } from 'react-icons/fa6';
 import validator from 'validator';
@@ -19,16 +19,15 @@ type ProductValues = (
         keyof (
             Pick<
                 Product,
-                "name" |
-                "description"
+                "name"
             > &
             Pick<
-                ProductDetails,
-                "market_price" |
-                "online_price" |
+                Product["details"],
+                "marketPrice" |
+                "onlinePrice" |
                 "status" |
-                "weight_grams" |
-                "etsy_listing"
+                "weightGrams" |
+                "etsyListing"
             >
         ), 
         string
@@ -36,6 +35,7 @@ type ProductValues = (
 );
 
 export interface ProductFormValues extends ProductValues {
+    description: string, // overrides entity JSON typing
     categories: string[], // category id array
     tags: string[], // tag id array
     images: File[]
@@ -45,7 +45,7 @@ export interface ProductFormProps {
     type: ProductFormType,
     initialValues: ProductFormValues,
     onSubmit: (values: ProductFormValues) => Promise<void>,
-    productImages?: ProductMedia[],
+    productImages?: Product["media"],
     onRemoveImage?: (image: ProductMedia) => Promise<void>
 };
 
@@ -108,7 +108,7 @@ function ProductForm({ type, initialValues, productImages, onSubmit, onRemoveIma
                                     </div>
                                     <div className="w-full">
                                         <form.AppField
-                                            name="etsy_listing"
+                                            name="etsyListing"
                                             validators={{
                                                 onChange: ({ value }) => {
                                                     if(value !== "" && !validator.isURL(value)) {
@@ -132,7 +132,7 @@ function ProductForm({ type, initialValues, productImages, onSubmit, onRemoveIma
                             <div className="w-full flex flex-col md:flex-row gap-5">
                                 <div className="flex-1">
                                     <form.AppField
-                                        name="market_price"
+                                        name="marketPrice"
                                         validators={{
                                             onChange: ({ value }) =>
                                                 validator.isNumeric(value) ? undefined : "Must be a number"
@@ -150,7 +150,7 @@ function ProductForm({ type, initialValues, productImages, onSubmit, onRemoveIma
                                 </div>
                                 <div className="flex-1">
                                     <form.AppField
-                                        name="online_price"
+                                        name="onlinePrice"
                                         validators={{
                                             onChange: ({ value }) =>
                                                 validator.isNumeric(value) ? undefined : "Must be a number"

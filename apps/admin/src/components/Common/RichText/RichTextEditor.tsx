@@ -65,10 +65,10 @@ function RichTextEditor({ value, onChange }: RichTextEditorProps) {
             </FixedToolbar>
             <EditorContainer 
                 className={`
-                    bg-card-light rounded-b-xl px-4 py-4 border-background border-1
+                    bg-card-light rounded-b-xl px-4 py-4 border-background border
                 `}
             >
-                <Editor className="!pl-0 !pr-0" placeholder="Type your content here..." />
+                <Editor className="pl-0! pr-0!" placeholder="Type your content here..." />
             </EditorContainer>
         </Plate>
     );

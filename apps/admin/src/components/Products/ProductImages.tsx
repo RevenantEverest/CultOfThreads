@@ -1,10 +1,11 @@
 "use client"
 
-import type { ProductMedia } from '@repo/supabase';
+import type { ProductMedia } from '@repo/entities';
 
 import { useState } from 'react';
 import { FaChevronCircleRight, FaChevronCircleLeft } from 'react-icons/fa';
 import { URLS } from '@@admin/constants';
+import { FaImage } from 'react-icons/fa6';
 
 interface ProductImages {
     images: ProductMedia[]
@@ -50,32 +51,44 @@ function ProductImages({ images }: ProductImages) {
                 >
                     <img
                         alt={'Product Image'}
-                        src={URLS.SUPABASE_STORAGE + image.media_url}
+                        src={URLS.SUPABASE_STORAGE + image.mediaUrl}
                     />
                 </button>
             );
         });
     };
 
+    const defaultImage = () => (
+        <div className="bg-card-light h-full w-full flex items-center justify-center rounded-xl border-muted border-4">
+            <FaImage className="text-8xl" />
+        </div>
+    );
+
     return(
         <div className="flex flex-col md:flex-row gap-2 relative">
-            <div className="flex items-center justify-center relative rounded-xl">
+            <div className="flex items-center justify-center relative rounded-xl w-full aspect-square">
                 {
                     images.length > 1 &&
                     <FaChevronCircleLeft 
-                        className="absolute left-4 text-4xl text-card/100 duration-150 hover:cursor-pointer hover:text-primary"
+                        className="absolute left-4 text-4xl text-card duration-150 hover:cursor-pointer hover:text-primary"
                         onClick={previousImage}
                     />
                 }
-                <img
-                    className="rounded-xl border-muted border-4 hover:cursor-zoom-in"
-                    src={URLS.SUPABASE_STORAGE + (images[imageIndex] && images[imageIndex].media_url)} 
-                    alt={`featured`}
-                />
+                
+                {
+                    images[imageIndex] ?
+                    <img
+                        className="rounded-xl border-muted border-4 hover:cursor-zoom-in"
+                        src={URLS.SUPABASE_STORAGE + (images[imageIndex] && images[imageIndex].mediaUrl)} 
+                        alt={`featured`}
+                    />
+                    :
+                    defaultImage()
+                }
                 {
                     images.length > 1 &&
                     <FaChevronCircleRight 
-                        className="absolute right-4 text-4xl text-card/100 duration-150 hover:cursor-pointer hover:text-primary"
+                        className="absolute right-4 text-4xl text-card duration-150 hover:cursor-pointer hover:text-primary"
                         onClick={nextImage}
                     />
                 }

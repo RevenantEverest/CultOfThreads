@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { BeatLoader } from 'react-spinners';
-import { useQuery } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 import { FaTimesCircle } from 'react-icons/fa';
 
@@ -9,7 +8,8 @@ import { Card, CardContent, ToastError } from '@repo/ui';
 import { useThemeStore } from '@@admin/store/theme';
 import { TagSelect } from '@@admin/components/Tags';
 
-import { tagApi } from '@repo/supabase';
+import { useAuthStore } from '@@admin/store/auth';
+import { tags } from '@repo/queries';
 
 
 interface TagSelectContainerProps {
@@ -19,10 +19,14 @@ interface TagSelectContainerProps {
 
 function TagSelectContainer({ values, onChange }: TagSelectContainerProps) {
 
+    const auth = useAuthStore((state) => state.auth);
     const theme = useThemeStore((state) => state.theme);
-    const query = useQuery({
-        queryKey: ["tags"],
-        queryFn: tagApi.fetchAll
+
+    const query = tags.hooks.useIndex({
+        authToken: auth.session?.accessToken ?? "",
+        pagination: {
+            limit: 10
+        }
     });
 
     useEffect(() => {
@@ -38,6 +42,12 @@ function TagSelectContainer({ values, onChange }: TagSelectContainerProps) {
         onChange(value);
     };
 
+    const nextPage = () => {
+        if(!query.hasNextPage) return;
+
+        query.fetchNextPage();
+    };
+
     return(
         <div className="w-full flex flex-col gap-3">
             {
@@ -49,16 +59,18 @@ function TagSelectContainer({ values, onChange }: TagSelectContainerProps) {
                 />
                 :
                 <TagSelect 
-                    tags={query.data ?? []}
+                    tags={query.data?.pages.flatMap((page) => page.results) ?? []}
                     pTagIds={values}
                     onChange={handleTagAdd}
+                    nextPage={nextPage}
+                    isLoading={query.isLoading || query.isFetching || !query.data}
                 />
             }
             <Card className="bg-card-light border-none flex items-center justify-center py-5 pb-0">
                 <CardContent className="flex gap-3 flex-wrap items-center justify-center w-full">
                     {
                         values.map((item) => {
-                            const data = query.data ?? [];
+                            const data = query.data?.pages.flatMap((page) => page.results) ?? [];
                             const tag = data.filter((c) => c.id === item);
 
                             return(

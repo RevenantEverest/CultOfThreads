@@ -1,4 +1,4 @@
-import type { Category } from '@repo/supabase';
+import type { Category } from '@repo/entities';
 
 import dayjs from 'dayjs';
 import {
@@ -8,14 +8,14 @@ import {
 import RemoveCategory from './RemoveCategory';
 import EditCategory from './EditCategory';
 
-interface CategoryListItemProps {
+interface CategoriesRowProps {
     category: Category
 };
 
-function CategoryListItem({ category }: CategoryListItemProps) {
+function CategoriesRow({ category }: CategoriesRowProps) {
 
     const cellClass = "py-4";
-    const createdAt = dayjs(category.created_at).format("MMMM D, YYYY")
+    const createdAt = dayjs(category.createdAt).format("MMMM D, YYYY")
 
     return(
         <TableRow className="border-b-muted font-semibold">
@@ -40,4 +40,4 @@ function CategoryListItem({ category }: CategoryListItemProps) {
     );
 };
 
-export default CategoryListItem;
+export default CategoriesRow;

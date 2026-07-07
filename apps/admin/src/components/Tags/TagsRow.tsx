@@ -1,21 +1,18 @@
-import type { Tag } from '@repo/supabase';
+import type { Tag } from '@repo/entities';
 
 import dayjs from 'dayjs';
-import {
-    TableCell,
-    TableRow
-} from '@repo/ui';
+import { TableCell, TableRow } from '@repo/ui';
 import RemoveTag from './RemoveTag';
 import EditTag from './EditTag';
 
-interface TagListItemProps {
+interface TagsRowProps {
     tag: Tag
 };
 
-function TagListItem({ tag }: TagListItemProps) {
+function TagsRow({ tag }: TagsRowProps) {
 
     const cellClass = "py-4";
-    const createdAt = dayjs(tag.created_at).format("MMMM D, YYYY")
+    const createdAt = dayjs(tag.createdAt).format("MMMM D, YYYY")
 
     return(
         <TableRow className="border-b-muted font-semibold">
@@ -40,4 +37,4 @@ function TagListItem({ tag }: TagListItemProps) {
     );
 };
 
-export default TagListItem;
+export default TagsRow;

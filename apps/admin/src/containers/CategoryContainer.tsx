@@ -1,24 +1,23 @@
 import { useState, useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { BeatLoader } from 'react-spinners';
 import toast from 'react-hot-toast';
 
 import { ToastError } from '@repo/ui';
-import { AddCategory, CategoryList } from '@@admin/components/Categories';
+import { AddCategory, CategoriesTable } from '@@admin/components/Categories';
 import Search from '@@admin/components/Search';
 
-import { useThemeStore } from '@@admin/store/theme';
-
-import { categoryApi } from '@repo/supabase';
+import { categories } from '@repo/queries';
+import { useAuthStore } from '@@admin/store/auth';
 
 function CategoryContainer() {
 
-    const theme = useThemeStore((state) => state.theme);
+    const auth = useAuthStore((state) => state.auth);
     
     const [search, setSearch] = useState("");
-    const query = useQuery({ 
-        queryKey: ["categories"], 
-        queryFn: categoryApi.fetchAll
+    const query = categories.hooks.useIndex({
+        authToken: auth.session?.accessToken ?? "",
+        pagination: {
+            limit: 10
+        }
     });
 
     useEffect(() => {
@@ -29,6 +28,12 @@ function CategoryContainer() {
             <ToastError toast={t} message={"Error fetching Categories"} />
         ));
     }, [query.isError, query.error]);
+
+    const nextPage = () => {
+        if(!query.hasNextPage) return;
+
+        query.fetchNextPage();
+    };
 
     return(
         <div className="mt-20 pb-20 flex flex-col items-center justify-center gap-5">
@@ -41,16 +46,15 @@ function CategoryContainer() {
                 </div>
             </div>
             <div className="w-full">
-                {
-                    query.isLoading ?
-                    <BeatLoader
-                        className="flex flex-1 items-center justify-center mt-10"
-                        size={15}
-                        color={theme.colors.primary}
-                    />
-                    :
-                    <CategoryList search={search} categories={query.data ?? []} />
-                }
+                <CategoriesTable
+                    categories={
+                        query.data?.pages.flatMap((page) => page.results) ?? []
+                    } 
+                    dataAmount={query.data?.pages[0] && query.data.pages[0].count}
+                    search={search} 
+                    isLoading={query.isLoading || query.isFetching || !query.data}
+                    nextPage={nextPage}
+                />
             </div>
         </div>
     );

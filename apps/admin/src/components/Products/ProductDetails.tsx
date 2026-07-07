@@ -1,4 +1,4 @@
-import type { ProductDetails as Details, ProductDetailsStatus } from '@repo/supabase';
+import type { ProductDetails as Details } from '@repo/entities';
 
 import { FaShop, FaCartShopping, FaDollarSign } from 'react-icons/fa6';
 import { createSlateEditor, PlateStatic } from 'platejs';
@@ -46,7 +46,7 @@ function ProductDetails({ name, description, details }: ProductDetailsProps) {
     return(
         <div className="flex flex-col gap-10 pb-20 md:pb-0">
             <h1 className="text-4xl font-bold text-center md:text-left flex flex-col md:flex-row items-center gap-5">
-                {name} <StatusBadge status={details.status as ProductDetailsStatus} size="md" />
+                {name} <StatusBadge status={details.status} size="md" />
             </h1>
             <div className="flex gap-0 md:gap-10">
                 <div className="flex flex-col md:flex-row items-center pb-2 font-bold text-lg gap-3 md:gap-2 flex-1">
@@ -54,7 +54,7 @@ function ProductDetails({ name, description, details }: ProductDetailsProps) {
                     <p>Market Price:</p>
                     <div className="bg-card-light flex items-center px-5 py-1 rounded-full">
                         <FaDollarSign className="text-primary" />
-                        <p>{details.market_price?.toLocaleString()}</p>
+                        <p>{details.marketPrice?.toLocaleString()}</p>
                     </div>
                 </div>
                 <div className="flex flex-col md:flex-row items-center pb-2 font-bold text-lg gap-3 md:gap-2 flex-1">
@@ -62,14 +62,14 @@ function ProductDetails({ name, description, details }: ProductDetailsProps) {
                     <p>Online Price:</p>
                     <div className="bg-card-light flex items-center px-5 py-1 rounded-full">
                         <FaDollarSign className="text-primary" />
-                        <p>{details.online_price?.toLocaleString()}</p>
+                        <p>{details.onlinePrice?.toLocaleString()}</p>
                     </div>
                 </div>
             </div>
             {
-                (details.etsy_listing && details.etsy_listing !== "") ?
+                (details.etsyListing && details.etsyListing !== "") ?
                 <div className="flex justify-center md:justify-start">
-                    <a href={details.etsy_listing} target="_blank" rel="noopener noreferrer">
+                    <a href={details.etsyListing} target="_blank" rel="noopener noreferrer">
                         <Button className="text-text">
                             Shop on Etsy
                         </Button>

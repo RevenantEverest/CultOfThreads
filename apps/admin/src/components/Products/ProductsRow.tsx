@@ -1,4 +1,4 @@
-import type { ProductListing, ProductDetailsStatus } from '@repo/supabase';
+import type { Product } from '@repo/entities';
 
 import { Link } from '@tanstack/react-router';
 import {
@@ -12,11 +12,11 @@ import StatusBadge from './StatusBadge';
 
 import { URLS } from '@@admin/constants';
 
-interface ProductListItemProps {
-    product: ProductListing
+interface ProductsRowProps {
+    product: Product
 };
 
-function ProductListItem({ product }: ProductListItemProps) {
+function ProductsRow({ product }: ProductsRowProps) {
 
     const cellClass = "py-4";
 
@@ -28,7 +28,7 @@ function ProductListItem({ product }: ProductListItemProps) {
                         (product.media && product.media[0]) &&
                         <img 
                             className="shrink-0 relative object-cover w-full h-full rounded-lg"
-                            src={`${URLS.SUPABASE_STORAGE}/${product.media[0].media_url}`} 
+                            src={`${URLS.SUPABASE_STORAGE}/${product.media[0].mediaUrl}`} 
                             alt={product.name}
                         />
                     }
@@ -43,20 +43,20 @@ function ProductListItem({ product }: ProductListItemProps) {
                 <div className="flex items-center gap-1 justify-center">
                     {
                         product?.details?.status && 
-                        <StatusBadge status={product.details.status as ProductDetailsStatus} />
+                        <StatusBadge status={product.details.status as Product["details"]["status"]} />
                     }
                 </div>
             </TableCell>
             <TableCell className={`${cellClass}`}>
                 <div className="flex items-center gap-1 justify-center">
                     <FaDollarSign className="text-primary" />
-                    <p>{product?.details?.online_price ?? 0}</p>
+                    <p>{product?.details?.onlinePrice ?? 0}</p>
                 </div>
             </TableCell>
             <TableCell className={`${cellClass}`}>
                 <div className="flex items-center gap-1 justify-center">
                     <FaDollarSign className="text-primary" />
-                    <p>{product?.details?.market_price ?? 0}</p>
+                    <p>{product?.details?.marketPrice ?? 0}</p>
                 </div>
             </TableCell>
             <TableCell className={`${cellClass}`}>
@@ -73,4 +73,4 @@ function ProductListItem({ product }: ProductListItemProps) {
     );
 };
 
-export default ProductListItem;
+export default ProductsRow;

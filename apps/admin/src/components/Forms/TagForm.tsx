@@ -1,4 +1,4 @@
-import type { Tag } from '@repo/supabase';
+import type { Tag } from '@repo/entities';
 
 import { Card, CardContent } from '@repo/ui';
 import { useAppForm } from '@repo/ui/hooks';
