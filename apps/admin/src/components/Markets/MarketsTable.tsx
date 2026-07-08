@@ -35,7 +35,7 @@ function MarketsTable({ markets, search, dataAmount=0, isLoading, nextPage }: Ma
                     keyExtractor={(item: Market) => item.id}
                     data={parseSearchedResults()}
                     renderHeader={() => (<MarketsHeader dataAmount={dataAmount} />)}
-                    renderItem={(item: Market, key) => (
+                    renderItem={({ item, key }) => (
                         <MarketsRow key={key} market={item} />
                     )}
                     onEndReached={nextPage}

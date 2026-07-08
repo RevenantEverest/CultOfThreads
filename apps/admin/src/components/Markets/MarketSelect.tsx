@@ -34,7 +34,7 @@ function MarketSelect({ value, markets, onChange, nextPage, isLoading }: MarketS
                     <FlatList
                         keyExtractor={(item: Market) => item.id}
                         data={markets}
-                        renderItem={(item: Market, key) => (
+                        renderItem={({ item, key }) => (
                             <SelectItem key={key} value={item.id}>
                                 {item.name}
                             </SelectItem>

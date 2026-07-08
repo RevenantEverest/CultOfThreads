@@ -37,7 +37,7 @@ function SignUpsTable({ signUps, search, dataAmount=0, isLoading, nextPage }: Ne
                     renderHeader={() => (
                         <SignUpsHeader dataAmount={dataAmount} />
                     )}
-                    renderItem={(item: Newsletter, key) => (
+                    renderItem={({ item, key }) => (
                         <SignUpsRow key={key} item={item} />
                     )}
                     onEndReached={nextPage}

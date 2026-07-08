@@ -35,7 +35,7 @@ function CategoriesTable({ categories, search, dataAmount=0, isLoading, nextPage
                     keyExtractor={(item: Category) => item.id}
                     data={parseSearchedResults()}
                     renderHeader={() => (<CategoriesHeader dataAmount={dataAmount} />)}
-                    renderItem={(item: Category, key) => (
+                    renderItem={({ item, key }) => (
                         <CategoriesRow key={key} category={item} />
                     )}
                     onEndReached={nextPage}

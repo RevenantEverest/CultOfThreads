@@ -35,7 +35,7 @@ function ProductsTable({ products, search, dataAmount=0, isLoading, nextPage }: 
                     keyExtractor={(item: Product) => item.id}
                     data={parseSearchedResults()}
                     renderHeader={() => (<ProductsHeader dataAmount={dataAmount} />)}
-                    renderItem={(item: Product, key) => (
+                    renderItem={({ item, key }) => (
                         <ProductsRow key={key} product={item} />
                     )}
                     onEndReached={nextPage}

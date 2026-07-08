@@ -31,7 +31,7 @@ function CategorySelect({ categories, pCategoryIds, onChange, nextPage, isLoadin
                     <FlatList
                         keyExtractor={(item: Category) => item.id}
                         data={categories}
-                        renderItem={(item: Category, key) => (
+                        renderItem={({ item, key }) => (
                             <SelectItem 
                                 key={key} 
                                 value={item.id}

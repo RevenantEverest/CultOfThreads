@@ -34,7 +34,7 @@ function ContactsTable({ contacts, search, dataAmount=0, isLoading, nextPage }: 
                     keyExtractor={(item: Contact) => item.id}
                     data={parseSearchedResults()}
                     renderHeader={() => (<ContactsHeader dataAmount={dataAmount} />)}
-                    renderItem={(item: Contact, key) => (
+                    renderItem={({ item, key }) => (
                         <ContactsRow key={key} contact={item} />
                     )}
                     onEndReached={nextPage}

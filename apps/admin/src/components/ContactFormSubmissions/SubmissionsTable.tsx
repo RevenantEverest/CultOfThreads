@@ -34,7 +34,7 @@ function SubmissionsTable({ submissions, dataAmount=0, search, nextPage, isLoadi
                     keyExtractor={(item: ContactForm) => item.id}
                     data={parseSearchedResults()}
                     renderHeader={() => (<SubmissionsHeader dataAmount={dataAmount} />)}
-                    renderItem={(item: ContactForm, key) => (
+                    renderItem={({ item, key }) => (
                         <SubmissionRow key={key} submission={item} />
                     )}
                     onEndReached={nextPage}

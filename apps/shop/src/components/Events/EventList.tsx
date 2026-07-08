@@ -29,7 +29,7 @@ function EventList() {
                 data={
                     query.data?.pages.flatMap((page) => page.results) ?? []
                 }
-                renderItem={(item: Event, key) => (
+                renderItem={({ item, key }) => (
                     <EventListItem key={key} event={item} />
                 )}
                 renderLoading={() => <Spinner />}

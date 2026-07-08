@@ -35,7 +35,7 @@ function EventsTable({ events, search, dataAmount=0, isLoading, nextPage }: Even
                     keyExtractor={(item: Event) => item.id}
                     data={parseSearchedResults()}
                     renderHeader={() => (<EventsHeader dataAmount={dataAmount} />)}
-                    renderItem={(item: Event, key) => (
+                    renderItem={({ item, key }) => (
                         <EventsRow key={key} event={item} />
                     )}
                     onEndReached={nextPage}

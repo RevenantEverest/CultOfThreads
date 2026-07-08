@@ -34,7 +34,7 @@ function TrafficAnalyticsTable({ analytics, search, dataAmount=0, isLoading, nex
                     keyExtractor={(item: TrafficAnalytics) => item.id}
                     data={parseSearchedResults()}
                     renderHeader={() => (<TrafficAnalyticsHeader dataAmount={dataAmount} />)}
-                    renderItem={(item: TrafficAnalytics, key) => (
+                    renderItem={({ item, key }) => (
                         <TrafficAnalyticsRow key={key} analytic={item} />
                     )}
                     onEndReached={nextPage}

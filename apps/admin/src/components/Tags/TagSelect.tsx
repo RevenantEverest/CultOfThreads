@@ -31,7 +31,7 @@ function TagSelect({ tags, pTagIds, onChange, nextPage, isLoading }: TagSelectPr
                     <FlatList
                         keyExtractor={(item: Tag) => item.id}
                         data={tags}
-                        renderItem={(item: Tag, key) => (
+                        renderItem={({ item, key }) => (
                             <SelectItem 
                                 key={key}
                                 value={item.id}

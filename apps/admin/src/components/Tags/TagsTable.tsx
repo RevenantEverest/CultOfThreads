@@ -35,7 +35,7 @@ function TagsTable({ tags, search, dataAmount=0, isLoading, nextPage }: TagsTabl
                     keyExtractor={(item: Tag) => item.id}
                     data={parseSearchedResults()}
                     renderHeader={() => (<TagsHeader dataAmount={dataAmount} />)}
-                    renderItem={(item: Tag, key) => (
+                    renderItem={({ item, key }) => (
                         <TagsRow key={key} tag={item} />
                     )}
                     onEndReached={nextPage}

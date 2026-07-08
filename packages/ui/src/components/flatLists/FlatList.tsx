@@ -2,10 +2,16 @@
 
 import React, { useRef, useEffect } from 'react';
 
+interface FlatListRenderItemParams<T> {
+    item: T,
+    index: number,
+    key?: string | number,
+};
+
 export interface FlatListProps<T> {
     className?: React.HTMLAttributes<HTMLDivElement>["className"],
     data: T[],
-    renderItem: (item: T, key?: string | number) => React.ReactNode,
+    renderItem: (params: FlatListRenderItemParams<T>) => React.ReactNode,
     keyExtractor: (item: T) => string | number,
     onEndReached?: () => void,
     renderLoading?: () => React.ReactNode,
@@ -42,8 +48,12 @@ function FlatList<T>(props: FlatListProps<T>) {
     }, [onEndReached, isLoading]);
 
     const renderList = () => {
-        return data.map((item) => (
-            renderItem(item, keyExtractor(item))
+        return data.map((item, index) => (
+            renderItem({
+                item, 
+                index,
+                key: keyExtractor(item),
+            })
         ));
     };
 

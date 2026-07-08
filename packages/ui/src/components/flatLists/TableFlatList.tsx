@@ -3,10 +3,16 @@
 import React, { useRef, useEffect } from 'react';
 import { Table, TableBody } from '../shadcn/table';
 
+interface TableFlatListRenderItemParams<T> {
+    item: T,
+    index: number,
+    key?: string | number,
+};
+
 export interface TableFlatListProps<T> {
     className?: React.HTMLAttributes<HTMLDivElement>["className"],
     data: T[],
-    renderItem: (item: T, key?: string | number) => React.ReactNode,
+    renderItem: (params: TableFlatListRenderItemParams<T>) => React.ReactNode,
     keyExtractor: (item: T) => string | number,
     onEndReached?: () => void,
     renderLoading?: () => React.ReactNode,
@@ -45,8 +51,12 @@ function TableFlatList<T>(props: TableFlatListProps<T>) {
     }, [onEndReached, isLoading]);
 
     const renderList = () => {
-        return data.map((item) => (
-            renderItem(item, keyExtractor(item))
+        return data.map((item, index) => (
+            renderItem({
+                item,
+                index,
+                key: keyExtractor(item)
+            })
         ));
     };
 
