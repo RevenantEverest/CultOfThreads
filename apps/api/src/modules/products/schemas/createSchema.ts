@@ -1,11 +1,6 @@
 import { z } from 'zod';
 import { schemaValidation } from '~/utils';
 
-export const mediaSchema = z.object({
-    id: z.string(),
-    mediaUrl: z.url()
-});
-
 export const createSchema = z.object({
     name: z.string(),
     description: z.preprocess((value) => {

@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { schemaValidation } from '~/utils';
 
-export const mediaSchema = z.object({
+const mediaSchema = z.object({
     id: z.string(),
     mediaUrl: z.string()
 });
