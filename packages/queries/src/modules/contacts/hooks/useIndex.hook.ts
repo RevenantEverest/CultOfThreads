@@ -5,7 +5,7 @@ import { type FetchAllOptions, fetchAll } from '~/modules/contacts/actions';
 import { KEYS } from '~/modules/contacts/__meta';
 import { Contact } from '@repo/entities';
 
-import * as utils from '~/utils';
+import { pagination } from '~/utils';
 
 const makeRequest = (pageParam: number, options: FetchAllOptions) => {
     const { limit=10 } = options.pagination;
@@ -24,7 +24,7 @@ export async function usePrefetchIndex(queryClient: QueryClient, options: FetchA
         queryFn: ({ pageParam }) => makeRequest(pageParam, options),
         initialPageParam: 1,
         getNextPageParam: (lastPage: PaginatedResponse<Contact>) => {
-            return utils.getNextPageParam<Contact>(lastPage);
+            return pagination.getNextPageParam<Contact>(lastPage);
         }
     });
 };
@@ -35,7 +35,7 @@ export function useIndex(options: FetchAllOptions) {
         queryFn: ({ pageParam }) => makeRequest(pageParam, options),
         initialPageParam: 1,
         getNextPageParam: (lastPage: PaginatedResponse<Contact>) => {
-            return utils.getNextPageParam<Contact>(lastPage);
+            return pagination.getNextPageParam<Contact>(lastPage);
         }
     });
 };

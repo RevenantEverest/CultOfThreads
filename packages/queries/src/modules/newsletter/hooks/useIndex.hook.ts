@@ -5,7 +5,7 @@ import { type FetchAllOptions, fetchAll } from '~/modules/newsletter/actions';
 import { KEYS } from '~/modules/newsletter/__meta';
 import { Newsletter } from '@repo/entities';
 
-import * as utils from '~/utils';
+import { pagination } from '~/utils';
 
 const makeRequest = (pageParam: number, options: FetchAllOptions) => {
     const { limit=10 } = options.pagination;
@@ -24,7 +24,7 @@ export async function usePrefetchIndex(queryClient: QueryClient, options: FetchA
         queryFn: ({ pageParam }) => makeRequest(pageParam, options),
         initialPageParam: 1,
         getNextPageParam: (lastPage: PaginatedResponse<Newsletter>) => {
-            return utils.getNextPageParam<Newsletter>(lastPage)
+            return pagination.getNextPageParam<Newsletter>(lastPage)
         }
     });
 };
@@ -35,7 +35,7 @@ export function useIndex(options: FetchAllOptions) {
         queryFn: ({ pageParam }) => makeRequest(pageParam, options),
         initialPageParam: 1,
         getNextPageParam: (lastPage: PaginatedResponse<Newsletter>) => {
-            return utils.getNextPageParam<Newsletter>(lastPage);
+            return pagination.getNextPageParam<Newsletter>(lastPage);
         }
     });
 };

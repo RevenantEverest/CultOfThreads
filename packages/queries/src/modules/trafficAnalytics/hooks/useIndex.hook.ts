@@ -5,7 +5,7 @@ import { type FetchAllOptions, fetchAll } from '~/modules/trafficAnalytics/actio
 import { KEYS } from '~/modules/trafficAnalytics/__meta';
 import { TrafficAnalytics } from '@repo/entities';
 
-import * as utils from '~/utils';
+import { pagination } from '~/utils';
 
 const makeRequest = (pageParam: number, options: FetchAllOptions) => {
     const { limit=10 } = options.pagination;
@@ -24,7 +24,7 @@ export async function usePrefetchIndex(queryClient: QueryClient, options: FetchA
         queryFn: ({ pageParam }) => makeRequest(pageParam, options),
         initialPageParam: 1,
         getNextPageParam: (lastPage: PaginatedResponse<TrafficAnalytics>) => {
-            return utils.getNextPageParam<TrafficAnalytics>(lastPage);
+            return pagination.getNextPageParam<TrafficAnalytics>(lastPage);
         }
     });
 };
@@ -35,7 +35,7 @@ export function useIndex(options: FetchAllOptions) {
         queryFn: ({ pageParam }) => makeRequest(pageParam, options),
         initialPageParam: 1,
         getNextPageParam: (lastPage: PaginatedResponse<TrafficAnalytics>) => {
-            return utils.getNextPageParam<TrafficAnalytics>(lastPage);
+            return pagination.getNextPageParam<TrafficAnalytics>(lastPage);
         }
     });
 };

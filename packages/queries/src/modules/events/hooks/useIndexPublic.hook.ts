@@ -5,7 +5,7 @@ import { type FetchAllPublicOptions, fetchAllPublic } from '~/modules/events/act
 import { KEYS } from '~/modules/events/__meta';
 import { Event } from '@repo/entities';
 
-import * as utils from '~/utils';
+import { pagination } from '~/utils';
 
 const makeRequest = (pageParam: number, options: FetchAllPublicOptions) => {
     const { limit=10 } = options.pagination;
@@ -23,7 +23,7 @@ export async function usePrefetchIndexPublic(queryClient: QueryClient, options: 
         queryFn: ({ pageParam }) => makeRequest(pageParam, options),
         initialPageParam: 1,
         getNextPageParam: (lastPage: PaginatedResponse<Event>) => {
-            return utils.getNextPageParam<Event>(lastPage);
+            return pagination.getNextPageParam<Event>(lastPage);
         }
     });
 };
@@ -34,7 +34,7 @@ export function useIndexPublic(options: FetchAllPublicOptions) {
         queryFn: ({ pageParam }) => makeRequest(pageParam, options),
         initialPageParam: 1,
         getNextPageParam: (lastPage: PaginatedResponse<Event>) => {
-            return utils.getNextPageParam<Event>(lastPage);
+            return pagination.getNextPageParam<Event>(lastPage);
         }
     });
 };
