@@ -26,6 +26,13 @@ router.route("/")
     controllers.create
 )
 
+router.route("/public")
+.get(
+    security.isValidOrigin,
+    pagination.extractParams,
+    controllers.indexPublic
+)
+
 router.route("/id/:id")
 .get(
     auth.verifyToken,
