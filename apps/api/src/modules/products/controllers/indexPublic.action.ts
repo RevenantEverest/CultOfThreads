@@ -1,25 +1,85 @@
 import type { Request, Response } from '~/types/express';
+import type { FindManyOptions } from 'typeorm';
 
+import { Any, ILike } from 'typeorm';
+import { z } from 'zod';
 import { StatusCodes } from 'http-status-codes';
 import { Product } from '@repo/entities';
 
-import { entities, logs, pagination } from '~/utils';
+import { querySchema } from '~/modules/products/schemas';
 
-export default async function indexPublic(req: Request, res: Response<["pagination"]>) {
+import { entities, logs, pagination, text } from '~/utils';
+
+export default async function indexPublic(req: Request, res: Response<["pagination", "queryContext"]>) {
 
     const { limit, offset } = res.locals.pagination;
-
-    const [products, err] = await entities.indexAndCount<Product>(Product, {
-        limit,
-        offset,
-        order: {
-            createdAt: "DESC"
-        },
+    const queryContext = res.locals.queryContext as z.infer<typeof querySchema> | undefined;
+    
+    const findOptions: FindManyOptions<Product> = {
         where: {
             details: {
                 status: "ACTIVE"
             }
         },
+        order: {
+            createdAt: "DESC"
+        },
+    };
+
+    if(queryContext && queryContext.filter) {
+        const { category, tags } = queryContext.filter;
+
+        if(category) {
+            findOptions.where = {
+                ...findOptions.where,
+                categories: {
+                    category: {
+                        name: text.capitalizeFirstLetter(category)
+                    }
+                }
+            };
+        }
+
+        if(tags) {
+            findOptions.where = {
+                ...findOptions.where,
+                tags: {
+                    tag: {
+                        name: Any(tags.map((item) => text.capitalizeFirstLetter(item)))
+                    }
+                }
+            }
+        }
+    }
+
+    if(queryContext && queryContext.sort) {
+        const { field, order } = queryContext.sort;
+
+        switch(field) {
+            case "price":
+                findOptions.order = {
+                    details: {
+                        onlinePrice: order
+                    }
+                };
+                break;
+            default:
+                logs.log({ level: "WARNING", message: `Attempted to sort by unsupported field: ${field}` });
+                break;
+        }
+    }
+
+    if(queryContext && queryContext.search) {
+        findOptions.where = {
+            ...findOptions.where,
+            name: ILike(`%${queryContext.search}%`)
+        };
+    }
+
+    const [products, err] = await entities.indexAndCount<Product>(Product, {
+        limit,
+        offset,
+        ...findOptions,
         relations: {
             details: true,
             media: true,

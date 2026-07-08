@@ -2,12 +2,15 @@ import express from 'express';
 import multer from 'multer';
 import * as controllers from './controllers';
 
+import { querySchema } from './schemas';
+
 import {
     pagination,
     validation,
     auth,
     permissions,
-    security
+    security,
+    query
 } from '~/middleware';
 
 const router = express.Router();
@@ -19,6 +22,7 @@ router.route("/")
     security.isValidOrigin,
     permissions.isAdmin,
     pagination.extractParams,
+    query.parseQueryContext(querySchema),
     controllers.index
 )
 .post(
@@ -33,6 +37,7 @@ router.route("/public")
 .get(
     security.isValidOrigin,
     pagination.extractParams,
+    query.parseQueryContext(querySchema),
     controllers.indexPublic
 )
 
