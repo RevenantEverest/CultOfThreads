@@ -41,6 +41,18 @@ router.route("/public")
     controllers.indexPublic
 )
 
+router.route("/public/best-sellers")
+.get(
+    security.isValidOrigin,
+    controllers.getBestSellersPublic
+)
+
+router.route("/public/new-arrivals")
+.get(
+    security.isValidOrigin,
+    controllers.getNewArrivalsPublic
+)
+
 router.route("/public/id/:id")
 .get(
     security.isValidOrigin,
