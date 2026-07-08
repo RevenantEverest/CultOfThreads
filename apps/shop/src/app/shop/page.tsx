@@ -1,17 +1,13 @@
 import type { Metadata, Viewport } from 'next';
 
 import { Suspense } from 'react';
-import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 
-import { ProductList } from '@@shop/components/Products';
 import { Layout } from '@@shop/components/Common';
 import { UpcomingEvents } from '@@shop/components/Events';
 import Newsletter from '@@shop/components/Newsletter';
 
 import { IMAGE_RESOURCES } from '@repo/ui';
-
-import { categoryApi } from '@repo/supabase';
-import { products } from '@repo/queries';
+import { ProductsContainer } from '@@shop/containers';
 
 export const revalidate = 60;
 
@@ -37,20 +33,8 @@ export async function generateMetadata(): Promise<Metadata> {
 
 async function Shop() {
 
-    const queryClient = new QueryClient();
-    products.hooks.usePrefetchIndexPublic(queryClient, {
-        pagination: {
-            limit: 10
-        }
-    });
-
-    await queryClient.prefetchQuery({
-        queryKey: ["categories"],
-        queryFn: categoryApi.fetchAll
-    });
-
     return(
-        <HydrationBoundary state={dehydrate(queryClient)}>
+        <>
             <Layout main transparent className="pb-20 gap-40">
                 <div>
                     <div className="flex items-center justify-center pt-15 pb-5">
@@ -63,13 +47,13 @@ async function Shop() {
                         </div>
                     </div>
                     <Suspense>
-                        <ProductList />
+                        <ProductsContainer />
                     </Suspense>
                 </div>
                 <UpcomingEvents />
             </Layout>
             <Newsletter className="w-full bg-card z-20 relative py-20 md:px-56" />
-        </HydrationBoundary>
+        </>
     );
 };
 

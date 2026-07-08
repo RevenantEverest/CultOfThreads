@@ -1,8 +1,5 @@
 "use client"
 
-import type { Product } from '@repo/entities';
-
-import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 import { 
@@ -12,72 +9,64 @@ import {
     SelectTrigger, 
     SelectValue 
 } from '@repo/ui';
-import Search from '@@shop/components/Search';
 
-type SortType = "Price ASC" | "Price DSC" | "Best Sellers" | "New";
+type SortType = "price:ASC" | "price:DESC" | "best seller" | "new";
 
 interface ProductSortProps {
-    products: Product[],
-    displayedProducts: Product[],
-    setProducts: (value: Product[]) => void 
+    dataAmount?: number
 };
 
-function ProductSort({ products, displayedProducts, setProducts }: ProductSortProps) {
+function ProductSort({ dataAmount=0 }: ProductSortProps) {
 
     const searchParams = useSearchParams();
-    const [search, setSearch] = useState("");
-    
-    useEffect(() => {
-        const updatedProducts = products.filter((el) => {
-            if(el.name && search) {
-                return el.name.toLowerCase().indexOf(search.trim().toLowerCase()) !== -1;
-            }
-
-            return el;        
-        });
-
-        setProducts(updatedProducts);
-    }, [search, products, setProducts]);
 
     const handleSortChange = (value: SortType) => {
+        console.log("Changed");
         const params = new URLSearchParams(searchParams.toString());
-        params.set("sort", value);
+
+        if(value === "price:ASC" || value === "price:DESC") {
+            if(params.get("filter[tags]")) {
+                params.delete("filter[tags]");
+            }
+
+            params.set("sort", value);
+        }
+
+        if(value === "best seller" || value === "new") {
+            params.set("filter[tags]", value);
+        }
+
         window.history.pushState(null, "", `?${params.toString()}`);
     };
 
     return(
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-start md:justify-center gap-10">
-            <div className="w-full md:w-4/12">
-                <Search setSearch={setSearch} />
+        <div className="flex items-center justify-start md:justify-end flex-1 gap-5 relative">
+            <div>
+                <p className="font-bold text-sm absolute -top-7">Sort By:</p>
+                <Select 
+                    onValueChange={(value) => handleSortChange(value as SortType)}
+                >
+                    <SelectTrigger className="bg-card-light px-2.5 py-2.5 rounded-md font-semibold text-sm w-40">
+                        <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="font-semibold">
+                        <SelectItem value={"best seller"}>
+                            Best Sellers
+                        </SelectItem>
+                        <SelectItem value={"new"}>
+                            New
+                        </SelectItem>
+                        <SelectItem value={"price:ASC"}>
+                            Price High to Low
+                        </SelectItem>
+                        <SelectItem value={"price:DESC"}>
+                            Price Low to High
+                        </SelectItem>
+                    </SelectContent>
+                </Select>
             </div>
-            <div className="flex items-center justify-start md:justify-end flex-1 gap-5 relative">
-                <div>
-                    <p className="font-bold text-sm absolute -top-7">Sort By:</p>
-                    <Select 
-                        onValueChange={(value) => handleSortChange(value as SortType)}
-                    >
-                        <SelectTrigger className="bg-card-light px-2.5 py-2.5 rounded-md font-semibold text-sm w-40">
-                            <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent className="font-semibold">
-                            <SelectItem value={"Best Sellers"}>
-                                Best Sellers
-                            </SelectItem>
-                            <SelectItem value={"New"}>
-                                New
-                            </SelectItem>
-                            <SelectItem value={"Price ASC"}>
-                                Price High to Low
-                            </SelectItem>
-                            <SelectItem value={"Price DSC"}>
-                                Price Low to High
-                            </SelectItem>
-                        </SelectContent>
-                    </Select>
-                </div>
-                <div>
-                    <p className="text-accent font-bold text-sm">{displayedProducts.length} products</p>
-                </div>
+            <div>
+                <p className="text-accent font-bold text-sm">{dataAmount} products</p>
             </div>
         </div>
     );

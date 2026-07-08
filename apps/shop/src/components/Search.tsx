@@ -3,10 +3,11 @@ import { useAppForm } from '@repo/ui/hooks';
 import { FaSearch } from 'react-icons/fa';
 
 interface SearchProps {
-    setSearch: (value: string) => void
+    setSearch: (value: string) => void,
+    defaultValue?: string
 };
 
-function Search({ setSearch }: SearchProps) {
+function Search({ setSearch, defaultValue }: SearchProps) {
     
     const theme = useThemeStore((state) => state.theme);
 
@@ -31,6 +32,7 @@ function Search({ setSearch }: SearchProps) {
                             type="text" 
                             icon={FaSearch} 
                             theme={theme}
+                            defaultValue={defaultValue}
                         />
                     )}    
                 >
