@@ -4,13 +4,16 @@ import axios from 'axios';
 import { BASE_URL } from '~/modules/products/__meta';
 import { Product } from '@repo/entities';
 
-export type FetchAllPublicOptions = HookOptions<"pagination">;
+export interface FetchAllPublicOptions extends HookOptions<"pagination"> {
+    query?: string
+};
 
-export async function fetchAllPublic({ pagination }: FetchAllPublicOptions): Promise<PaginatedResponse<Product>> {
+export async function fetchAllPublic({ pagination, query }: FetchAllPublicOptions): Promise<PaginatedResponse<Product>> {
+
     const { page=1, limit=10 } = pagination;
     const { data } = await axios({
         method: "GET",
-        params: { page, limit },
+        params: { page, limit, query },
         url: `${BASE_URL}/public`
     });
 

@@ -23,3 +23,5 @@ interface Options<T = unknown> {
 };
 
 export type HookOptions<K extends keyof Options<unknown>, T = unknown> = Pick<Options<T>, K>;
+
+export type Filters = Record<string, string>;

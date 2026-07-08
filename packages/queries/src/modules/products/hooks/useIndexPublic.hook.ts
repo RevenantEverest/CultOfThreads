@@ -5,11 +5,16 @@ import { type FetchAllPublicOptions, fetchAllPublic } from '~/modules/products/a
 import { KEYS } from '~/modules/products/__meta';
 import { Product } from '@repo/entities';
 
-import * as utils from '~/utils';
+import { pagination } from '~/utils';
 
-const makeRequest = (pageParam: number, options: FetchAllPublicOptions) => {
+interface Options extends FetchAllPublicOptions {
+    filters?: Record<string, string>
+};
+
+const makeRequest = (pageParam: number, options: Options) => {
     const { limit=10 } = options.pagination;
     return fetchAllPublic({
+        query: options.query,
         pagination: {
             page: pageParam,
             limit
@@ -19,25 +24,25 @@ const makeRequest = (pageParam: number, options: FetchAllPublicOptions) => {
 
 export async function usePrefetchIndexPublic(
     queryClient: QueryClient, 
-    options: FetchAllPublicOptions
+    options: Options
 ) {
     await queryClient.prefetchInfiniteQuery({
-        queryKey: KEYS.lists(),
+        queryKey: KEYS.lists(options.filters),
         queryFn: ({ pageParam }) => makeRequest(pageParam, options),
         initialPageParam: 1,
         getNextPageParam: (lastPage: PaginatedResponse<Product>) => {
-            return utils.getNextPageParam<Product>(lastPage);
+            return pagination.getNextPageParam<Product>(lastPage);
         }
     });
 };
 
-export function useIndexPublic(options: FetchAllPublicOptions) {
+export function useIndexPublic(options: Options) {
     return useInfiniteQuery({
-        queryKey: KEYS.lists(),
+        queryKey: KEYS.lists(options.filters),
         queryFn: ({ pageParam }) => makeRequest(pageParam, options),
         initialPageParam: 1,
         getNextPageParam: (lastPage: PaginatedResponse<Product>) => {
-            return utils.getNextPageParam<Product>(lastPage);
+            return pagination.getNextPageParam<Product>(lastPage);
         }
     });
 };
