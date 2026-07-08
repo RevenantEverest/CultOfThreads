@@ -6,3 +6,4 @@ export * as pagination from './pagination';
 export * as promises from './promises';
 export * as schemaValidation from './schemaValidation';
 export * as supabaseStorage from './supabaseStorage';
+export * as text from './text';
