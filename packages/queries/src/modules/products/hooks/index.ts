@@ -1,5 +1,7 @@
 export * from './useCreate.hook';
 export * from './useDestroy.hook';
+export * from './useGetByBestSellersPublic.hook';
+export * from './useGetByNewArrivalsPublic.hook';
 export * from './useGetOne.hook';
 export * from './useGetOnePublic.hook';
 export * from './useIndex.hook';
