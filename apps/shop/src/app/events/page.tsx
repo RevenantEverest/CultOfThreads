@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from 'next';
 
-import { HydrationBoundary } from '@tanstack/react-query';
 import { PageHeader, Layout, ScrollToSeeMore } from '@@shop/components/Common';
 import { EventList, UpcomingEvents } from '@@shop/components/Events';
 import Newsletter from '@@shop/components/Newsletter';
@@ -30,7 +29,7 @@ export async function generateMetadata(): Promise<Metadata> {
 async function Events() {
 
     return(
-        <HydrationBoundary>
+        <>
             <PageHeader>
                 <div className="flex sm:flex-col xl:flex-row xl:gap-5 items-center justify-center lg:px-72 h-[90dvh] relative">
                     <div className="flex-1 flex flex-col text-center xl:text-left items-center xl:items-start justify-center">
@@ -44,7 +43,7 @@ async function Events() {
                 </div>
             </PageHeader>
             <Layout main transparent className="gap-20">
-                <UpcomingEvents isEventsPage amount={1} />
+                <UpcomingEvents isEventsPage />
                 <div className="text-center flex flex-col">
                     <p className="order-2 md:order-1 mt-5 md:mt-0 text-lg md:text-2xl text-muted mb-2 uppercase font-semibold">Thinking about catching us in person?</p>
                     <h1 className="order-1 md:order-2 text-5xl md:text-6xl font-beach">See Where We&apos;ll Be Next</h1>
@@ -52,7 +51,7 @@ async function Events() {
                 <EventList />
             </Layout>
             <Newsletter className="w-full bg-card z-20 relative py-20 xl:px-56" />
-        </HydrationBoundary>
+        </>
     );
 };
 
