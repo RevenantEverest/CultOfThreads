@@ -114,6 +114,7 @@
       "name": "shop",
       "version": "0.1.0",
       "dependencies": {
+        "@repo/entities": "workspace:*",
         "@repo/queries": "workspace:*",
         "@repo/supabase": "workspace:*",
         "@repo/ui": "workspace:*",
