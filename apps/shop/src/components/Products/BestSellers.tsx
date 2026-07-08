@@ -1,8 +1,7 @@
 "use client"
 
-import type { ProductListing } from '@repo/supabase';
+import type { Product } from '@repo/entities';
 
-import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 
 import { Button, MotionFadeIn } from '@repo/ui';
@@ -10,18 +9,15 @@ import ProductListItem from './ProductListItem';
 
 import { useBreakpointGrid } from '@@shop/hooks';
 
-import { productApi } from '@repo/supabase';
 import { FaLongArrowAltRight } from 'react-icons/fa';
+import { products } from '@repo/queries';
 
 function BestSellers() {
 
     const breakpointGrid = useBreakpointGrid();
-    const query = useQuery({
-        queryKey: ["best_sellers"],
-        queryFn: () => productApi.fetchByTagName("Best Seller")
-    });
+    const query = products.hooks.useGetByBestSellersPublic();
 
-    const renderProducts = (products: ProductListing[]) => {
+    const renderProducts = (products: Product[]) => {
         const itemsPerRow = breakpointGrid.itemsPerRow;
 
         if(!itemsPerRow) {
@@ -37,10 +33,7 @@ function BestSellers() {
                     fadeDelay={staggerDelay}
                     posYDelay={staggerDelay}
                 >
-                    <ProductListItem 
-                        product={product}
-                        index={index}
-                    />
+                    <ProductListItem product={product} index={index} />
                 </MotionFadeIn>
             );
         });
@@ -66,7 +59,7 @@ function BestSellers() {
                 <div className={`
                     ${breakpointGrid.gridClasses} gap-5 gap-y-10 md:gap-y-20 pb-20
                 `}>
-                    {query.data && breakpointGrid.itemsPerRow && renderProducts(query.data)}
+                    {query.data && breakpointGrid.itemsPerRow && renderProducts(query.data.results)}
                 </div>
             </div>
         </div>
