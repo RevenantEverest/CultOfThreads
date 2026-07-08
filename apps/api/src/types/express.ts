@@ -11,12 +11,22 @@ export interface LocalsPagination {
     offset: number
 };
 
+export interface LocalsQueryContext {
+    filter: unknown,
+    sort: {
+        field: string,
+        order: "ASC" | "DESC"
+    },
+    search: string
+};
+
 /**
  * Shape of potential Response Locals (`res.locals`) object
  */
 export interface Locals<T> {
     pagination: LocalsPagination, 
     auth: AuthPayload,
+    queryContext: LocalsQueryContext,
     params: T
 };
 
