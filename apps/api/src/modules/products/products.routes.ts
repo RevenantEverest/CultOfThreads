@@ -53,6 +53,19 @@ router.route("/public/new-arrivals")
     controllers.getNewArrivalsPublic
 )
 
+/*
+    Using POST instead of GET here specifically to account for
+    the fact that potentially tens of UUID's would be sent back 
+    via a search parameter
+
+    This could cause the search parameter to be 36 * n in length
+*/
+router.route("/public/cart")
+.post(
+    security.isValidOrigin,
+    controllers.getCartProductsPublic
+)
+
 router.route("/public/id/:id")
 .get(
     security.isValidOrigin,
