@@ -3,7 +3,8 @@
     "compilerOptions": {
         "outDir": "dist",
         "rootDir": "./src",
-        "allowJs": true
+        "allowJs": true,
+        "types": ["node"]
     },
     "include": ["src", "supabase.d.ts"],
     "exclude": ["node_modules", "dist"]
