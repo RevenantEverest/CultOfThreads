@@ -13,7 +13,6 @@
   "dependencies": {
     "@repo/entities": "workspace:*",
     "@repo/queries": "workspace:*",
-    "@repo/supabase": "workspace:*",
     "@repo/ui": "workspace:*",
     "axios": "^1.16.0",
     "eslint-config-next": "^16.2.3",

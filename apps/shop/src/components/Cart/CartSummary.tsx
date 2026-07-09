@@ -1,4 +1,8 @@
+import type { Product } from '@repo/entities';
+
 import { FaLongArrowAltRight } from 'react-icons/fa';
+import { FaDollarSign } from 'react-icons/fa6';
+import { useQueryClient } from '@tanstack/react-query';
 
 import { 
     Card,
@@ -8,26 +12,28 @@ import {
     CardFooter,
     Button
 } from '@repo/ui';
-import { useQueryClient } from '@tanstack/react-query';
-import { QUERY_KEYS } from '@@shop/constants';
 import { useCartStore } from '@@shop/store/cart';
-import { ProductWithDetailsAndMedia } from '@repo/supabase';
-import { FaDollarSign } from 'react-icons/fa6';
+import { ApiResponse, products } from '@repo/queries';
+
 
 function CartSummary() {
 
     const cartItems = useCartStore((state) => state.cart.items);
+    const productIds = cartItems.map((item) => item.productId);
+    
     const queryClient = useQueryClient();
-    const cartProducts = queryClient.getQueryData<ProductWithDetailsAndMedia[]>([QUERY_KEYS.CART_PRODUCTS]);
+    const cartProducts = queryClient.getQueryData<ApiResponse<Product[]>>(
+        products.PRODUCT_KEYS.cart(productIds)
+    );
 
     const getSubtotal = () => {
         let subtotal = 0;
 
         for(let i = 0; i < cartItems.length; i++) {
             const current = cartItems[i];
-            const product = cartProducts?.find((item) => item.id === current?.productId);
+            const product = cartProducts?.results.find((item) => item.id === current?.productId);
 
-            subtotal += ((product?.details?.online_price ?? 0) * (current?.quantity ?? 0));
+            subtotal += ((product?.details?.onlinePrice ?? 0) * (current?.quantity ?? 0));
         }
 
         return subtotal;

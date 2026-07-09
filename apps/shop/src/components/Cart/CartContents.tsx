@@ -1,24 +1,27 @@
 "use client"
 
-import type { ProductWithDetailsAndMedia } from '@repo/supabase';
+import type { Product } from '@repo/entities';
 
 import { useQueryClient } from '@tanstack/react-query';
 
 import { useCartStore } from '@@shop/store/cart';
 import CartItem from './CartItem';
 
-import { QUERY_KEYS } from '@@shop/constants';
+import { ApiResponse, products } from '@repo/queries';
 
 function CartContents() {
 
     const cartItems = useCartStore((state) => state.cart.items);
+    const productIds = cartItems.map((item) => item.productId);
 
     const queryClient = useQueryClient();
-    const cartProducts = queryClient.getQueryData<ProductWithDetailsAndMedia[]>([QUERY_KEYS.CART_PRODUCTS]);
+    const cartProducts = queryClient.getQueryData<ApiResponse<Product[]>>(
+        products.PRODUCT_KEYS.cart(productIds)
+    );
 
     const renderItems = () => {
         return cartItems.map((item, index) => {
-            const product = cartProducts?.find((cProduct) => cProduct.id === item.productId);
+            const product = cartProducts?.results.find((cProduct) => cProduct.id === item.productId);
 
             return(
                 <CartItem 
@@ -28,7 +31,6 @@ function CartContents() {
                     product={product}
                 />
             );
-            
         });
     };
 

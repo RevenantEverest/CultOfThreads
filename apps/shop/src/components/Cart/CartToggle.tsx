@@ -1,6 +1,13 @@
-import { useCartStore } from '@@shop/store/cart';
-import { MotionHover, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@repo/ui'
 import { FaShoppingCart } from 'react-icons/fa'
+
+import { 
+    MotionHover, 
+    Tooltip, 
+    TooltipContent, 
+    TooltipProvider, 
+    TooltipTrigger
+} from '@repo/ui';
+import { useCartStore } from '@@shop/store/cart';
 
 function CartToggle() {
 

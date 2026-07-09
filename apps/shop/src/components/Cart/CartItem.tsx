@@ -1,4 +1,4 @@
-import type { ProductWithDetailsAndMedia } from '@repo/supabase';
+import type { Product } from '@repo/entities';
 
 import { FaPlus, FaMinus } from 'react-icons/fa';
 import { FaDollarSign } from 'react-icons/fa6';
@@ -12,7 +12,7 @@ import { URLS } from '@@shop/constants';
 interface CartItemProps {
     productId: string,
     quantity: number,
-    product?: ProductWithDetailsAndMedia
+    product?: Product
 };
 
 function CartItem({ productId, quantity, product }: CartItemProps) {
@@ -27,7 +27,7 @@ function CartItem({ productId, quantity, product }: CartItemProps) {
                     height={100}
                     width={100}
                     loading="eager"
-                    src={URLS.SUPABASE_STORAGE + (product?.media && product.media[0]?.media_url)} 
+                    src={URLS.SUPABASE_STORAGE + (product?.media && product.media[0]?.mediaUrl)} 
                     alt={`featured`}
                 />
             </div>
@@ -36,7 +36,7 @@ function CartItem({ productId, quantity, product }: CartItemProps) {
                     <p className="font-bold">{product?.name}</p>
                     <div className="flex items-center">
                         <FaDollarSign className="text-primary mt-0.5" />
-                        <p>{((product?.details?.online_price ?? 0) * quantity).toLocaleString()}</p>
+                        <p>{((product?.details?.onlinePrice ?? 0) * quantity).toLocaleString()}</p>
                     </div>
                 </div>
                 <div className="flex gap-5">
