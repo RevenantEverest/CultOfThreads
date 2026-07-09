@@ -3,6 +3,7 @@ export * from './destroy.action';
 export * from './fetchAll.action';
 export * from './fetchAllPublic.action';
 export * from './fetchByBestSellersPublic.action';
+export * from './fetchByCartProductsPublic.action';
 export * from './fetchById.action';
 export * from './fetchByIdPublic.action';
 export * from './fetchByNewArrivalsPublic.action';

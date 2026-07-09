@@ -6,5 +6,6 @@ export const KEYS = {
     lists: (filters?: Record<string, string>) => [...KEYS.all, "list", filters],
     details: (id: string) => [...KEYS.all, "details", id],
     bestSellers: () => [...KEYS.all, "best-sellers"],
-    newArrivals: () => [...KEYS.all, "new-arrivals"]
+    newArrivals: () => [...KEYS.all, "new-arrivals"],
+    cart: (productIds: string[]) => [...KEYS.all, "cart", productIds]
 };
