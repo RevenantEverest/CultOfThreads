@@ -6,6 +6,7 @@
             "env": ["NEXT_PUBLIC_SUPABASE_URL", "NEXT_PUBLIC_SUPABASE_KEY"]
         },
         "build:entities": {
+            "dependsOn": ["^build"],
             "outputs": ["dist/**"]
         },
         "dev": {
