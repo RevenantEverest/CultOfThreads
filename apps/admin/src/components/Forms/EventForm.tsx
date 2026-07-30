@@ -1,4 +1,4 @@
-import type { Event, Market } from '@repo/supabase';
+import type { Event, Market } from '@repo/entities';
 
 import { FaLongArrowAltRight } from 'react-icons/fa';
 import dayjs from 'dayjs';
@@ -20,10 +20,10 @@ type EventValues = (
         keyof(
             Pick<
                 Event,
-                "market_id" |
+                "market" |
                 "address" |
-                "date_from" |
-                "date_to"
+                "dateFrom" |
+                "dateTo"
             >
         ),
         string
@@ -40,9 +40,11 @@ export interface EventFormProps {
     initialValues: EventFormValues,
     flyerUrl?: string | null,
     onSubmit: (values: EventFormValues) => Promise<void>,
+    nextPage: () => void,
+    isLoading?: boolean
 };
 
-function EventForm({ type, markets, initialValues, flyerUrl, onSubmit }: EventFormProps) {
+function EventForm({ type, markets, initialValues, flyerUrl, onSubmit, nextPage, isLoading }: EventFormProps) {
 
     const theme = useThemeStore((state) => state.theme);
 
@@ -92,14 +94,20 @@ function EventForm({ type, markets, initialValues, flyerUrl, onSubmit }: EventFo
                             </div>
                             <div className="w-full lg:w-90">
                                 <form.Field
-                                    name="market_id"
+                                    name="market"
                                     validators={{
                                         onChange: ({ value }) => (
                                             value === "" ? "Field is Required" : undefined
                                         )
                                     }}
                                     children={(field) => (
-                                        <MarketSelect value={field.state.value} markets={markets} onChange={(value) => field.handleChange(value)} />
+                                        <MarketSelect 
+                                            value={field.state.value} 
+                                            markets={markets} 
+                                            onChange={(value) => field.handleChange(value)}
+                                            nextPage={nextPage}
+                                            isLoading={isLoading}
+                                        />
                                     )}
                                 />
                             </div>
@@ -110,15 +118,15 @@ function EventForm({ type, markets, initialValues, flyerUrl, onSubmit }: EventFo
                                     <p className="font-bold">Date From</p>
                                     <div className="flex flex-col gap-5 bg-card-light px-4 rounded-lg pt-6 pb-3">
                                         <form.Field
-                                            name="date_from"
+                                            name="dateFrom"
                                             validators={{
-                                                onChangeListenTo: ["date_to"],
+                                                onChangeListenTo: ["dateTo"],
                                                 onChange: ({ value }) => {
                                                     if(value === "") {
                                                         return "Field Is Required";
                                                     }
 
-                                                    if(dayjs(value).isAfter(form.state.values.date_to)) {
+                                                    if(dayjs(value).isAfter(form.state.values.dateTo)) {
                                                         return "Date cannot be after column: Date To";
                                                     }
 
@@ -144,15 +152,15 @@ function EventForm({ type, markets, initialValues, flyerUrl, onSubmit }: EventFo
                                     <p className="font-bold">Date To</p>
                                     <div className="flex flex-col gap-5 bg-card-light px-4 rounded-lg pt-6 pb-3">
                                         <form.Field
-                                            name="date_to"
+                                            name="dateTo"
                                             validators={{
-                                                onChangeListenTo: ["date_from"],
+                                                onChangeListenTo: ["dateFrom"],
                                                 onChange: ({ value }) => {
                                                     if(value === "") {
                                                         return "Field Is Required";
                                                     }
 
-                                                    if(dayjs(value).isBefore(form.state.values.date_from)) {
+                                                    if(dayjs(value).isBefore(form.state.values.dateFrom)) {
                                                         return "Date cannot be before column: Date From";
                                                     }
 

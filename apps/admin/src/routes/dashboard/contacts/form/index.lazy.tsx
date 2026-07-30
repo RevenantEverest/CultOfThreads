@@ -3,17 +3,17 @@ import { createLazyFileRoute } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 
 import { BeatLoader } from 'react-spinners';
-import { useQuery } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 import { FiRefreshCcw } from 'react-icons/fi';
 
 import { ToastError, Button } from '@repo/ui';
 import { Layout, Breadcrumb } from '@@admin/components/Common';
-import { ContactFormSubmissionList } from '@@admin/components/Contacts';
 import Search from '@@admin/components/Search';
 
 import { useThemeStore } from '@@admin/store/theme';
-import { contactFormApi } from '@repo/supabase';
+import { contactForm } from '@repo/queries';
+import { useAuthStore } from '@@admin/store/auth';
+import { SubmissionsTable } from '@@admin/components/ContactFormSubmissions';
 
 export const Route = createLazyFileRoute('/dashboard/contacts/form/')({
     component: ContactForm,
@@ -22,13 +22,16 @@ export const Route = createLazyFileRoute('/dashboard/contacts/form/')({
 function ContactForm() {
 
     const theme = useThemeStore((state) => state.theme);
+    const auth = useAuthStore((state) => state.auth);
     const [search, setSearch] = useState("");
 
     const [refreshing, setRefreshing] = useState(false);
 
-    const query = useQuery({
-        queryKey: ["contact_form_submissions"],
-        queryFn: contactFormApi.fetchAll
+    const query = contactForm.hooks.useIndex({
+        authToken: auth.session?.accessToken ?? "",
+        pagination: {
+            limit: 10
+        }
     });
 
     useEffect(() => {
@@ -36,9 +39,15 @@ function ContactForm() {
 
         console.error(query.error);
         toast((t) => (
-            <ToastError toast={t} message={"Error fetching traffic analytics"} />
+            <ToastError toast={t} message={"Error fetching Contact Form Submissions"} />
         ));
     }, [query.isError, query.error]);
+
+    const nextPage = () => {
+        if(!query.hasNextPage) return;
+
+        query.fetchNextPage();
+    };
 
     return(
         <Layout className="">
@@ -52,7 +61,7 @@ function ContactForm() {
                     ]}
                 />
             </div>
-            <div className="mt-15 flex flex-col gap-5">
+            <div className="mt-15 flex flex-col gap-5 pb-20">
                 <div className="flex">
                     <div className="w-full">
                         <Search setSearch={setSearch} />
@@ -83,16 +92,15 @@ function ContactForm() {
                         </Button>
                     </div>
                 </div>
-                {
-                    query.isLoading ?
-                    <BeatLoader
-                        className="flex flex-1 items-center justify-center mt-10"
-                        size={15}
-                        color={theme.colors.primary}
-                    />
-                    :
-                    <ContactFormSubmissionList search={search} submissions={query.data ?? []} />
-                }
+                <SubmissionsTable 
+                    submissions={
+                        query.data?.pages.flatMap((page) => page.results) ?? []
+                    } 
+                    dataAmount={query.data?.pages[0] && query.data.pages[0].count}
+                    search={search} 
+                    isLoading={query.isLoading || query.isFetching || !query.data}
+                    nextPage={nextPage}
+                />
             </div>
         </Layout>
     );

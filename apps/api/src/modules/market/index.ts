@@ -1,0 +1,1 @@
+export { default as marketRoutes } from './market.routes';

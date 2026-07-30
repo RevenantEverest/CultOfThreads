@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
     /* config options here */
-    transpilePackages: ['@repo/supabase'], 
+    transpilePackages: ['@repo/entities'], 
     images: {
         remotePatterns: [
             {

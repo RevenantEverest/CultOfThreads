@@ -1,4 +1,4 @@
-import type { Contact } from '@repo/supabase';
+import type { Contact } from '@repo/entities';
 
 import { 
     Button,
@@ -17,9 +17,10 @@ import { FaTrashCan } from 'react-icons/fa6';
 import { FaTimes } from 'react-icons/fa';
 import { AnimatePresence, motion } from 'motion/react';
 
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
+import { useAuthStore } from '@@admin/store/auth';
 
-import { contactApi } from '@repo/supabase';
+import { contacts } from '@repo/queries';
 
 interface RemoveContactProps {
     contact: Contact
@@ -27,25 +28,23 @@ interface RemoveContactProps {
 
 function RemoveContact({ contact }: RemoveContactProps) {
 
+    const auth = useAuthStore((state) => state.auth);
+
     const queryClient = useQueryClient();
-    const mutation = useMutation({
-        mutationFn: contactApi.destroy,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["contacts"] });
-        }
-    });
+    const mutation = contacts.hooks.useDestroy(queryClient);
 
     const removeContact = async () => {
         try {
-            await mutation.mutateAsync(contact.id);
+            await mutation.mutateAsync({
+                authToken: auth.session?.accessToken ?? "",
+                id: contact.id
+            });
 
             toast((t) => (
                 <ToastSuccess toast={t} message={"Contact removed!"} />
             ));
         }
-        catch(error) {
-            console.error("Mutation Error", error);
-
+        catch {
             toast((t) => (
                 <ToastError toast={t} message={"Error deleting Contact"} />
             ));
@@ -80,7 +79,7 @@ function RemoveContact({ contact }: RemoveContactProps) {
                                         Are you sure you want to delete this contact for 
                                         <br />
                                         <span className="text-primary font-bold ml-1">
-                                            {(contact.first_name ?? "") + " " + (contact.last_name ?? "")}
+                                            {(contact.firstName ?? "") + " " + (contact.lastName ?? "")}
                                         </span>?
                                     </DialogTitle>
                                     <div className="flex gap-2 items-center justify-center">

@@ -1,8 +1,8 @@
-import type { Tag } from '@repo/supabase';
+import type { Tag } from '@repo/entities';
 import type { TagFormValues } from '@@admin/components/Forms/TagForm';
 
 import { useState } from 'react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { AnimatePresence, motion } from 'motion/react';
 import { FaPencil } from 'react-icons/fa6';
 import { toast } from 'react-hot-toast';
@@ -15,9 +15,10 @@ import {
     ToastError,
     ToastSuccess
 } from '@repo/ui';
-import { tagApi } from '@repo/supabase';
 
 import TagForm from '@@admin/components/Forms/TagForm';
+import { tags } from '@repo/queries';
+import { useAuthStore } from '@@admin/store/auth';
 
 interface EditTagProps {
     tag: Tag
@@ -25,23 +26,22 @@ interface EditTagProps {
 
 function EditTag({ tag }: EditTagProps) {
 
+    const auth = useAuthStore((state) => state.auth);
     const [visible, setVisible] = useState(false);
     
     const queryClient = useQueryClient();
-    const mutation = useMutation({
-        mutationFn: tagApi.update,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["tags"] });
-        }
-    });
+    const mutation = tags.hooks.useUpdate(queryClient);
 
     const initialValues: TagFormValues = tag;
 
     const onSubmit = async (values: TagFormValues) => {
         try {
             await mutation.mutateAsync({
-                ...tag,
-                name: values.name
+                authToken: auth.session?.accessToken ?? "",
+                id: tag.id,
+                payload: {
+                    name: values.name
+                }
             });
 
             toast((t) => (
@@ -50,8 +50,7 @@ function EditTag({ tag }: EditTagProps) {
 
             setVisible(false);
         }
-        catch(error) {
-            console.error(error);
+        catch {
             toast((t) => (
                 <ToastError toast={t} message={"Error updating Tag"} />
             ));

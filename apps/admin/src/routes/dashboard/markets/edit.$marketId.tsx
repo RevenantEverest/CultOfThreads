@@ -1,18 +1,24 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 
 import { ToastSuccess, ToastError } from '@repo/ui';
-import { Layout, Breadcrumb } from '@@admin/components/Common';
+import { Layout, Breadcrumb, Spinner } from '@@admin/components/Common';
 import MarketForm, { MarketFormValues } from '@@admin/components/Forms/MarketForm';
 
-import { marketApi } from '@repo/supabase';
+import { useAuthStore } from '@@admin/store/auth';
+
+import { markets } from '@repo/queries';
 
 export const Route = createFileRoute('/dashboard/markets/edit/$marketId')({
     loader: ({ context, params }) => {
-        context.queryClient.prefetchQuery({
-            queryKey: ["markets", params.marketId],
-            queryFn: () => marketApi.fetchById(params.marketId)
+        const authToken = useAuthStore.getState().auth.session;
+
+        if(!authToken?.accessToken) return;
+
+        markets.hooks.usePrefetchGetOne(context.queryClient, {
+            id: params.marketId,
+            authToken: authToken.accessToken
         });
     },
     component: EditMarket,
@@ -21,42 +27,28 @@ export const Route = createFileRoute('/dashboard/markets/edit/$marketId')({
 function EditMarket() {
 
     const params = Route.useParams();
+    const auth = useAuthStore((state) => state.auth);
     const navigate = useNavigate();
 
-    const { data } = useSuspenseQuery({ 
-        queryKey: ["markets", params.marketId],
-        queryFn: () => marketApi.fetchById(params.marketId)
-    });
-
     const queryClient = useQueryClient();
-    const mutation = useMutation({
-        mutationFn: marketApi.update,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["markets"] });
-        }
+    const { data, isLoading } = markets.hooks.useGetOne({
+        id: params.marketId,
+        authToken: auth.session?.accessToken ?? ""
     });
 
-    const initialValues: MarketFormValues = {
-        name: data.name,
-        state: data.details?.state ?? ""
-    };
+    const mutation = markets.hooks.useUpdate(queryClient);
 
     const onSubmit = async (values: MarketFormValues) => {
 
         try {
-            if(!data.details) {
-                throw new Error("Missing Market Details");
-            }
-
             await mutation.mutateAsync({
-                id: data.id,
-                name: values.name,
-                details: {
-                    ...data.details,
+                id: data?.results.id as string,
+                authToken: auth.session?.accessToken ?? "",
+                payload: {
+                    name: values.name,
                     state: values.state,
-                },
-                created_at: data.created_at,
-                image: values.image
+                    file: values.image
+                }
             });
 
             toast((t) => (
@@ -78,7 +70,7 @@ function EditMarket() {
             <div className="flex flex-col gap-3">
                 <div className="flex items-center gap-4">
                     <h1 className="text-4xl font-bold">
-                        {data.name}
+                        {data?.results.name}
                     </h1>
                 </div>
                 <Breadcrumb
@@ -90,12 +82,19 @@ function EditMarket() {
                 />
             </div>
             <div className="my-20">
-                <MarketForm
-                    type="update"
-                    initialValues={initialValues}
-                    logoUrl={data.details?.logo_url}
-                    onSubmit={onSubmit}
-                />
+                {
+                    isLoading ? 
+                    <Spinner /> :
+                    <MarketForm
+                        type="update"
+                        initialValues={{
+                            name: data?.results.name ?? "",
+                            state: data?.results.details?.state ?? ""
+                        }}
+                        logoUrl={data?.results.details.logoUrl}
+                        onSubmit={onSubmit}
+                    />
+                }
             </div>
         </Layout>
     );

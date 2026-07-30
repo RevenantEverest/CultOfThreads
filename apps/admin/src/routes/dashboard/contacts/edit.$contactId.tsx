@@ -1,20 +1,25 @@
 import type { ContactFormValues } from '@@admin/components/Forms/ContactForm';
 
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 
 import { ToastSuccess, ToastError } from '@repo/ui';
 import { Layout, Breadcrumb } from '@@admin/components/Common';
 import ContactForm from '@@admin/components/Forms/ContactForm';
 
-import { contactApi } from '@repo/supabase';
+import { contacts } from '@repo/queries';
+import { useAuthStore } from '@@admin/store/auth';
 
 export const Route = createFileRoute('/dashboard/contacts/edit/$contactId')({
     loader: ({ context, params }) => {
-        context.queryClient.prefetchQuery({
-            queryKey: ["contact", params.contactId],
-            queryFn: () => contactApi.fetchById(params.contactId)
+        const authToken = useAuthStore.getState().auth.session;
+
+        if(!authToken?.accessToken) return;
+
+        contacts.hooks.usePrefetchGetOne(context.queryClient, { 
+            id: params.contactId,
+            authToken: authToken.accessToken
         });
     },
     component: EditContact,
@@ -23,35 +28,34 @@ export const Route = createFileRoute('/dashboard/contacts/edit/$contactId')({
 function EditContact() {
 
     const params = Route.useParams();
+    const auth = useAuthStore((state) => state.auth);
     const navigate = useNavigate();
 
-    const { data } = useSuspenseQuery({ 
-        queryKey: ["contacts", params.contactId],
-        queryFn: () => contactApi.fetchById(params.contactId)
+    const { data } = contacts.hooks.useGetOne({
+        id: params.contactId,
+        authToken: auth.session?.accessToken ?? ""
     });
 
     const queryClient = useQueryClient();
-    const mutation = useMutation({
-        mutationFn: contactApi.update,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["contacts"] });
-        }
-    });
+    const mutation = contacts.hooks.useUpdate(queryClient);
 
     const initialValues: ContactFormValues = {
-        first_name: data.first_name ?? "",
-        last_name: data.last_name ?? "",
-        email: data.email ?? "",
-        phone: data.phone ?? "",
-        address: data.address ?? ""
+        firstName: data?.results.firstName ?? "",
+        lastName: data?.results.lastName ?? "",
+        email: data?.results.email ?? "",
+        phone: data?.results.phone ?? "",
+        address: data?.results.address ?? ""
     };
 
     const onSubmit = async (values: ContactFormValues) => {
         try {
             await mutation.mutateAsync({
-                id: data.id,
-                ...values,
-                email: values.email.toLowerCase()
+                id: params.contactId,
+                authToken: auth.session?.accessToken ?? "",
+                payload: {
+                    ...values,
+                    email: values.email.toLowerCase()
+                }
             });
 
             toast((t) => (
@@ -60,8 +64,7 @@ function EditContact() {
 
             navigate({ to: "/dashboard/contacts" });
         }
-        catch(error) {
-            console.error(error);
+        catch {
             toast((t) => (
                 <ToastError toast={t} message="Error updating Contact" />
             ));
@@ -73,7 +76,7 @@ function EditContact() {
             <div className="flex flex-col gap-3">
                 <div className="flex items-center gap-4">
                     <h1 className="text-4xl font-bold">
-                        {(data.first_name ?? "") + " " + (data.last_name ?? "")}
+                        {(data?.results.firstName ?? "") + " " + (data?.results.lastName ?? "")}
                     </h1>
                 </div>
                 <Breadcrumb

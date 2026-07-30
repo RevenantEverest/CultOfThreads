@@ -2,25 +2,22 @@
 
 import type { ContactFormValues } from '@@shop/components/Forms/ContactForm';
 
-import { useMutation } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast'
 
 import { ToastError, ToastSuccess } from '@repo/ui';
 import ContactForm from '@@shop/components/Forms/ContactForm';
 
-import { contactFormApi } from '@repo/supabase';
+import { contactForm } from '@repo/queries';
 
 function ContactContainer() {
 
-    const mutation = useMutation({
-        mutationFn: contactFormApi.create
-    });
+    const { mutateAsync } = contactForm.hooks.useCreateSubmission();
 
     const onSubmit = async (values: ContactFormValues) => {
         try {
-            await mutation.mutateAsync({
-                first_name: values.firstName,
-                last_name: values.lastName,
+            await mutateAsync({
+                firstName: values.firstName,
+                lastName: values.lastName,
                 email: values.email,
                 message: values.message
             });

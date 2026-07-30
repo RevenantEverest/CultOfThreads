@@ -1,4 +1,4 @@
-import type { EventWithMarket } from '@repo/supabase';
+import type { Event } from '@repo/entities';
 
 import { 
     Button,
@@ -17,27 +17,28 @@ import { FaTrashCan } from 'react-icons/fa6';
 import { FaTimes } from 'react-icons/fa';
 import { AnimatePresence, motion } from 'motion/react';
 
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 
-import { eventsApi } from '@repo/supabase';
+import { useAuthStore } from '@@admin/store/auth';
+import { events } from '@repo/queries';
 
 interface RemoveEventProps {
-    event: EventWithMarket
+    event: Event
 };
 
 function RemoveEvent({ event }: RemoveEventProps) {
 
+    const auth = useAuthStore((state) => state.auth);
+
     const queryClient = useQueryClient();
-    const mutation = useMutation({
-        mutationFn: eventsApi.destroy,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["events"] });
-        }
-    });
+    const mutation = events.hooks.useDestroy(queryClient);
 
     const removeEvent = async () => {
         try {
-            await mutation.mutateAsync(event);
+            await mutation.mutateAsync({
+                id: event.id,
+                authToken: auth.session?.accessToken ?? ""
+            });
 
             toast((t) => (
                 <ToastSuccess toast={t} message={"Event removed!"} />

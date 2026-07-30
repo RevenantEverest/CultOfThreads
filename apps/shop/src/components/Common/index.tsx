@@ -9,3 +9,5 @@ export { default as DropdownItem } from './Dropdown/DropdownItem';
 
 export { default as Image } from './Image';
 export { default as Sparkle } from './Sparkle';
+
+export { default as Spinner } from './Spinner';

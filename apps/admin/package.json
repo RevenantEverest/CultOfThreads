@@ -10,16 +10,18 @@
     "lint": "eslint . --max-warnings 0"
   },
   "dependencies": {
+    "@repo/entities": "workspace:*",
+    "@repo/queries": "workspace:*",
     "@repo/ui": "workspace:*",
     "@repo/supabase": "workspace:*",
-    "@tanstack/react-router": "^1.120.15",
+    "@tanstack/react-router": "^1.168.18",
     "slate": "^0.117.2",
-    "slate-react": "^0.117.3"
+    "slate-react": "^0.117.4"
   },
   "devDependencies": {
     "@repo/tailwind-config": "workspace:*",
-    "@tanstack/react-router-devtools": "^1.120.15",
-    "@tanstack/router-vite-plugin": "^1.120.15",
-    "@vitejs/plugin-react-swc": "^4.1.0"
+    "@tanstack/react-router-devtools": "^1.166.13",
+    "@tanstack/router-vite-plugin": "^1.166.33",
+    "@vitejs/plugin-react-swc": "^4.3.0"
   }
 }

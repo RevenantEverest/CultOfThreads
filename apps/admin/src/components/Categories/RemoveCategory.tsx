@@ -1,5 +1,9 @@
-import type { Category } from '@repo/supabase';
+import type { Category } from '@repo/entities';
 
+import { toast } from 'react-hot-toast';
+import { FaTrashCan } from 'react-icons/fa6';
+import { FaTimes } from 'react-icons/fa';
+import { AnimatePresence, motion } from 'motion/react';
 import { 
     Button,
     Card,
@@ -12,14 +16,11 @@ import {
     ToastError,
     ToastSuccess
 } from '@repo/ui';
-import { toast } from 'react-hot-toast';
-import { FaTrashCan } from 'react-icons/fa6';
-import { FaTimes } from 'react-icons/fa';
-import { AnimatePresence, motion } from 'motion/react';
 
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 
-import { categoryApi } from '@repo/supabase';
+import { categories } from '@repo/queries';
+import { useAuthStore } from '@@admin/store/auth';
 
 interface RemoveCategoryProps {
     category: Category
@@ -27,25 +28,23 @@ interface RemoveCategoryProps {
 
 function RemoveCategory({ category }: RemoveCategoryProps) {
 
+    const auth = useAuthStore((state) => state.auth);
+
     const queryClient = useQueryClient();
-    const mutation = useMutation({
-        mutationFn: categoryApi.destroy,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["categories"] });
-        }
-    });
+    const mutation = categories.hooks.useDestroy(queryClient);
 
     const removeEvent = async () => {
         try {
-            await mutation.mutateAsync(category);
+            await mutation.mutateAsync({
+                authToken: auth.session?.accessToken ?? "",
+                id: category.id
+            });
 
             toast((t) => (
                 <ToastSuccess toast={t} message={"Category removed!"} />
             ));
         }
-        catch(error) {
-            console.error("Mutation Error", error);
-
+        catch {
             toast((t) => (
                 <ToastError toast={t} message={"Error deleting Category"} />
             ));

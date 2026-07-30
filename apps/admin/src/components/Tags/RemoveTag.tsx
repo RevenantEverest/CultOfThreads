@@ -1,4 +1,4 @@
-import type { Tag } from '@repo/supabase';
+import type { Tag } from '@repo/entities';
 
 import { 
     Button,
@@ -17,9 +17,10 @@ import { FaTrashCan } from 'react-icons/fa6';
 import { FaTimes } from 'react-icons/fa';
 import { AnimatePresence, motion } from 'motion/react';
 
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 
-import { tagApi } from '@repo/supabase';
+import { useAuthStore } from '@@admin/store/auth';
+import { tags } from '@repo/queries';
 
 interface RemoveTagProps {
     tag: Tag
@@ -27,17 +28,17 @@ interface RemoveTagProps {
 
 function RemoveTag({ tag }: RemoveTagProps) {
 
+    const auth = useAuthStore((state) => state.auth);
+
     const queryClient = useQueryClient();
-    const mutation = useMutation({
-        mutationFn: tagApi.destroy,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["tags"] });
-        }
-    });
+    const mutation = tags.hooks.useDestroy(queryClient);
 
     const removeEvent = async () => {
         try {
-            await mutation.mutateAsync(tag);
+            await mutation.mutateAsync({
+                id: tag.id,
+                authToken: auth.session?.accessToken ?? ""
+            });
 
             toast((t) => (
                 <ToastSuccess toast={t} message={"Tag removed!"} />

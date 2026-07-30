@@ -1,4 +1,4 @@
-import type { Product } from '@repo/supabase';
+import type { Product } from '@repo/entities';
 
 import { 
     Button,
@@ -17,9 +17,10 @@ import { FaTrashCan } from 'react-icons/fa6';
 import { FaTimes } from 'react-icons/fa';
 import { AnimatePresence, motion } from 'motion/react';
 
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 
-import { productApi } from '@repo/supabase';
+import { products } from '@repo/queries';
+import { useAuthStore } from '@@admin/store/auth';
 
 interface RemoveProductProps {
     product: Product
@@ -27,17 +28,17 @@ interface RemoveProductProps {
 
 function RemoveProduct({ product }: RemoveProductProps) {
 
+    const auth = useAuthStore((state) => state.auth);
+
     const queryClient = useQueryClient();
-    const mutation = useMutation({
-        mutationFn: productApi.destroy,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["products"] });
-        }
-    });
+    const mutation = products.hooks.useDestroy(queryClient);
 
     const removeProduct = async () => {
         try {
-            await mutation.mutateAsync(product.id);
+            await mutation.mutateAsync({
+                id: product.id,
+                authToken: auth.session?.accessToken ?? ""
+            });
 
             toast((t) => (
                 <ToastSuccess toast={t} message={"Product removed!"} />

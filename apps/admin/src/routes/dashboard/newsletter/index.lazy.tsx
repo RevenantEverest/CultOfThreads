@@ -3,17 +3,18 @@ import { createLazyFileRoute } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 
 import { BeatLoader } from 'react-spinners';
-import { useQuery } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 import { FiRefreshCcw } from 'react-icons/fi';
 
 import { ToastError, Button } from '@repo/ui';
 import { Layout, Breadcrumb } from '@@admin/components/Common';
-import { NewsletterList } from '@@admin/components/Newsletter';
+import SignUpsTable from '@@admin/components/Newsletter/SignUpsTable';
 import Search from '@@admin/components/Search';
 
 import { useThemeStore } from '@@admin/store/theme';
-import { newsletterApi } from '@repo/supabase';
+import { useAuthStore } from '@@admin/store/auth';
+
+import { newsletter } from '@repo/queries';
 
 export const Route = createLazyFileRoute('/dashboard/newsletter/')({
     component: ContactForm,
@@ -22,13 +23,15 @@ export const Route = createLazyFileRoute('/dashboard/newsletter/')({
 function ContactForm() {
 
     const theme = useThemeStore((state) => state.theme);
+    const auth = useAuthStore((state) => state.auth);
     const [search, setSearch] = useState("");
 
     const [refreshing, setRefreshing] = useState(false);
-
-    const query = useQuery({
-        queryKey: ["newsletter"],
-        queryFn: newsletterApi.fetchAll
+    const query = newsletter.hooks.useIndex({
+        authToken: auth.session?.accessToken ?? "",
+        pagination: {
+            page: 1, limit: 10
+        }
     });
 
     useEffect(() => {
@@ -39,6 +42,12 @@ function ContactForm() {
             <ToastError toast={t} message={"Error fetching newsletter sign ups"} />
         ));
     }, [query.isError, query.error]);
+
+    const nextPage = () => {
+        if(!query.hasNextPage) return;
+
+        query.fetchNextPage();
+    };
 
     return(
         <Layout className="">
@@ -82,16 +91,13 @@ function ContactForm() {
                         </Button>
                     </div>
                 </div>
-                {
-                    query.isLoading ?
-                    <BeatLoader
-                        className="flex flex-1 items-center justify-center mt-10"
-                        size={15}
-                        color={theme.colors.primary}
-                    />
-                    :
-                    <NewsletterList search={search} submissions={query.data ?? []} />
-                }
+                <SignUpsTable
+                    signUps={query.data?.pages.flatMap((page) => page.results) ?? []}
+                    dataAmount={query.data?.pages[0] && query.data.pages[0].count}
+                    search={search}
+                    isLoading={query.isLoading || query.isFetching || !query.data}
+                    nextPage={nextPage}
+                />
             </div>
         </Layout>
     );

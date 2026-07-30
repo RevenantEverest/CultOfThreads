@@ -1,0 +1,1 @@
+export { default as trafficAnalyticRoutes } from './trafficAnalytics.routes';

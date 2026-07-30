@@ -16,6 +16,7 @@ import ThemeHandler from '@@shop/components/ThemeHandler';
 import Providers from '@@shop/Providers';
 import UtmParser from '@@shop/components/UtmParser';
 import ScrollToTopOnNavigate from '@@shop/components/ScrollToTopOnNavigate';
+import { Cart } from '@@shop/components/Cart';
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -55,6 +56,7 @@ export default function RootLayout({ children, }: Readonly<{
                             flickerSpeed="slowest"
                         />
                     </div>
+                    <Cart />
                     <AnimatePresence mode="popLayout">
                         {children}
                     </AnimatePresence>

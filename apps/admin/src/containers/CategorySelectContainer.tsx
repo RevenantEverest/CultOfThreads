@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { BeatLoader } from 'react-spinners';
-import { useQuery } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 
 import { Card, CardContent, ToastError } from '@repo/ui';
@@ -8,8 +7,9 @@ import { Card, CardContent, ToastError } from '@repo/ui';
 import { useThemeStore } from '@@admin/store/theme';
 import CategorySelect from '@@admin/components/Categories/CategorySelect';
 
-import { categoryApi } from '@repo/supabase';
 import { FaTimesCircle } from 'react-icons/fa';
+import { useAuthStore } from '@@admin/store/auth';
+import { categories } from '@repo/queries';
 
 
 interface CategorySelectContainerProps {
@@ -19,10 +19,13 @@ interface CategorySelectContainerProps {
 
 function CategorySelectContainer({ values, onChange }: CategorySelectContainerProps) {
 
+    const auth = useAuthStore((state) => state.auth);
     const theme = useThemeStore((state) => state.theme);
-    const query = useQuery({
-        queryKey: ["categories"],
-        queryFn: categoryApi.fetchAll
+    const query = categories.hooks.useIndex({
+        authToken: auth.session?.accessToken ?? "",
+        pagination: {
+            limit: 10
+        }
     });
 
     useEffect(() => {
@@ -38,6 +41,12 @@ function CategorySelectContainer({ values, onChange }: CategorySelectContainerPr
         onChange(value);
     };
 
+    const nextPage = () => {
+        if(!query.hasNextPage) return;
+
+        query.fetchNextPage();
+    };
+
     return(
         <div className="w-full flex flex-col gap-3">
             {
@@ -49,16 +58,20 @@ function CategorySelectContainer({ values, onChange }: CategorySelectContainerPr
                 />
                 :
                 <CategorySelect 
-                    categories={query.data ?? []}
+                    categories={
+                        query.data?.pages.flatMap((page) => page.results) ?? []
+                    }
                     pCategoryIds={values}
                     onChange={handleCategoryAdd}
+                    nextPage={nextPage}
+                    isLoading={query.isLoading || query.isFetching || !query.data}
                 />
             }
             <Card className="bg-card-light border-none flex items-center justify-center py-5 pb-0">
                 <CardContent className="flex gap-3 flex-wrap items-center justify-center w-full">
                     {
                         values.map((item) => {
-                            const data = query.data ?? [];
+                            const data = query.data?.pages.flatMap((page) => page.results) ?? [];
                             const category = data.filter((c) => c.id === item);
 
                             return(

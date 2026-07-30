@@ -1,7 +1,7 @@
 import type { ContactFormValues } from '@@admin/components/Forms/ContactForm';
 
 import { createLazyFileRoute } from '@tanstack/react-router';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from '@tanstack/react-router';
 import { ToastSuccess, ToastError } from '@repo/ui';
@@ -9,7 +9,8 @@ import { ToastSuccess, ToastError } from '@repo/ui';
 import { Layout, Breadcrumb } from '@@admin/components/Common';
 import ContactForm from '@@admin/components/Forms/ContactForm';
 
-import { contactApi } from '@repo/supabase';
+import { contacts } from '@repo/queries';
+import { useAuthStore } from '@@admin/store/auth';
 
 export const Route = createLazyFileRoute('/dashboard/contacts/add')({
     component: AddContact,
@@ -17,19 +18,15 @@ export const Route = createLazyFileRoute('/dashboard/contacts/add')({
 
 function AddContact() {
 
+    const auth = useAuthStore((state) => state.auth);
     const navigate = useNavigate();
 
     const queryClient = useQueryClient();
-    const mutation = useMutation({
-        mutationFn: contactApi.create,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["contacts"] })
-        }
-    });
+    const mutation = contacts.hooks.useCreate(queryClient);
 
     const initialValues: ContactFormValues = {
-        first_name: "",
-        last_name: "",
+        firstName: "",
+        lastName: "",
         email: "",
         phone: "",
         address: ""
@@ -38,8 +35,11 @@ function AddContact() {
     const onSubmit = async (values: ContactFormValues) => {
         try {
             await mutation.mutateAsync({
-                ...values,
-                email: values.email.toLowerCase()
+                authToken: auth.session?.accessToken ?? "",
+                payload: {
+                    ...values,
+                    email: values.email.toLowerCase()
+                }
             });
 
             toast((t) => (
@@ -48,8 +48,7 @@ function AddContact() {
 
             navigate({ to: "/dashboard/contacts" });
         }
-        catch(error) {
-            console.error(error);
+        catch {
             toast((t) => (
                 <ToastError toast={t} message="Error creating Contact" />
             ));

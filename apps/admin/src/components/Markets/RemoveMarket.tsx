@@ -1,5 +1,4 @@
-import type { MarketWithDetails } from '@repo/supabase';
-
+import type { Market } from '@repo/entities';
 import { 
     Button,
     Card,
@@ -17,27 +16,28 @@ import { FaTrashCan } from 'react-icons/fa6';
 import { FaTimes } from 'react-icons/fa';
 import { AnimatePresence, motion } from 'motion/react';
 
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 
-import { marketApi } from '@repo/supabase';
+import { markets } from '@repo/queries';
+import { useAuthStore } from '@@admin/store/auth';
 
 interface RemoveMarketProps {
-    market: MarketWithDetails
+    market: Market
 };
 
 function RemoveMarket({ market }: RemoveMarketProps) {
 
+    const auth = useAuthStore((state) => state.auth);
+
     const queryClient = useQueryClient();
-    const mutation = useMutation({
-        mutationFn: marketApi.destroy,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["markets"] });
-        }
-    });
+    const mutation = markets.hooks.useDestroy(queryClient);
 
     const removeMarket = async () => {
         try {
-            await mutation.mutateAsync(market);
+            await mutation.mutateAsync({
+                id: market.id,
+                authToken: auth.session?.accessToken ?? ""
+            });
 
             toast((t) => (
                 <ToastSuccess toast={t} message={"Market removed!"} />

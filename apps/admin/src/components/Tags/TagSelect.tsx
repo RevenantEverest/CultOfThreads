@@ -1,32 +1,24 @@
-import type { Tag } from '@repo/supabase';
+import type { Tag } from '@repo/entities';
 
-import { 
+import {
+    FlatList,
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue
 } from '@repo/ui';
+import { Spinner } from '@@admin/components/Common';
 
 interface TagSelectProps {
     tags: Tag[],
     pTagIds: string[],
-    onChange: (value: string) => void 
+    onChange: (value: string) => void,
+    nextPage: () => void,
+    isLoading?: boolean
 };
 
-function TagSelect({ tags, pTagIds, onChange }: TagSelectProps) {
-
-    const renderTags = () => {
-        return tags.map((tag) => (
-            <SelectItem 
-                key={`tag-select-${tag.name}`}
-                value={tag.id}
-                disabled={pTagIds.includes(tag.id)}
-            >
-                {tag.name}
-            </SelectItem>
-        ));
-    };
+function TagSelect({ tags, pTagIds, onChange, nextPage, isLoading }: TagSelectProps) {
 
     return(
         <div className="w-full">
@@ -36,7 +28,22 @@ function TagSelect({ tags, pTagIds, onChange }: TagSelectProps) {
                     <SelectValue placeholder="Choose A Tag" />
                 </SelectTrigger>
                 <SelectContent className="font-semibold">
-                    {renderTags()}
+                    <FlatList
+                        keyExtractor={(item: Tag) => item.id}
+                        data={tags}
+                        renderItem={({ item, key }) => (
+                            <SelectItem 
+                                key={key}
+                                value={item.id}
+                                disabled={pTagIds.includes(item.id)}
+                            >
+                                {item.name}
+                            </SelectItem>
+                        )}
+                        onEndReached={nextPage}
+                        renderLoading={() => <Spinner />}
+                        isLoading={isLoading}
+                    />
                 </SelectContent>
             </Select>
         </div>

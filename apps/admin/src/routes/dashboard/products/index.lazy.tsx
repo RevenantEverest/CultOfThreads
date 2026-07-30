@@ -1,18 +1,17 @@
 import { createLazyFileRoute } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 
-import { BeatLoader } from 'react-spinners';
-import { useQuery } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 
 import { Layout, Breadcrumb } from '@@admin/components/Common';
 import { ToastError } from '@repo/ui';
 
-import { AddProduct, ProductsList, ProductSettingsButton } from '@@admin/components/Products';
-import { useThemeStore } from '@@admin/store/theme';
+import { AddProduct, ProductSettingsButton, ProductsTable } from '@@admin/components/Products';
 import Search from '@@admin/components/Search';
 
-import { productApi } from '@repo/supabase';
+import { useAuthStore } from '@@admin/store/auth';
+
+import { products } from '@repo/queries';
 
 export const Route = createLazyFileRoute('/dashboard/products/')({
     component: DashboardProducts,
@@ -20,9 +19,15 @@ export const Route = createLazyFileRoute('/dashboard/products/')({
 
 function DashboardProducts() {
 
-    const theme = useThemeStore((state) => state.theme);
+    const auth = useAuthStore((state) => state.auth);
 
-    const query = useQuery({ queryKey: ['products'], queryFn: productApi.fetchListings });
+    const query = products.hooks.useIndex({
+        authToken: auth.session?.accessToken ?? "",
+        pagination: {
+            limit: 10
+        }
+    });
+
     const [search, setSearch] = useState("");
 
     useEffect(() => {
@@ -33,6 +38,12 @@ function DashboardProducts() {
             <ToastError toast={t} message={"Error fetching products"} />
         ));
     }, [query.isError, query.error]);
+
+    const nextPage = () => {
+        if(!query.hasNextPage) return;
+
+        query.fetchNextPage();
+    };
 
     return(
         <Layout className="pb-20">
@@ -55,16 +66,15 @@ function DashboardProducts() {
                         <ProductSettingsButton />
                     </div>
                 </div>
-                {
-                    query.isLoading ?
-                    <BeatLoader
-                        className="flex flex-1 items-center justify-center mt-10"
-                        size={15}
-                        color={theme.colors.primary}
-                    />
-                    :
-                    <ProductsList search={search} products={query.data ?? []} />
-                }
+                <ProductsTable
+                    products={
+                        query.data?.pages.flatMap((page) => page.results) ?? []
+                    } 
+                    dataAmount={query.data?.pages[0] && query.data.pages[0].count}
+                    search={search} 
+                    isLoading={query.isLoading || query.isFetching || !query.data}
+                    nextPage={nextPage}
+                />
             </div>
         </Layout>
     );

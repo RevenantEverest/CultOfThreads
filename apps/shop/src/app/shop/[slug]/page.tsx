@@ -5,9 +5,9 @@ import { Product } from '@@shop/components/Products';
 import { Layout } from '@@shop/components/Common';
 import Newsletter from '@@shop/components/Newsletter';
 
-import { productApi } from '@repo/supabase';
 import { URLS } from '@@shop/constants';
 import { json, text } from '@@shop/utils';
+import { products } from '@repo/queries';
 
 export const viewport: Viewport = {
     themeColor: "#FB5377"
@@ -25,21 +25,21 @@ interface SingleProductProps {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
     try {
         const { slug } = await params;
+
         const queryClient = new QueryClient();
-        const data = await queryClient.fetchQuery({
-            queryKey: ["products", slug],
-            queryFn: () => productApi.fetchActiveListingById(slug)
+        const { results } = await products.hooks.useFetchGetOnePublic(queryClient, {
+            id: slug
         });
 
-        const description = json.richTextToString(data.description as string);
+        const description = json.richTextToString(results.description as string);
 
         return {
-            title: `Cult of Threads | ${data.name}`,
+            title: `Cult of Threads | ${results.name}`,
             description: text.truncate(description),
             openGraph: {
                 siteName: "Cult of Threads",
                 url: `https://cultofthreads.com/shop/${slug}`,
-                images: [URLS.SUPABASE_STORAGE + data.media?.[0]?.media_url]
+                images: [URLS.SUPABASE_STORAGE + results.media?.[0]?.mediaUrl]
             }
         };
     }
@@ -54,10 +54,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 async function SingleProduct({ params }: SingleProductProps) {
 
     const { slug } = await params;
+
     const queryClient = new QueryClient();
-    await queryClient.prefetchQuery({
-        queryKey: ["products", slug],
-        queryFn: () => productApi.fetchActiveListingById(slug)
+    products.hooks.usePrefetchGetOnePublic(queryClient, {
+        id: slug
     });
 
     return(

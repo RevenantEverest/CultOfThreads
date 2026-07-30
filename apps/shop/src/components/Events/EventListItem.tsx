@@ -1,6 +1,6 @@
 "use client"
 
-import type { EventWithMarket } from '@repo/supabase';
+import type { Event } from '@repo/entities';
 
 import { useState } from 'react';
 import posthog from 'posthog-js';
@@ -20,7 +20,7 @@ import { URLS } from '@@shop/constants';
 import EventBadges from './EventBadges';
 
 interface EventListItemProps {
-    event: EventWithMarket
+    event: Event
 };
 
 dayjs.extend(utc);
@@ -32,14 +32,14 @@ function EventListItem({ event }: EventListItemProps) {
     const [open, setOpen] = useState(false);
     const copier = useCopyToClipboard();
 
-    const flyerUrl = URLS.SUPABASE_STORAGE + event.flyer_url;
+    const flyerUrl = URLS.SUPABASE_STORAGE + event.flyerUrl;
 
-    const dateFromDate = dayjs(event.date_from).tz(dayjs.tz.guess()).format("MMMM Do, YYYY");
-    const dateFromTime = dayjs(event.date_from).tz(dayjs.tz.guess()).format("h:mm A");
-    const dateToTime = dayjs(event.date_to).tz(dayjs.tz.guess()).format("h:mm A");
+    const dateFromDate = dayjs(event.dateFrom).tz(dayjs.tz.guess()).format("MMMM Do, YYYY");
+    const dateFromTime = dayjs(event.dateFrom).tz(dayjs.tz.guess()).format("h:mm A");
+    const dateToTime = dayjs(event.dateTo).tz(dayjs.tz.guess()).format("h:mm A");
 
-    const isPast = dayjs(event.date_to).isBefore(dayjs());
-    const isToday = dayjs(dayjs(event.date_from).format("M/D/YYYY")).isSame(dayjs(dayjs().format("M/D/YYYY")));
+    const isPast = dayjs(event.dateTo).isBefore(dayjs());
+    const isToday = dayjs(dayjs(event.dateFrom).format("M/D/YYYY")).isSame(dayjs(dayjs().format("M/D/YYYY")));
 
     const pathname = usePathname();
 

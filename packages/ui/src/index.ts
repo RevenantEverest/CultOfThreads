@@ -2,5 +2,6 @@
 export * from './components';
 export * from './constants';
 
+export * from './types/breakpoints';
 export * from './types/socialLinks';
 export * from './types/theme';

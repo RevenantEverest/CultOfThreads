@@ -1,6 +1,6 @@
 "use client"
 
-import type { ProductMedia } from '@repo/supabase';
+import type { ProductMedia } from '@repo/entities';
 
 import { useState } from 'react';
 import { FaChevronCircleRight, FaChevronCircleLeft } from 'react-icons/fa';
@@ -55,7 +55,7 @@ function ProductImages({ images }: ProductImages) {
                         alt={'Product Image'}
                         height={400}
                         width={400}
-                        src={URLS.SUPABASE_STORAGE + image.media_url}
+                        src={URLS.SUPABASE_STORAGE + image.mediaUrl}
                     />
                 </button>
             );
@@ -68,7 +68,7 @@ function ProductImages({ images }: ProductImages) {
                 {
                     images.length > 1 &&
                     <FaChevronCircleLeft 
-                        className="absolute left-4 text-4xl text-card/100 duration-150 hover:cursor-pointer hover:text-primary"
+                        className="absolute left-4 text-4xl text-card duration-150 hover:cursor-pointer hover:text-primary"
                         onClick={previousImage}
                     />
                 }
@@ -77,14 +77,14 @@ function ProductImages({ images }: ProductImages) {
                     height={1080}
                     width={1080}
                     loading="eager"
-                    src={URLS.SUPABASE_STORAGE + (images[imageIndex] && images[imageIndex].media_url)} 
+                    src={URLS.SUPABASE_STORAGE + (images[imageIndex] && images[imageIndex].mediaUrl)} 
                     alt={`featured`}
                     onClick={() => setOpen(true)}
                 />
                 {
                     images.length > 1 &&
                     <FaChevronCircleRight 
-                        className="absolute right-4 text-4xl text-card/100 duration-150 hover:cursor-pointer hover:text-primary"
+                        className="absolute right-4 text-4xl text-card duration-150 hover:cursor-pointer hover:text-primary"
                         onClick={nextImage}
                     />
                 }
@@ -96,7 +96,7 @@ function ProductImages({ images }: ProductImages) {
                 open={open} 
                 setOpen={setOpen} 
                 index={imageIndex}
-                images={images.map((image) => URLS.SUPABASE_STORAGE + image.media_url)}
+                images={images.map((image) => URLS.SUPABASE_STORAGE + image.mediaUrl)}
             />
         </div>
     );

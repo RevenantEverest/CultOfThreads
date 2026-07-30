@@ -35,7 +35,11 @@ function NewsletterForm({ onSubmit }: NewsletterFormProps) {
     const form = useAppForm({
         defaultValues: initialValues,
         onSubmit: async ({ value }) => {
-            await onSubmit(value);
+            try {
+                await onSubmit(value);
+                form.reset();
+            }
+            catch {} //eslint-disable-line
         }
     });
 
@@ -88,7 +92,7 @@ function NewsletterForm({ onSubmit }: NewsletterFormProps) {
                                 />
                             </div>
                         </div>
-                        <form.SubscribeField theme={theme} label="Subscribe" className="w-full py-5.5 text-md !text-card" />
+                        <form.SubscribeField theme={theme} label="Subscribe" className="w-full py-5.5 text-md text-card!" />
                     </form.AppForm>
                 </form>
             </CardContent>

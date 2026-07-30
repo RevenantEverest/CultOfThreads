@@ -1,0 +1,32 @@
+import { z } from 'zod';
+import { schemaValidation } from '~/utils';
+
+const mediaSchema = z.object({
+    id: z.string(),
+    mediaUrl: z.string()
+});
+
+export const updateSchema = z.object({
+    name: z.string().optional(),
+    description: z.preprocess((value) => {
+        return schemaValidation.parseJsonValue(value);        
+    }, z.array(z.record(z.string(), z.any()))).optional(),
+    marketPrice: z.coerce.number().optional(),
+    onlinePrice: z.coerce.number().optional(),
+    weightGrams: z.coerce.number().optional(),
+    status: z.union([
+        z.literal("ACTIVE"),
+        z.literal("DRAFT")
+    ]),
+    tags: z.preprocess((value) => {
+        return schemaValidation.parseJsonValue(value);
+    }, z.array(z.string())),
+    categories: z.preprocess((value) => {
+        return schemaValidation.parseJsonValue(value);
+    }, z.array(z.string())),
+    etsyListing: z.url().optional(),
+    media: z.preprocess((value) => {
+        return schemaValidation.parseJsonValue(value);
+    }, z.array(mediaSchema))
+});
+

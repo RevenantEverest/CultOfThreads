@@ -1,23 +1,31 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 
 import { ToastError, ToastSuccess } from '@repo/ui';
 
-import { Layout, Breadcrumb } from '@@admin/components/Common';
+import { Layout, Breadcrumb, Spinner } from '@@admin/components/Common';
 import EventForm, { EventFormValues } from '@@admin/components/Forms/EventForm';
 
-import { eventsApi, marketApi } from '@repo/supabase';
+import { useAuthStore } from '@@admin/store/auth';
+import { events, markets } from '@repo/queries';
 
 export const Route = createFileRoute('/dashboard/events/edit/$eventId')({
     loader: ({ context, params }) => {
-        context.queryClient.prefetchQuery({
-            queryKey: ["events", params.eventId],
-            queryFn: () => eventsApi.fetchById(params.eventId)
+        const authToken = useAuthStore.getState().auth.session;
+
+        if(!authToken?.accessToken) return;
+
+        events.hooks.usePrefetchGetOne(context.queryClient, {
+            id: params.eventId,
+            authToken: authToken.accessToken
         });
-        context.queryClient.prefetchQuery({
-            queryKey: ["markets"],
-            queryFn: marketApi.fetchAll
+
+        markets.hooks.usePrefetchIndex(context.queryClient, {
+            authToken: authToken.accessToken,
+            pagination: {
+                limit: 10
+            }
         });
     },
     component: EditEvent
@@ -26,44 +34,44 @@ export const Route = createFileRoute('/dashboard/events/edit/$eventId')({
 function EditEvent() {
 
     const params = Route.useParams();
+    const auth = useAuthStore((state) => state.auth);
     const navigate = useNavigate();
 
-    const { data } = useSuspenseQuery({
-        queryKey: ["events", params.eventId],
-        queryFn: () => eventsApi.fetchById(params.eventId)
-    });
-    const markets = useSuspenseQuery({
-        queryKey: ["markets"],
-        queryFn: marketApi.fetchAll
+    const queryClient = useQueryClient();
+    
+    const { data, isLoading } = events.hooks.useGetOne({
+        id: params.eventId,
+        authToken: auth.session?.accessToken ?? ""
     });
 
-    const queryClient = useQueryClient();
-    const mutation = useMutation({
-        mutationFn: eventsApi.update,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["events"] })
+    const marketsQuery = markets.hooks.useIndex({
+        authToken: auth.session?.accessToken ?? "",
+        pagination: {
+            limit: 10
         }
     });
 
-    const initialValues: EventFormValues = {
-        address: data.address,
-        market_id: data.market_id,
-        date_from: data.date_from,
-        date_to: data.date_to ?? ""
+    const mutation = events.hooks.useUpdate(queryClient);
+
+    const nextPage = () => {
+        if(!marketsQuery.hasNextPage) return;
+
+        marketsQuery.fetchNextPage();
     };
 
     const onSubmit = async (values: EventFormValues) => {
 
         try {
             await mutation.mutateAsync({
-                id: data.id,
-                market_id: values.market_id,
-                address: values.address,
-                date_from: values.date_from,
-                date_to: values.date_to ?? undefined,
-                flyer_url: data.flyer_url,
-                image: values.image,
-                created_at: data.created_at
+                id: data?.results.id as string,
+                authToken: auth.session?.accessToken ?? "",
+                payload: {
+                    marketId: values.market,
+                    address: values.address,
+                    dateFrom: values.dateFrom,
+                    dateTo: values.dateTo ?? undefined,
+                    file: values.image
+                }
             });
 
             toast((t) => (
@@ -93,13 +101,26 @@ function EditEvent() {
                 />
             </div>
             <div className="my-20">
-                <EventForm
-                    type="update"
-                    markets={markets.data}
-                    initialValues={initialValues}
-                    flyerUrl={data.flyer_url}
-                    onSubmit={onSubmit}
-                />
+                {
+                    isLoading || !data?.results ?
+                    <Spinner /> :
+                    <EventForm
+                        type="update"
+                        markets={
+                            marketsQuery.data?.pages.flatMap((page) => page.results) ?? []
+                        }
+                        initialValues={{
+                            address: data.results.address,
+                            market: data.results.market.id,
+                            dateFrom: (data.results.dateFrom as unknown) as string,
+                            dateTo: (data.results.dateTo as unknown) as string
+                        }}
+                        flyerUrl={data.results.flyerUrl}
+                        onSubmit={onSubmit}
+                        nextPage={nextPage}
+                        isLoading={marketsQuery.isLoading || marketsQuery.isFetching || !marketsQuery.data}
+                    />
+                }
             </div>
         </Layout>
     );

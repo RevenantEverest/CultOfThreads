@@ -35,13 +35,13 @@ function Home() {
     return (
         <React.Fragment>
             <Jumbotron />                
-            <Layout main transparent className="!pt-40 pb-10 md:pb-20 gap-50 md:gap-20">
+            <Layout main transparent className="pt-40! pb-10 md:pb-20 gap-50 md:gap-20">
                 <div className="flex flex-col gap-30">
                     <NewArrivals />
                     <BestSellers />
                 </div>
                 <UpcomingEvents />
-                <FAQ className="md:!w-10/12" />
+                <FAQ className="md:w-10/12!" />
             </Layout>
             <Newsletter className="w-full bg-card z-20 relative py-20 lg:px-56" />
         </React.Fragment>

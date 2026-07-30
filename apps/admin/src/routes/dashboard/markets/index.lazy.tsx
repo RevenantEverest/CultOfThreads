@@ -1,20 +1,17 @@
 import { createLazyFileRoute } from '@tanstack/react-router';
 
 import { useEffect, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { BeatLoader } from 'react-spinners';
 import toast from 'react-hot-toast';
 
-import {
-    ToastError 
-} from '@repo/ui';
-import { useThemeStore } from '@@admin/store/theme';
+import { ToastError } from '@repo/ui';
 import Search from '@@admin/components/Search';
 
 import { Layout, Breadcrumb } from '@@admin/components/Common';
-import { MarketList, AddMarket } from '@@admin/components/Markets';
+import { AddMarket, MarketsTable } from '@@admin/components/Markets';
 
-import { marketApi } from '@repo/supabase';
+import { useAuthStore } from '@@admin/store/auth';
+
+import { markets } from '@repo/queries';
 
 export const Route = createLazyFileRoute('/dashboard/markets/')({
     component: Markets,
@@ -22,13 +19,15 @@ export const Route = createLazyFileRoute('/dashboard/markets/')({
 
 function Markets() {
 
-    const theme = useThemeStore((state) => state.theme);
-    const query = useQuery({ 
-        queryKey: ["markets"], 
-        queryFn: marketApi.fetchAll
-    });
-
+    const auth = useAuthStore((state) => state.auth);
     const [search, setSearch] = useState("");
+
+    const query = markets.hooks.useIndex({
+        authToken: auth.session?.accessToken ?? "",
+        pagination: {
+            limit: 10
+        }
+    });
 
     useEffect(() => {
         if(!query.isError) return;
@@ -38,6 +37,12 @@ function Markets() {
             <ToastError toast={t} message={"Error fetching markets"} />
         ));
     }, [query.isError, query.error]);
+
+    const nextPage = () => {
+        if(!query.hasNextPage) return;
+
+        query.fetchNextPage();
+    };
 
     return(
         <Layout className="pb-20">
@@ -59,16 +64,15 @@ function Markets() {
                         <AddMarket />
                     </div>
                 </div>
-                {
-                    query.isLoading ?
-                    <BeatLoader
-                        className="flex flex-1 items-center justify-center mt-10"
-                        size={15}
-                        color={theme.colors.primary}
-                    />
-                    :
-                    <MarketList search={search} markets={query.data ?? []} />
-                }
+                <MarketsTable
+                    markets={
+                        query.data?.pages.flatMap((page) => page.results) ?? []
+                    } 
+                    dataAmount={query.data?.pages[0] && query.data.pages[0].count}
+                    search={search} 
+                    isLoading={query.isLoading || query.isFetching || !query.data}
+                    nextPage={nextPage}
+                />
             </div>
         </Layout>
     );

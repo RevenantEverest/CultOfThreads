@@ -1,8 +1,8 @@
 import type { CategoryFormValues } from '@@admin/components/Forms/CategoryForm';
+import type { Category } from '@repo/entities';
 
 import { useState } from 'react';
-import { Category, categoryApi } from '@repo/supabase';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { AnimatePresence, motion } from 'motion/react';
 import { FaPencil } from 'react-icons/fa6';
 import { toast } from 'react-hot-toast';
@@ -16,6 +16,8 @@ import {
     ToastSuccess
 } from '@repo/ui';
 import CategoryForm from '@@admin/components/Forms/CategoryForm';
+import { categories } from '@repo/queries';
+import { useAuthStore } from '@@admin/store/auth';
 
 interface EditCategoryProps {
     category: Category
@@ -23,23 +25,22 @@ interface EditCategoryProps {
 
 function EditCategory({ category }: EditCategoryProps) {
 
+    const auth = useAuthStore((state) => state.auth);
     const [visible, setVisible] = useState(false);
     
     const queryClient = useQueryClient();
-    const mutation = useMutation({
-        mutationFn: categoryApi.update,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["categories"] });
-        }
-    });
+    const mutation = categories.hooks.useUpdate(queryClient);
 
     const initialValues: CategoryFormValues = category;
 
     const onSubmit = async (values: CategoryFormValues) => {
         try {
             await mutation.mutateAsync({
-                ...category,
-                name: values.name
+                id: category.id,
+                authToken: auth.session?.accessToken ?? "",
+                payload: {
+                    name: values.name
+                }
             });
 
             toast((t) => (
@@ -48,8 +49,7 @@ function EditCategory({ category }: EditCategoryProps) {
 
             setVisible(false);
         }
-        catch(error) {
-            console.error(error);
+        catch {
             toast((t) => (
                 <ToastError toast={t} message={"Error updating Category"} />
             ));

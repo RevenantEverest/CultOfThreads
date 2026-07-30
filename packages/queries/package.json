@@ -1,0 +1,34 @@
+{
+    "name": "@repo/queries",
+    "version": "0.0.0",
+    "type": "module",    
+    "private": true,
+    "exports": {
+        ".": {
+            "import": "./dist/index.js",
+            "types": "./dist/index.d.ts"
+        },
+        "./utils": {
+            "import": "./dist/utils/index.js",
+            "types": "./dist/utils/index.d.ts"
+        }
+    },
+    "scripts": {
+        "build:queries": "tsc && tsc-alias",
+        "dev:queries": "concurrently --kill-others \"tsc -w\" \"tsc-alias -w\"",
+        "lint": "eslint . --max-warnings 0",
+        "check-types": "tsc --noEmit"
+    },
+    "dependencies": {
+        "@repo/entities": "workspace:*"
+    },
+    "devDependencies": {
+        "@repo/eslint-config": "workspace:*",
+        "@repo/typescript-config": "workspace:*",
+        "@tailwindcss/cli": "^4.2.2",
+        "@types/node": "^25.9.1",
+        "concurrently": "^10.0.0",
+        "eslint": "^9.39.4",
+        "tsc-alias": "^1.8.17"
+    }
+}

@@ -6,7 +6,7 @@ import pluginReact from "eslint-plugin-react";
 import globals from "globals";
 import pluginNext from "@next/eslint-plugin-next";
 import baseConfig from "./base.js";
-import { defineConfig } from 'eslint/config';
+import { defineConfig, globalIgnores } from 'eslint/config';
 
 /**
  * A custom ESLint configuration for libraries that use Next.js.
@@ -17,6 +17,12 @@ export default defineConfig([
     ...baseConfig,
     js.configs.recommended,
     eslintConfigPrettier,
+    globalIgnores([
+        ".next/**",
+        "out/**",
+        "build/**",
+        "next-env.d.ts",
+    ]),
     ...tseslint.configs.recommended,
     {
         ...pluginReact.configs.flat.recommended,

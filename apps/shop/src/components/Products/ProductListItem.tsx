@@ -1,6 +1,6 @@
 "use client"
 
-import type { ProductListing } from '@repo/supabase';
+import type { Product } from '@repo/entities';
 
 import Link from 'next/link';
 import posthog from 'posthog-js';
@@ -16,7 +16,7 @@ import { URLS } from '@@shop/constants';
 
 
 interface ProductListItemProps {
-    product: ProductListing,
+    product: Product,
     index: number,
 };
 
@@ -55,7 +55,7 @@ function ProductListItem({ product }: ProductListItemProps) {
                                         height={500}
                                         width={500}
                                         loading="eager"
-                                        src={URLS.SUPABASE_STORAGE + (featuredImage ? featuredImage.media_url : "")} 
+                                        src={URLS.SUPABASE_STORAGE + (featuredImage ? featuredImage.mediaUrl : "")} 
                                         alt={product.name}
                                     />
                                 </motion.div>
@@ -67,7 +67,7 @@ function ProductListItem({ product }: ProductListItemProps) {
                         <div className="flex items-center -ml-1">
                             <FaDollarSign className="text-primary text-lg" />
                             <p className="font-semibold">
-                                {product.details?.online_price}
+                                {product.details?.onlinePrice}
                             </p>
                         </div>
                     </div>

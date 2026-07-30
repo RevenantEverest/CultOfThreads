@@ -1,11 +1,9 @@
 import type { ProductFormValues } from '@@admin/components/Forms/ProductForm';
-import type { ProductDetailsStatus } from '@repo/supabase';
-import type { CreateProductParams } from '@repo/supabase';
 
 import { createLazyFileRoute } from '@tanstack/react-router';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from '@tanstack/react-router';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import {
     ToastSuccess,
     ToastError
@@ -14,12 +12,9 @@ import {
 import { Layout, Breadcrumb } from '@@admin/components/Common';
 import { ProductForm } from '@@admin/components/Forms/ProductForm';
 
-import { 
-    productApi, 
-    productCategoryApi, 
-    productMediaApi,
-    productTagApi
-} from '@repo/supabase';
+import { products } from '@repo/queries';
+import { Product } from '@repo/entities';
+import { useAuthStore } from '@@admin/store/auth';
 
 export const Route = createLazyFileRoute('/dashboard/products/add')({
     component: AddProduct,
@@ -27,45 +22,20 @@ export const Route = createLazyFileRoute('/dashboard/products/add')({
 
 function AddProduct() {
 
+    const auth = useAuthStore((state) => state.auth);
     const navigate = useNavigate();
 
     const queryClient = useQueryClient();
-    const mutation = useMutation({
-        mutationFn: productApi.create,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["products"] })
-        }
-    });
-
-    const fileMutation = useMutation({
-        mutationFn: productMediaApi.create,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["product_media"] })
-        }
-    });
-
-    const categoryMutation = useMutation({
-        mutationFn: productCategoryApi.create,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["products"] })
-        }
-    });
-
-    const tagMutation = useMutation({
-        mutationFn: productTagApi.create,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["products"] })
-        }
-    });
+    const mutation = products.hooks.useCreate(queryClient);
 
     const initialValues: ProductFormValues = {
         name: "",
         description: JSON.stringify([]),
-        market_price: "",
-        online_price: "",
-        weight_grams: "",
-        status: "DRAFT" as ProductDetailsStatus,
-        etsy_listing: "",
+        marketPrice: "",
+        onlinePrice: "",
+        weightGrams: "",
+        status: "DRAFT",
+        etsyListing: "",
         categories: [],
         tags: [],
         images: []
@@ -73,54 +43,21 @@ function AddProduct() {
 
     const onSubmit = async (values: ProductFormValues) => {
 
-        const productData: CreateProductParams = {
-            name: values.name,
-            description: values.description,
-            details: {
-                market_price: Number(values.market_price),
-                online_price: Number(values.online_price),
-                status: values.status as ProductDetailsStatus,
-                weight_grams: Number(values.weight_grams)
-            }            
-        };
-
         try {
-            const data = await mutation.mutateAsync(productData);
-            for(let i = 0; i < values.images.length; i++) {
-                const currentImage = values.images[i];
-
-                if(!currentImage) {
-                    continue;
+            await mutation.mutateAsync({
+                authToken: auth.session?.accessToken ?? "",
+                payload: {
+                    name: values.name,
+                    description: values.description,
+                    marketPrice: values.marketPrice,
+                    onlinePrice: values.onlinePrice,
+                    status: values.status as Product["details"]["status"],
+                    weightGrams: values.weightGrams,
+                    tags: values.tags,
+                    categories: values.categories,
+                    files: values.images
                 }
-                
-                await fileMutation.mutateAsync({ productId: data.id, file: currentImage });
-            };
-
-            /*
-                Add Categories
-            */
-            for(let i = 0; i < values.categories.length; i++) {
-                const currentCategory = values.categories[i];
-
-                if(!currentCategory) {
-                    continue;
-                }
-
-                await categoryMutation.mutateAsync({ product_id: data.id, category_id: currentCategory });
-            };
-
-            /*
-                Add Tags
-            */
-            for(let i = 0; i < values.tags.length; i++) {
-                const currentTag = values.tags[i];
-
-                if(!currentTag) {
-                    continue;
-                }
-
-                await tagMutation.mutateAsync({ product_id: data.id, tag_id: currentTag });
-            };
+            });
 
             toast((t) => (
                 <ToastSuccess toast={t} message={"Product Created!"} />

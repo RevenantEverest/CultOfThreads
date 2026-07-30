@@ -1,63 +1,36 @@
 "use client"
 
-import type { ProductListing } from '@repo/supabase';
+import type { Product } from '@repo/entities';
 
-import { useState, useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 
 import { Button, MotionFadeIn } from '@repo/ui';
-import { useBreakpoints } from '@repo/ui/hooks';
 import ProductListItem from './ProductListItem';
 
-import { productApi } from '@repo/supabase';
 import { FaLongArrowAltRight } from 'react-icons/fa';
+import { useBreakpointGrid } from '@@shop/hooks';
+import { products } from '@repo/queries';
 
 function NewArrivals() {
 
-    const breakpoint = useBreakpoints();
-    const query = useQuery({
-        queryKey: ["new_products"],
-        queryFn: () => productApi.fetchByTagName("New")
+    const breakpointGrid = useBreakpointGrid({ 
+        overrides: { 
+            XL: 4, 
+            XXL: 4 
+        }
     });
 
-    const [itemsInRow, setItemsInRow] = useState<number | null>(null);
+    const query = products.hooks.useGetByNewArrivalsPublic();
 
-    useEffect(() => {
-        switch(breakpoint) {
-            case "XXL":
-                setItemsInRow(3);
-                break;
-            case "XL": 
-                setItemsInRow(3);
-                break;
-            case "LG":
-                setItemsInRow(3);
-                break;
-            case "MD":
-                setItemsInRow(2);
-                break;
-            case "SM": 
-                setItemsInRow(1);
-                break;
-        }
-    }, [breakpoint]);
-
-    const renderProducts = (products: ProductListing[]) => {
-        if(!itemsInRow) {
+    const renderProducts = (products: Product[]) => {
+        const itemsPerRow = breakpointGrid.itemsPerRow;
+        
+        if(!itemsPerRow) {
             return;
         }
 
-        const ROW_STAGGER_TIME = 0.1;
-        const COLUMN_STAGGER_TIME = 0.1;
-
         return products.map((product, index) => {
-            const rowIndex = Math.floor(index / itemsInRow);
-            const colIndex = index % itemsInRow;
-
-            const rowDelay = rowIndex * ROW_STAGGER_TIME;
-            const colDelay = colIndex * COLUMN_STAGGER_TIME;
-            const staggerDelay = rowDelay + colDelay;
+            const staggerDelay = breakpointGrid.getAnimationStaggerValues(index, itemsPerRow);
 
             return(
                 <MotionFadeIn
@@ -65,11 +38,7 @@ function NewArrivals() {
                     fadeDelay={staggerDelay}
                     posYDelay={staggerDelay}
                 >
-                    <ProductListItem 
-                        
-                        product={product}
-                        index={index}
-                />
+                    <ProductListItem product={product} index={index} />
                 </MotionFadeIn>
             );
         });
@@ -93,9 +62,9 @@ function NewArrivals() {
             </MotionFadeIn>
             <div className="flex items-center justify-center">
                 <div className={`
-                    grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 gap-y-10 md:gap-y-20 pb-20
+                    ${breakpointGrid.gridClasses} gap-5 gap-y-10 md:gap-y-20 pb-20
                 `}>
-                    {query.data && itemsInRow && renderProducts(query.data)}
+                    {query.data && breakpointGrid.itemsPerRow && renderProducts(query.data.results)}
                 </div>
             </div>
         </div>

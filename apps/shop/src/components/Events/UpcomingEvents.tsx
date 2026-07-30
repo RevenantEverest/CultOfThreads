@@ -1,69 +1,39 @@
 "use client"
 
-import type { EventWithMarket } from '@repo/supabase';
+import type { Event } from '@repo/entities';
 
-import { useState, useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 
 import { Button, MotionFadeIn } from '@repo/ui';
-import { useBreakpoints } from '@repo/ui/hooks';
 import EventListItem from './EventListItem';
 
-import { eventsApi } from '@repo/supabase';
+import { useBreakpointGrid } from '@@shop/hooks';
+import { events } from '@repo/queries';
 
 interface UpcomingEventsProps {
-    amount?: number,
     isEventsPage?: boolean
 };
 
-function UpcomingEvents({ amount, isEventsPage }: UpcomingEventsProps) {
+function UpcomingEvents({ isEventsPage }: UpcomingEventsProps) {
 
-    const breakpoint = useBreakpoints();
-    const query = useQuery({
-        queryKey: ["upcoming_events"],
-        queryFn: () => eventsApi.fetchUpcoming({ limit: 3 })
+    const breakpointGrid = useBreakpointGrid({
+        overrides: {
+            XL: 3,
+            XXL: 3
+        }
     });
 
-    const [itemsInRow, setItemsInRow] = useState<number | null>(null);
+    const query = events.hooks.useUpcoming();
 
-    useEffect(() => {
-        switch(breakpoint) {
-            case "XXL":
-                setItemsInRow(3);
-                break;
-            case "XL": 
-                setItemsInRow(3);
-                break;
-            case "LG":
-                setItemsInRow(3);
-                break;
-            case "MD":
-                setItemsInRow(2);
-                break;
-            case "SM": 
-                setItemsInRow(1);
-                break;
-        }
-    }, [breakpoint]);
+    const renderEvents = (events: Event[]) => {
+        const itemsPerRow = breakpointGrid.itemsPerRow;
 
-    const renderEvents = (events: EventWithMarket[]) => {
-        if(!itemsInRow) {
+        if(!itemsPerRow) {
             return;
         }
 
-        const ROW_STAGGER_TIME = 0.1;
-        const COLUMN_STAGGER_TIME = 0.1;
-
-        const sortedEvents = events.sort((a, b) => a.date_from.localeCompare(b.date_from));
-
-        return sortedEvents.slice(0, amount ?? events.length).map((item, index) => {
-            const rowIndex = Math.floor(index / itemsInRow);
-            const colIndex = index % itemsInRow;
-
-            const rowDelay = rowIndex * ROW_STAGGER_TIME;
-            const colDelay = colIndex * COLUMN_STAGGER_TIME;
-            const staggerDelay = rowDelay + colDelay;
+        return events.map((item, index) => {
+            const staggerDelay = breakpointGrid.getAnimationStaggerValues(index, itemsPerRow);
             
             return(
                 <MotionFadeIn
@@ -92,8 +62,12 @@ function UpcomingEvents({ amount, isEventsPage }: UpcomingEventsProps) {
                     </h1>
                 </div>
             </MotionFadeIn>
-            <div className="flex flex-col md:flex-row gap-5 items-center justify-center flex-wrap gap-y-10 md:gap-y-20 pb-20">
-                {query.data && itemsInRow && renderEvents(query.data)}
+            <div 
+                className={`
+                    ${breakpointGrid.gridClasses} gap-5 items-center justify-center gap-y-10 md:gap-y-20 pb-20
+                `}
+            >
+                {query.data && breakpointGrid.itemsPerRow && renderEvents(query.data.results)}
             </div>
             {
                 !isEventsPage &&

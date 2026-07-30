@@ -10,190 +10,176 @@
 
 import { createFileRoute } from '@tanstack/react-router'
 
-// Import Routes
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as DashboardLayoutRouteImport } from './routes/dashboard/_layout'
+import { Route as DashboardSalesAddRouteImport } from './routes/dashboard/sales/add'
+import { Route as DashboardSalesEditSaleIdRouteImport } from './routes/dashboard/sales/edit.$saleId'
+import { Route as DashboardProductsItemProductIdRouteImport } from './routes/dashboard/products/item.$productId'
+import { Route as DashboardProductsEditProductIdRouteImport } from './routes/dashboard/products/edit.$productId'
+import { Route as DashboardMarketsEditMarketIdRouteImport } from './routes/dashboard/markets/edit.$marketId'
+import { Route as DashboardEventsItemEventIdRouteImport } from './routes/dashboard/events/item.$eventId'
+import { Route as DashboardEventsEditEventIdRouteImport } from './routes/dashboard/events/edit.$eventId'
+import { Route as DashboardContactsEditContactIdRouteImport } from './routes/dashboard/contacts/edit.$contactId'
+import { Route as DashboardContactsFormItemSubmissionIdRouteImport } from './routes/dashboard/contacts/form/item.$submissionId'
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as DashboardLayoutImport } from './routes/dashboard/_layout'
-import { Route as DashboardSalesAddImport } from './routes/dashboard/sales/add'
-import { Route as DashboardSalesEditSaleIdImport } from './routes/dashboard/sales/edit.$saleId'
-import { Route as DashboardProductsItemProductIdImport } from './routes/dashboard/products/item.$productId'
-import { Route as DashboardProductsEditProductIdImport } from './routes/dashboard/products/edit.$productId'
-import { Route as DashboardMarketsEditMarketIdImport } from './routes/dashboard/markets/edit.$marketId'
-import { Route as DashboardEventsItemEventIdImport } from './routes/dashboard/events/item.$eventId'
-import { Route as DashboardEventsEditEventIdImport } from './routes/dashboard/events/edit.$eventId'
-import { Route as DashboardContactsEditContactIdImport } from './routes/dashboard/contacts/edit.$contactId'
-import { Route as DashboardContactsFormItemSubmissionIdImport } from './routes/dashboard/contacts/form/item.$submissionId'
-
-// Create Virtual Routes
-
-const LoginLazyImport = createFileRoute('/login')()
-const IndexLazyImport = createFileRoute('/')()
-const DashboardIndexLazyImport = createFileRoute('/dashboard/')()
-const DashboardSalesIndexLazyImport = createFileRoute('/dashboard/sales/')()
-const DashboardProductsIndexLazyImport = createFileRoute(
+const IndexLazyRouteImport = createFileRoute('/')()
+const DashboardIndexLazyRouteImport = createFileRoute('/dashboard/')()
+const DashboardSalesIndexLazyRouteImport =
+  createFileRoute('/dashboard/sales/')()
+const DashboardProductsIndexLazyRouteImport = createFileRoute(
   '/dashboard/products/',
 )()
-const DashboardNewsletterIndexLazyImport = createFileRoute(
+const DashboardNewsletterIndexLazyRouteImport = createFileRoute(
   '/dashboard/newsletter/',
 )()
-const DashboardMarketsIndexLazyImport = createFileRoute('/dashboard/markets/')()
-const DashboardEventsIndexLazyImport = createFileRoute('/dashboard/events/')()
-const DashboardContactsIndexLazyImport = createFileRoute(
+const DashboardMarketsIndexLazyRouteImport = createFileRoute(
+  '/dashboard/markets/',
+)()
+const DashboardEventsIndexLazyRouteImport =
+  createFileRoute('/dashboard/events/')()
+const DashboardContactsIndexLazyRouteImport = createFileRoute(
   '/dashboard/contacts/',
 )()
-const DashboardAnalyticsIndexLazyImport = createFileRoute(
+const DashboardAnalyticsIndexLazyRouteImport = createFileRoute(
   '/dashboard/analytics/',
 )()
-const DashboardProductsAddLazyImport = createFileRoute(
+const DashboardProductsAddLazyRouteImport = createFileRoute(
   '/dashboard/products/add',
 )()
-const DashboardMarketsAddLazyImport = createFileRoute(
+const DashboardMarketsAddLazyRouteImport = createFileRoute(
   '/dashboard/markets/add',
 )()
-const DashboardEventsAddLazyImport = createFileRoute('/dashboard/events/add')()
-const DashboardContactsAddLazyImport = createFileRoute(
+const DashboardEventsAddLazyRouteImport = createFileRoute(
+  '/dashboard/events/add',
+)()
+const DashboardContactsAddLazyRouteImport = createFileRoute(
   '/dashboard/contacts/add',
 )()
-const DashboardProductsSettingsIndexLazyImport = createFileRoute(
+const DashboardProductsSettingsIndexLazyRouteImport = createFileRoute(
   '/dashboard/products/settings/',
 )()
-const DashboardContactsFormIndexLazyImport = createFileRoute(
+const DashboardContactsFormIndexLazyRouteImport = createFileRoute(
   '/dashboard/contacts/form/',
 )()
-const DashboardAnalyticsTrafficIndexLazyImport = createFileRoute(
+const DashboardAnalyticsTrafficIndexLazyRouteImport = createFileRoute(
   '/dashboard/analytics/traffic/',
 )()
 
-// Create/Update Routes
-
-const LoginLazyRoute = LoginLazyImport.update({
+const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/login.lazy').then((d) => d.Route))
-
-const DashboardLayoutRoute = DashboardLayoutImport.update({
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardLayoutRoute = DashboardLayoutRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const IndexLazyRoute = IndexLazyImport.update({
+const IndexLazyRoute = IndexLazyRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
-
-const DashboardIndexLazyRoute = DashboardIndexLazyImport.update({
+const DashboardIndexLazyRoute = DashboardIndexLazyRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => DashboardLayoutRoute,
 } as any).lazy(() =>
   import('./routes/dashboard/index.lazy').then((d) => d.Route),
 )
-
-const DashboardSalesIndexLazyRoute = DashboardSalesIndexLazyImport.update({
+const DashboardSalesIndexLazyRoute = DashboardSalesIndexLazyRouteImport.update({
   id: '/sales/',
   path: '/sales/',
   getParentRoute: () => DashboardLayoutRoute,
 } as any).lazy(() =>
   import('./routes/dashboard/sales/index.lazy').then((d) => d.Route),
 )
-
-const DashboardProductsIndexLazyRoute = DashboardProductsIndexLazyImport.update(
-  {
+const DashboardProductsIndexLazyRoute =
+  DashboardProductsIndexLazyRouteImport.update({
     id: '/products/',
     path: '/products/',
     getParentRoute: () => DashboardLayoutRoute,
-  } as any,
-).lazy(() =>
-  import('./routes/dashboard/products/index.lazy').then((d) => d.Route),
-)
-
+  } as any).lazy(() =>
+    import('./routes/dashboard/products/index.lazy').then((d) => d.Route),
+  )
 const DashboardNewsletterIndexLazyRoute =
-  DashboardNewsletterIndexLazyImport.update({
+  DashboardNewsletterIndexLazyRouteImport.update({
     id: '/newsletter/',
     path: '/newsletter/',
     getParentRoute: () => DashboardLayoutRoute,
   } as any).lazy(() =>
     import('./routes/dashboard/newsletter/index.lazy').then((d) => d.Route),
   )
-
-const DashboardMarketsIndexLazyRoute = DashboardMarketsIndexLazyImport.update({
-  id: '/markets/',
-  path: '/markets/',
-  getParentRoute: () => DashboardLayoutRoute,
-} as any).lazy(() =>
-  import('./routes/dashboard/markets/index.lazy').then((d) => d.Route),
-)
-
-const DashboardEventsIndexLazyRoute = DashboardEventsIndexLazyImport.update({
-  id: '/events/',
-  path: '/events/',
-  getParentRoute: () => DashboardLayoutRoute,
-} as any).lazy(() =>
-  import('./routes/dashboard/events/index.lazy').then((d) => d.Route),
-)
-
-const DashboardContactsIndexLazyRoute = DashboardContactsIndexLazyImport.update(
-  {
+const DashboardMarketsIndexLazyRoute =
+  DashboardMarketsIndexLazyRouteImport.update({
+    id: '/markets/',
+    path: '/markets/',
+    getParentRoute: () => DashboardLayoutRoute,
+  } as any).lazy(() =>
+    import('./routes/dashboard/markets/index.lazy').then((d) => d.Route),
+  )
+const DashboardEventsIndexLazyRoute =
+  DashboardEventsIndexLazyRouteImport.update({
+    id: '/events/',
+    path: '/events/',
+    getParentRoute: () => DashboardLayoutRoute,
+  } as any).lazy(() =>
+    import('./routes/dashboard/events/index.lazy').then((d) => d.Route),
+  )
+const DashboardContactsIndexLazyRoute =
+  DashboardContactsIndexLazyRouteImport.update({
     id: '/contacts/',
     path: '/contacts/',
     getParentRoute: () => DashboardLayoutRoute,
-  } as any,
-).lazy(() =>
-  import('./routes/dashboard/contacts/index.lazy').then((d) => d.Route),
-)
-
+  } as any).lazy(() =>
+    import('./routes/dashboard/contacts/index.lazy').then((d) => d.Route),
+  )
 const DashboardAnalyticsIndexLazyRoute =
-  DashboardAnalyticsIndexLazyImport.update({
+  DashboardAnalyticsIndexLazyRouteImport.update({
     id: '/analytics/',
     path: '/analytics/',
     getParentRoute: () => DashboardLayoutRoute,
   } as any).lazy(() =>
     import('./routes/dashboard/analytics/index.lazy').then((d) => d.Route),
   )
-
-const DashboardProductsAddLazyRoute = DashboardProductsAddLazyImport.update({
-  id: '/products/add',
-  path: '/products/add',
-  getParentRoute: () => DashboardLayoutRoute,
-} as any).lazy(() =>
-  import('./routes/dashboard/products/add.lazy').then((d) => d.Route),
-)
-
-const DashboardMarketsAddLazyRoute = DashboardMarketsAddLazyImport.update({
+const DashboardProductsAddLazyRoute =
+  DashboardProductsAddLazyRouteImport.update({
+    id: '/products/add',
+    path: '/products/add',
+    getParentRoute: () => DashboardLayoutRoute,
+  } as any).lazy(() =>
+    import('./routes/dashboard/products/add.lazy').then((d) => d.Route),
+  )
+const DashboardMarketsAddLazyRoute = DashboardMarketsAddLazyRouteImport.update({
   id: '/markets/add',
   path: '/markets/add',
   getParentRoute: () => DashboardLayoutRoute,
 } as any).lazy(() =>
   import('./routes/dashboard/markets/add.lazy').then((d) => d.Route),
 )
-
-const DashboardEventsAddLazyRoute = DashboardEventsAddLazyImport.update({
+const DashboardEventsAddLazyRoute = DashboardEventsAddLazyRouteImport.update({
   id: '/events/add',
   path: '/events/add',
   getParentRoute: () => DashboardLayoutRoute,
 } as any).lazy(() =>
   import('./routes/dashboard/events/add.lazy').then((d) => d.Route),
 )
-
-const DashboardContactsAddLazyRoute = DashboardContactsAddLazyImport.update({
-  id: '/contacts/add',
-  path: '/contacts/add',
-  getParentRoute: () => DashboardLayoutRoute,
-} as any).lazy(() =>
-  import('./routes/dashboard/contacts/add.lazy').then((d) => d.Route),
-)
-
-const DashboardSalesAddRoute = DashboardSalesAddImport.update({
+const DashboardContactsAddLazyRoute =
+  DashboardContactsAddLazyRouteImport.update({
+    id: '/contacts/add',
+    path: '/contacts/add',
+    getParentRoute: () => DashboardLayoutRoute,
+  } as any).lazy(() =>
+    import('./routes/dashboard/contacts/add.lazy').then((d) => d.Route),
+  )
+const DashboardSalesAddRoute = DashboardSalesAddRouteImport.update({
   id: '/sales/add',
   path: '/sales/add',
   getParentRoute: () => DashboardLayoutRoute,
 } as any)
-
 const DashboardProductsSettingsIndexLazyRoute =
-  DashboardProductsSettingsIndexLazyImport.update({
+  DashboardProductsSettingsIndexLazyRouteImport.update({
     id: '/products/settings/',
     path: '/products/settings/',
     getParentRoute: () => DashboardLayoutRoute,
@@ -202,18 +188,16 @@ const DashboardProductsSettingsIndexLazyRoute =
       (d) => d.Route,
     ),
   )
-
 const DashboardContactsFormIndexLazyRoute =
-  DashboardContactsFormIndexLazyImport.update({
+  DashboardContactsFormIndexLazyRouteImport.update({
     id: '/contacts/form/',
     path: '/contacts/form/',
     getParentRoute: () => DashboardLayoutRoute,
   } as any).lazy(() =>
     import('./routes/dashboard/contacts/form/index.lazy').then((d) => d.Route),
   )
-
 const DashboardAnalyticsTrafficIndexLazyRoute =
-  DashboardAnalyticsTrafficIndexLazyImport.update({
+  DashboardAnalyticsTrafficIndexLazyRouteImport.update({
     id: '/analytics/traffic/',
     path: '/analytics/traffic/',
     getParentRoute: () => DashboardLayoutRoute,
@@ -222,261 +206,430 @@ const DashboardAnalyticsTrafficIndexLazyRoute =
       (d) => d.Route,
     ),
   )
-
-const DashboardSalesEditSaleIdRoute = DashboardSalesEditSaleIdImport.update({
-  id: '/sales/edit/$saleId',
-  path: '/sales/edit/$saleId',
-  getParentRoute: () => DashboardLayoutRoute,
-} as any)
-
+const DashboardSalesEditSaleIdRoute =
+  DashboardSalesEditSaleIdRouteImport.update({
+    id: '/sales/edit/$saleId',
+    path: '/sales/edit/$saleId',
+    getParentRoute: () => DashboardLayoutRoute,
+  } as any)
 const DashboardProductsItemProductIdRoute =
-  DashboardProductsItemProductIdImport.update({
+  DashboardProductsItemProductIdRouteImport.update({
     id: '/products/item/$productId',
     path: '/products/item/$productId',
     getParentRoute: () => DashboardLayoutRoute,
   } as any)
-
 const DashboardProductsEditProductIdRoute =
-  DashboardProductsEditProductIdImport.update({
+  DashboardProductsEditProductIdRouteImport.update({
     id: '/products/edit/$productId',
     path: '/products/edit/$productId',
     getParentRoute: () => DashboardLayoutRoute,
   } as any)
-
 const DashboardMarketsEditMarketIdRoute =
-  DashboardMarketsEditMarketIdImport.update({
+  DashboardMarketsEditMarketIdRouteImport.update({
     id: '/markets/edit/$marketId',
     path: '/markets/edit/$marketId',
     getParentRoute: () => DashboardLayoutRoute,
   } as any)
-
-const DashboardEventsItemEventIdRoute = DashboardEventsItemEventIdImport.update(
-  {
+const DashboardEventsItemEventIdRoute =
+  DashboardEventsItemEventIdRouteImport.update({
     id: '/events/item/$eventId',
     path: '/events/item/$eventId',
     getParentRoute: () => DashboardLayoutRoute,
-  } as any,
-)
-
-const DashboardEventsEditEventIdRoute = DashboardEventsEditEventIdImport.update(
-  {
+  } as any)
+const DashboardEventsEditEventIdRoute =
+  DashboardEventsEditEventIdRouteImport.update({
     id: '/events/edit/$eventId',
     path: '/events/edit/$eventId',
     getParentRoute: () => DashboardLayoutRoute,
-  } as any,
-)
-
+  } as any)
 const DashboardContactsEditContactIdRoute =
-  DashboardContactsEditContactIdImport.update({
+  DashboardContactsEditContactIdRouteImport.update({
     id: '/contacts/edit/$contactId',
     path: '/contacts/edit/$contactId',
     getParentRoute: () => DashboardLayoutRoute,
   } as any)
-
 const DashboardContactsFormItemSubmissionIdRoute =
-  DashboardContactsFormItemSubmissionIdImport.update({
+  DashboardContactsFormItemSubmissionIdRouteImport.update({
     id: '/contacts/form/item/$submissionId',
     path: '/contacts/form/item/$submissionId',
     getParentRoute: () => DashboardLayoutRoute,
   } as any)
 
-// Populate the FileRoutesByPath interface
+export interface FileRoutesByFullPath {
+  '/': typeof IndexLazyRoute
+  '/dashboard': typeof DashboardLayoutRouteWithChildren
+  '/login': typeof LoginRoute
+  '/dashboard/': typeof DashboardIndexLazyRoute
+  '/dashboard/sales/add': typeof DashboardSalesAddRoute
+  '/dashboard/contacts/add': typeof DashboardContactsAddLazyRoute
+  '/dashboard/events/add': typeof DashboardEventsAddLazyRoute
+  '/dashboard/markets/add': typeof DashboardMarketsAddLazyRoute
+  '/dashboard/products/add': typeof DashboardProductsAddLazyRoute
+  '/dashboard/analytics/': typeof DashboardAnalyticsIndexLazyRoute
+  '/dashboard/contacts/': typeof DashboardContactsIndexLazyRoute
+  '/dashboard/events/': typeof DashboardEventsIndexLazyRoute
+  '/dashboard/markets/': typeof DashboardMarketsIndexLazyRoute
+  '/dashboard/newsletter/': typeof DashboardNewsletterIndexLazyRoute
+  '/dashboard/products/': typeof DashboardProductsIndexLazyRoute
+  '/dashboard/sales/': typeof DashboardSalesIndexLazyRoute
+  '/dashboard/contacts/edit/$contactId': typeof DashboardContactsEditContactIdRoute
+  '/dashboard/events/edit/$eventId': typeof DashboardEventsEditEventIdRoute
+  '/dashboard/events/item/$eventId': typeof DashboardEventsItemEventIdRoute
+  '/dashboard/markets/edit/$marketId': typeof DashboardMarketsEditMarketIdRoute
+  '/dashboard/products/edit/$productId': typeof DashboardProductsEditProductIdRoute
+  '/dashboard/products/item/$productId': typeof DashboardProductsItemProductIdRoute
+  '/dashboard/sales/edit/$saleId': typeof DashboardSalesEditSaleIdRoute
+  '/dashboard/analytics/traffic/': typeof DashboardAnalyticsTrafficIndexLazyRoute
+  '/dashboard/contacts/form/': typeof DashboardContactsFormIndexLazyRoute
+  '/dashboard/products/settings/': typeof DashboardProductsSettingsIndexLazyRoute
+  '/dashboard/contacts/form/item/$submissionId': typeof DashboardContactsFormItemSubmissionIdRoute
+}
+export interface FileRoutesByTo {
+  '/': typeof IndexLazyRoute
+  '/login': typeof LoginRoute
+  '/dashboard': typeof DashboardIndexLazyRoute
+  '/dashboard/sales/add': typeof DashboardSalesAddRoute
+  '/dashboard/contacts/add': typeof DashboardContactsAddLazyRoute
+  '/dashboard/events/add': typeof DashboardEventsAddLazyRoute
+  '/dashboard/markets/add': typeof DashboardMarketsAddLazyRoute
+  '/dashboard/products/add': typeof DashboardProductsAddLazyRoute
+  '/dashboard/analytics': typeof DashboardAnalyticsIndexLazyRoute
+  '/dashboard/contacts': typeof DashboardContactsIndexLazyRoute
+  '/dashboard/events': typeof DashboardEventsIndexLazyRoute
+  '/dashboard/markets': typeof DashboardMarketsIndexLazyRoute
+  '/dashboard/newsletter': typeof DashboardNewsletterIndexLazyRoute
+  '/dashboard/products': typeof DashboardProductsIndexLazyRoute
+  '/dashboard/sales': typeof DashboardSalesIndexLazyRoute
+  '/dashboard/contacts/edit/$contactId': typeof DashboardContactsEditContactIdRoute
+  '/dashboard/events/edit/$eventId': typeof DashboardEventsEditEventIdRoute
+  '/dashboard/events/item/$eventId': typeof DashboardEventsItemEventIdRoute
+  '/dashboard/markets/edit/$marketId': typeof DashboardMarketsEditMarketIdRoute
+  '/dashboard/products/edit/$productId': typeof DashboardProductsEditProductIdRoute
+  '/dashboard/products/item/$productId': typeof DashboardProductsItemProductIdRoute
+  '/dashboard/sales/edit/$saleId': typeof DashboardSalesEditSaleIdRoute
+  '/dashboard/analytics/traffic': typeof DashboardAnalyticsTrafficIndexLazyRoute
+  '/dashboard/contacts/form': typeof DashboardContactsFormIndexLazyRoute
+  '/dashboard/products/settings': typeof DashboardProductsSettingsIndexLazyRoute
+  '/dashboard/contacts/form/item/$submissionId': typeof DashboardContactsFormItemSubmissionIdRoute
+}
+export interface FileRoutesById {
+  __root__: typeof rootRouteImport
+  '/': typeof IndexLazyRoute
+  '/dashboard': typeof DashboardLayoutRouteWithChildren
+  '/login': typeof LoginRoute
+  '/dashboard/': typeof DashboardIndexLazyRoute
+  '/dashboard/sales/add': typeof DashboardSalesAddRoute
+  '/dashboard/contacts/add': typeof DashboardContactsAddLazyRoute
+  '/dashboard/events/add': typeof DashboardEventsAddLazyRoute
+  '/dashboard/markets/add': typeof DashboardMarketsAddLazyRoute
+  '/dashboard/products/add': typeof DashboardProductsAddLazyRoute
+  '/dashboard/analytics/': typeof DashboardAnalyticsIndexLazyRoute
+  '/dashboard/contacts/': typeof DashboardContactsIndexLazyRoute
+  '/dashboard/events/': typeof DashboardEventsIndexLazyRoute
+  '/dashboard/markets/': typeof DashboardMarketsIndexLazyRoute
+  '/dashboard/newsletter/': typeof DashboardNewsletterIndexLazyRoute
+  '/dashboard/products/': typeof DashboardProductsIndexLazyRoute
+  '/dashboard/sales/': typeof DashboardSalesIndexLazyRoute
+  '/dashboard/contacts/edit/$contactId': typeof DashboardContactsEditContactIdRoute
+  '/dashboard/events/edit/$eventId': typeof DashboardEventsEditEventIdRoute
+  '/dashboard/events/item/$eventId': typeof DashboardEventsItemEventIdRoute
+  '/dashboard/markets/edit/$marketId': typeof DashboardMarketsEditMarketIdRoute
+  '/dashboard/products/edit/$productId': typeof DashboardProductsEditProductIdRoute
+  '/dashboard/products/item/$productId': typeof DashboardProductsItemProductIdRoute
+  '/dashboard/sales/edit/$saleId': typeof DashboardSalesEditSaleIdRoute
+  '/dashboard/analytics/traffic/': typeof DashboardAnalyticsTrafficIndexLazyRoute
+  '/dashboard/contacts/form/': typeof DashboardContactsFormIndexLazyRoute
+  '/dashboard/products/settings/': typeof DashboardProductsSettingsIndexLazyRoute
+  '/dashboard/contacts/form/item/$submissionId': typeof DashboardContactsFormItemSubmissionIdRoute
+}
+export interface FileRouteTypes {
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths:
+    | '/'
+    | '/dashboard'
+    | '/login'
+    | '/dashboard/'
+    | '/dashboard/sales/add'
+    | '/dashboard/contacts/add'
+    | '/dashboard/events/add'
+    | '/dashboard/markets/add'
+    | '/dashboard/products/add'
+    | '/dashboard/analytics/'
+    | '/dashboard/contacts/'
+    | '/dashboard/events/'
+    | '/dashboard/markets/'
+    | '/dashboard/newsletter/'
+    | '/dashboard/products/'
+    | '/dashboard/sales/'
+    | '/dashboard/contacts/edit/$contactId'
+    | '/dashboard/events/edit/$eventId'
+    | '/dashboard/events/item/$eventId'
+    | '/dashboard/markets/edit/$marketId'
+    | '/dashboard/products/edit/$productId'
+    | '/dashboard/products/item/$productId'
+    | '/dashboard/sales/edit/$saleId'
+    | '/dashboard/analytics/traffic/'
+    | '/dashboard/contacts/form/'
+    | '/dashboard/products/settings/'
+    | '/dashboard/contacts/form/item/$submissionId'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | '/login'
+    | '/dashboard'
+    | '/dashboard/sales/add'
+    | '/dashboard/contacts/add'
+    | '/dashboard/events/add'
+    | '/dashboard/markets/add'
+    | '/dashboard/products/add'
+    | '/dashboard/analytics'
+    | '/dashboard/contacts'
+    | '/dashboard/events'
+    | '/dashboard/markets'
+    | '/dashboard/newsletter'
+    | '/dashboard/products'
+    | '/dashboard/sales'
+    | '/dashboard/contacts/edit/$contactId'
+    | '/dashboard/events/edit/$eventId'
+    | '/dashboard/events/item/$eventId'
+    | '/dashboard/markets/edit/$marketId'
+    | '/dashboard/products/edit/$productId'
+    | '/dashboard/products/item/$productId'
+    | '/dashboard/sales/edit/$saleId'
+    | '/dashboard/analytics/traffic'
+    | '/dashboard/contacts/form'
+    | '/dashboard/products/settings'
+    | '/dashboard/contacts/form/item/$submissionId'
+  id:
+    | '__root__'
+    | '/'
+    | '/dashboard'
+    | '/login'
+    | '/dashboard/'
+    | '/dashboard/sales/add'
+    | '/dashboard/contacts/add'
+    | '/dashboard/events/add'
+    | '/dashboard/markets/add'
+    | '/dashboard/products/add'
+    | '/dashboard/analytics/'
+    | '/dashboard/contacts/'
+    | '/dashboard/events/'
+    | '/dashboard/markets/'
+    | '/dashboard/newsletter/'
+    | '/dashboard/products/'
+    | '/dashboard/sales/'
+    | '/dashboard/contacts/edit/$contactId'
+    | '/dashboard/events/edit/$eventId'
+    | '/dashboard/events/item/$eventId'
+    | '/dashboard/markets/edit/$marketId'
+    | '/dashboard/products/edit/$productId'
+    | '/dashboard/products/item/$productId'
+    | '/dashboard/sales/edit/$saleId'
+    | '/dashboard/analytics/traffic/'
+    | '/dashboard/contacts/form/'
+    | '/dashboard/products/settings/'
+    | '/dashboard/contacts/form/item/$submissionId'
+  fileRoutesById: FileRoutesById
+}
+export interface RootRouteChildren {
+  IndexLazyRoute: typeof IndexLazyRoute
+  DashboardLayoutRoute: typeof DashboardLayoutRouteWithChildren
+  LoginRoute: typeof LoginRoute
+}
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexLazyImport
-      parentRoute: typeof rootRoute
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
       id: '/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardLayoutImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof DashboardLayoutRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginLazyImport
-      parentRoute: typeof rootRoute
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexLazyRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/dashboard/': {
       id: '/dashboard/'
       path: '/'
       fullPath: '/dashboard/'
-      preLoaderRoute: typeof DashboardIndexLazyImport
-      parentRoute: typeof DashboardLayoutImport
+      preLoaderRoute: typeof DashboardIndexLazyRouteImport
+      parentRoute: typeof DashboardLayoutRoute
     }
-    '/dashboard/sales/add': {
-      id: '/dashboard/sales/add'
-      path: '/sales/add'
-      fullPath: '/dashboard/sales/add'
-      preLoaderRoute: typeof DashboardSalesAddImport
-      parentRoute: typeof DashboardLayoutImport
+    '/dashboard/sales/': {
+      id: '/dashboard/sales/'
+      path: '/sales'
+      fullPath: '/dashboard/sales/'
+      preLoaderRoute: typeof DashboardSalesIndexLazyRouteImport
+      parentRoute: typeof DashboardLayoutRoute
     }
-    '/dashboard/contacts/add': {
-      id: '/dashboard/contacts/add'
-      path: '/contacts/add'
-      fullPath: '/dashboard/contacts/add'
-      preLoaderRoute: typeof DashboardContactsAddLazyImport
-      parentRoute: typeof DashboardLayoutImport
+    '/dashboard/products/': {
+      id: '/dashboard/products/'
+      path: '/products'
+      fullPath: '/dashboard/products/'
+      preLoaderRoute: typeof DashboardProductsIndexLazyRouteImport
+      parentRoute: typeof DashboardLayoutRoute
     }
-    '/dashboard/events/add': {
-      id: '/dashboard/events/add'
-      path: '/events/add'
-      fullPath: '/dashboard/events/add'
-      preLoaderRoute: typeof DashboardEventsAddLazyImport
-      parentRoute: typeof DashboardLayoutImport
+    '/dashboard/newsletter/': {
+      id: '/dashboard/newsletter/'
+      path: '/newsletter'
+      fullPath: '/dashboard/newsletter/'
+      preLoaderRoute: typeof DashboardNewsletterIndexLazyRouteImport
+      parentRoute: typeof DashboardLayoutRoute
     }
-    '/dashboard/markets/add': {
-      id: '/dashboard/markets/add'
-      path: '/markets/add'
-      fullPath: '/dashboard/markets/add'
-      preLoaderRoute: typeof DashboardMarketsAddLazyImport
-      parentRoute: typeof DashboardLayoutImport
+    '/dashboard/markets/': {
+      id: '/dashboard/markets/'
+      path: '/markets'
+      fullPath: '/dashboard/markets/'
+      preLoaderRoute: typeof DashboardMarketsIndexLazyRouteImport
+      parentRoute: typeof DashboardLayoutRoute
+    }
+    '/dashboard/events/': {
+      id: '/dashboard/events/'
+      path: '/events'
+      fullPath: '/dashboard/events/'
+      preLoaderRoute: typeof DashboardEventsIndexLazyRouteImport
+      parentRoute: typeof DashboardLayoutRoute
+    }
+    '/dashboard/contacts/': {
+      id: '/dashboard/contacts/'
+      path: '/contacts'
+      fullPath: '/dashboard/contacts/'
+      preLoaderRoute: typeof DashboardContactsIndexLazyRouteImport
+      parentRoute: typeof DashboardLayoutRoute
+    }
+    '/dashboard/analytics/': {
+      id: '/dashboard/analytics/'
+      path: '/analytics'
+      fullPath: '/dashboard/analytics/'
+      preLoaderRoute: typeof DashboardAnalyticsIndexLazyRouteImport
+      parentRoute: typeof DashboardLayoutRoute
     }
     '/dashboard/products/add': {
       id: '/dashboard/products/add'
       path: '/products/add'
       fullPath: '/dashboard/products/add'
-      preLoaderRoute: typeof DashboardProductsAddLazyImport
-      parentRoute: typeof DashboardLayoutImport
+      preLoaderRoute: typeof DashboardProductsAddLazyRouteImport
+      parentRoute: typeof DashboardLayoutRoute
     }
-    '/dashboard/analytics/': {
-      id: '/dashboard/analytics/'
-      path: '/analytics'
-      fullPath: '/dashboard/analytics'
-      preLoaderRoute: typeof DashboardAnalyticsIndexLazyImport
-      parentRoute: typeof DashboardLayoutImport
+    '/dashboard/markets/add': {
+      id: '/dashboard/markets/add'
+      path: '/markets/add'
+      fullPath: '/dashboard/markets/add'
+      preLoaderRoute: typeof DashboardMarketsAddLazyRouteImport
+      parentRoute: typeof DashboardLayoutRoute
     }
-    '/dashboard/contacts/': {
-      id: '/dashboard/contacts/'
-      path: '/contacts'
-      fullPath: '/dashboard/contacts'
-      preLoaderRoute: typeof DashboardContactsIndexLazyImport
-      parentRoute: typeof DashboardLayoutImport
+    '/dashboard/events/add': {
+      id: '/dashboard/events/add'
+      path: '/events/add'
+      fullPath: '/dashboard/events/add'
+      preLoaderRoute: typeof DashboardEventsAddLazyRouteImport
+      parentRoute: typeof DashboardLayoutRoute
     }
-    '/dashboard/events/': {
-      id: '/dashboard/events/'
-      path: '/events'
-      fullPath: '/dashboard/events'
-      preLoaderRoute: typeof DashboardEventsIndexLazyImport
-      parentRoute: typeof DashboardLayoutImport
+    '/dashboard/contacts/add': {
+      id: '/dashboard/contacts/add'
+      path: '/contacts/add'
+      fullPath: '/dashboard/contacts/add'
+      preLoaderRoute: typeof DashboardContactsAddLazyRouteImport
+      parentRoute: typeof DashboardLayoutRoute
     }
-    '/dashboard/markets/': {
-      id: '/dashboard/markets/'
-      path: '/markets'
-      fullPath: '/dashboard/markets'
-      preLoaderRoute: typeof DashboardMarketsIndexLazyImport
-      parentRoute: typeof DashboardLayoutImport
+    '/dashboard/sales/add': {
+      id: '/dashboard/sales/add'
+      path: '/sales/add'
+      fullPath: '/dashboard/sales/add'
+      preLoaderRoute: typeof DashboardSalesAddRouteImport
+      parentRoute: typeof DashboardLayoutRoute
     }
-    '/dashboard/newsletter/': {
-      id: '/dashboard/newsletter/'
-      path: '/newsletter'
-      fullPath: '/dashboard/newsletter'
-      preLoaderRoute: typeof DashboardNewsletterIndexLazyImport
-      parentRoute: typeof DashboardLayoutImport
+    '/dashboard/products/settings/': {
+      id: '/dashboard/products/settings/'
+      path: '/products/settings'
+      fullPath: '/dashboard/products/settings/'
+      preLoaderRoute: typeof DashboardProductsSettingsIndexLazyRouteImport
+      parentRoute: typeof DashboardLayoutRoute
     }
-    '/dashboard/products/': {
-      id: '/dashboard/products/'
-      path: '/products'
-      fullPath: '/dashboard/products'
-      preLoaderRoute: typeof DashboardProductsIndexLazyImport
-      parentRoute: typeof DashboardLayoutImport
+    '/dashboard/contacts/form/': {
+      id: '/dashboard/contacts/form/'
+      path: '/contacts/form'
+      fullPath: '/dashboard/contacts/form/'
+      preLoaderRoute: typeof DashboardContactsFormIndexLazyRouteImport
+      parentRoute: typeof DashboardLayoutRoute
     }
-    '/dashboard/sales/': {
-      id: '/dashboard/sales/'
-      path: '/sales'
-      fullPath: '/dashboard/sales'
-      preLoaderRoute: typeof DashboardSalesIndexLazyImport
-      parentRoute: typeof DashboardLayoutImport
-    }
-    '/dashboard/contacts/edit/$contactId': {
-      id: '/dashboard/contacts/edit/$contactId'
-      path: '/contacts/edit/$contactId'
-      fullPath: '/dashboard/contacts/edit/$contactId'
-      preLoaderRoute: typeof DashboardContactsEditContactIdImport
-      parentRoute: typeof DashboardLayoutImport
-    }
-    '/dashboard/events/edit/$eventId': {
-      id: '/dashboard/events/edit/$eventId'
-      path: '/events/edit/$eventId'
-      fullPath: '/dashboard/events/edit/$eventId'
-      preLoaderRoute: typeof DashboardEventsEditEventIdImport
-      parentRoute: typeof DashboardLayoutImport
-    }
-    '/dashboard/events/item/$eventId': {
-      id: '/dashboard/events/item/$eventId'
-      path: '/events/item/$eventId'
-      fullPath: '/dashboard/events/item/$eventId'
-      preLoaderRoute: typeof DashboardEventsItemEventIdImport
-      parentRoute: typeof DashboardLayoutImport
-    }
-    '/dashboard/markets/edit/$marketId': {
-      id: '/dashboard/markets/edit/$marketId'
-      path: '/markets/edit/$marketId'
-      fullPath: '/dashboard/markets/edit/$marketId'
-      preLoaderRoute: typeof DashboardMarketsEditMarketIdImport
-      parentRoute: typeof DashboardLayoutImport
-    }
-    '/dashboard/products/edit/$productId': {
-      id: '/dashboard/products/edit/$productId'
-      path: '/products/edit/$productId'
-      fullPath: '/dashboard/products/edit/$productId'
-      preLoaderRoute: typeof DashboardProductsEditProductIdImport
-      parentRoute: typeof DashboardLayoutImport
-    }
-    '/dashboard/products/item/$productId': {
-      id: '/dashboard/products/item/$productId'
-      path: '/products/item/$productId'
-      fullPath: '/dashboard/products/item/$productId'
-      preLoaderRoute: typeof DashboardProductsItemProductIdImport
-      parentRoute: typeof DashboardLayoutImport
+    '/dashboard/analytics/traffic/': {
+      id: '/dashboard/analytics/traffic/'
+      path: '/analytics/traffic'
+      fullPath: '/dashboard/analytics/traffic/'
+      preLoaderRoute: typeof DashboardAnalyticsTrafficIndexLazyRouteImport
+      parentRoute: typeof DashboardLayoutRoute
     }
     '/dashboard/sales/edit/$saleId': {
       id: '/dashboard/sales/edit/$saleId'
       path: '/sales/edit/$saleId'
       fullPath: '/dashboard/sales/edit/$saleId'
-      preLoaderRoute: typeof DashboardSalesEditSaleIdImport
-      parentRoute: typeof DashboardLayoutImport
+      preLoaderRoute: typeof DashboardSalesEditSaleIdRouteImport
+      parentRoute: typeof DashboardLayoutRoute
     }
-    '/dashboard/analytics/traffic/': {
-      id: '/dashboard/analytics/traffic/'
-      path: '/analytics/traffic'
-      fullPath: '/dashboard/analytics/traffic'
-      preLoaderRoute: typeof DashboardAnalyticsTrafficIndexLazyImport
-      parentRoute: typeof DashboardLayoutImport
+    '/dashboard/products/item/$productId': {
+      id: '/dashboard/products/item/$productId'
+      path: '/products/item/$productId'
+      fullPath: '/dashboard/products/item/$productId'
+      preLoaderRoute: typeof DashboardProductsItemProductIdRouteImport
+      parentRoute: typeof DashboardLayoutRoute
     }
-    '/dashboard/contacts/form/': {
-      id: '/dashboard/contacts/form/'
-      path: '/contacts/form'
-      fullPath: '/dashboard/contacts/form'
-      preLoaderRoute: typeof DashboardContactsFormIndexLazyImport
-      parentRoute: typeof DashboardLayoutImport
+    '/dashboard/products/edit/$productId': {
+      id: '/dashboard/products/edit/$productId'
+      path: '/products/edit/$productId'
+      fullPath: '/dashboard/products/edit/$productId'
+      preLoaderRoute: typeof DashboardProductsEditProductIdRouteImport
+      parentRoute: typeof DashboardLayoutRoute
     }
-    '/dashboard/products/settings/': {
-      id: '/dashboard/products/settings/'
-      path: '/products/settings'
-      fullPath: '/dashboard/products/settings'
-      preLoaderRoute: typeof DashboardProductsSettingsIndexLazyImport
-      parentRoute: typeof DashboardLayoutImport
+    '/dashboard/markets/edit/$marketId': {
+      id: '/dashboard/markets/edit/$marketId'
+      path: '/markets/edit/$marketId'
+      fullPath: '/dashboard/markets/edit/$marketId'
+      preLoaderRoute: typeof DashboardMarketsEditMarketIdRouteImport
+      parentRoute: typeof DashboardLayoutRoute
+    }
+    '/dashboard/events/item/$eventId': {
+      id: '/dashboard/events/item/$eventId'
+      path: '/events/item/$eventId'
+      fullPath: '/dashboard/events/item/$eventId'
+      preLoaderRoute: typeof DashboardEventsItemEventIdRouteImport
+      parentRoute: typeof DashboardLayoutRoute
+    }
+    '/dashboard/events/edit/$eventId': {
+      id: '/dashboard/events/edit/$eventId'
+      path: '/events/edit/$eventId'
+      fullPath: '/dashboard/events/edit/$eventId'
+      preLoaderRoute: typeof DashboardEventsEditEventIdRouteImport
+      parentRoute: typeof DashboardLayoutRoute
+    }
+    '/dashboard/contacts/edit/$contactId': {
+      id: '/dashboard/contacts/edit/$contactId'
+      path: '/contacts/edit/$contactId'
+      fullPath: '/dashboard/contacts/edit/$contactId'
+      preLoaderRoute: typeof DashboardContactsEditContactIdRouteImport
+      parentRoute: typeof DashboardLayoutRoute
     }
     '/dashboard/contacts/form/item/$submissionId': {
       id: '/dashboard/contacts/form/item/$submissionId'
       path: '/contacts/form/item/$submissionId'
       fullPath: '/dashboard/contacts/form/item/$submissionId'
-      preLoaderRoute: typeof DashboardContactsFormItemSubmissionIdImport
-      parentRoute: typeof DashboardLayoutImport
+      preLoaderRoute: typeof DashboardContactsFormItemSubmissionIdRouteImport
+      parentRoute: typeof DashboardLayoutRoute
     }
   }
 }
-
-// Create and export the route tree
 
 interface DashboardLayoutRouteChildren {
   DashboardIndexLazyRoute: typeof DashboardIndexLazyRoute
@@ -539,344 +692,11 @@ const DashboardLayoutRouteWithChildren = DashboardLayoutRoute._addFileChildren(
   DashboardLayoutRouteChildren,
 )
 
-export interface FileRoutesByFullPath {
-  '/': typeof IndexLazyRoute
-  '/dashboard': typeof DashboardLayoutRouteWithChildren
-  '/login': typeof LoginLazyRoute
-  '/dashboard/': typeof DashboardIndexLazyRoute
-  '/dashboard/sales/add': typeof DashboardSalesAddRoute
-  '/dashboard/contacts/add': typeof DashboardContactsAddLazyRoute
-  '/dashboard/events/add': typeof DashboardEventsAddLazyRoute
-  '/dashboard/markets/add': typeof DashboardMarketsAddLazyRoute
-  '/dashboard/products/add': typeof DashboardProductsAddLazyRoute
-  '/dashboard/analytics': typeof DashboardAnalyticsIndexLazyRoute
-  '/dashboard/contacts': typeof DashboardContactsIndexLazyRoute
-  '/dashboard/events': typeof DashboardEventsIndexLazyRoute
-  '/dashboard/markets': typeof DashboardMarketsIndexLazyRoute
-  '/dashboard/newsletter': typeof DashboardNewsletterIndexLazyRoute
-  '/dashboard/products': typeof DashboardProductsIndexLazyRoute
-  '/dashboard/sales': typeof DashboardSalesIndexLazyRoute
-  '/dashboard/contacts/edit/$contactId': typeof DashboardContactsEditContactIdRoute
-  '/dashboard/events/edit/$eventId': typeof DashboardEventsEditEventIdRoute
-  '/dashboard/events/item/$eventId': typeof DashboardEventsItemEventIdRoute
-  '/dashboard/markets/edit/$marketId': typeof DashboardMarketsEditMarketIdRoute
-  '/dashboard/products/edit/$productId': typeof DashboardProductsEditProductIdRoute
-  '/dashboard/products/item/$productId': typeof DashboardProductsItemProductIdRoute
-  '/dashboard/sales/edit/$saleId': typeof DashboardSalesEditSaleIdRoute
-  '/dashboard/analytics/traffic': typeof DashboardAnalyticsTrafficIndexLazyRoute
-  '/dashboard/contacts/form': typeof DashboardContactsFormIndexLazyRoute
-  '/dashboard/products/settings': typeof DashboardProductsSettingsIndexLazyRoute
-  '/dashboard/contacts/form/item/$submissionId': typeof DashboardContactsFormItemSubmissionIdRoute
-}
-
-export interface FileRoutesByTo {
-  '/': typeof IndexLazyRoute
-  '/login': typeof LoginLazyRoute
-  '/dashboard': typeof DashboardIndexLazyRoute
-  '/dashboard/sales/add': typeof DashboardSalesAddRoute
-  '/dashboard/contacts/add': typeof DashboardContactsAddLazyRoute
-  '/dashboard/events/add': typeof DashboardEventsAddLazyRoute
-  '/dashboard/markets/add': typeof DashboardMarketsAddLazyRoute
-  '/dashboard/products/add': typeof DashboardProductsAddLazyRoute
-  '/dashboard/analytics': typeof DashboardAnalyticsIndexLazyRoute
-  '/dashboard/contacts': typeof DashboardContactsIndexLazyRoute
-  '/dashboard/events': typeof DashboardEventsIndexLazyRoute
-  '/dashboard/markets': typeof DashboardMarketsIndexLazyRoute
-  '/dashboard/newsletter': typeof DashboardNewsletterIndexLazyRoute
-  '/dashboard/products': typeof DashboardProductsIndexLazyRoute
-  '/dashboard/sales': typeof DashboardSalesIndexLazyRoute
-  '/dashboard/contacts/edit/$contactId': typeof DashboardContactsEditContactIdRoute
-  '/dashboard/events/edit/$eventId': typeof DashboardEventsEditEventIdRoute
-  '/dashboard/events/item/$eventId': typeof DashboardEventsItemEventIdRoute
-  '/dashboard/markets/edit/$marketId': typeof DashboardMarketsEditMarketIdRoute
-  '/dashboard/products/edit/$productId': typeof DashboardProductsEditProductIdRoute
-  '/dashboard/products/item/$productId': typeof DashboardProductsItemProductIdRoute
-  '/dashboard/sales/edit/$saleId': typeof DashboardSalesEditSaleIdRoute
-  '/dashboard/analytics/traffic': typeof DashboardAnalyticsTrafficIndexLazyRoute
-  '/dashboard/contacts/form': typeof DashboardContactsFormIndexLazyRoute
-  '/dashboard/products/settings': typeof DashboardProductsSettingsIndexLazyRoute
-  '/dashboard/contacts/form/item/$submissionId': typeof DashboardContactsFormItemSubmissionIdRoute
-}
-
-export interface FileRoutesById {
-  __root__: typeof rootRoute
-  '/': typeof IndexLazyRoute
-  '/dashboard': typeof DashboardLayoutRouteWithChildren
-  '/login': typeof LoginLazyRoute
-  '/dashboard/': typeof DashboardIndexLazyRoute
-  '/dashboard/sales/add': typeof DashboardSalesAddRoute
-  '/dashboard/contacts/add': typeof DashboardContactsAddLazyRoute
-  '/dashboard/events/add': typeof DashboardEventsAddLazyRoute
-  '/dashboard/markets/add': typeof DashboardMarketsAddLazyRoute
-  '/dashboard/products/add': typeof DashboardProductsAddLazyRoute
-  '/dashboard/analytics/': typeof DashboardAnalyticsIndexLazyRoute
-  '/dashboard/contacts/': typeof DashboardContactsIndexLazyRoute
-  '/dashboard/events/': typeof DashboardEventsIndexLazyRoute
-  '/dashboard/markets/': typeof DashboardMarketsIndexLazyRoute
-  '/dashboard/newsletter/': typeof DashboardNewsletterIndexLazyRoute
-  '/dashboard/products/': typeof DashboardProductsIndexLazyRoute
-  '/dashboard/sales/': typeof DashboardSalesIndexLazyRoute
-  '/dashboard/contacts/edit/$contactId': typeof DashboardContactsEditContactIdRoute
-  '/dashboard/events/edit/$eventId': typeof DashboardEventsEditEventIdRoute
-  '/dashboard/events/item/$eventId': typeof DashboardEventsItemEventIdRoute
-  '/dashboard/markets/edit/$marketId': typeof DashboardMarketsEditMarketIdRoute
-  '/dashboard/products/edit/$productId': typeof DashboardProductsEditProductIdRoute
-  '/dashboard/products/item/$productId': typeof DashboardProductsItemProductIdRoute
-  '/dashboard/sales/edit/$saleId': typeof DashboardSalesEditSaleIdRoute
-  '/dashboard/analytics/traffic/': typeof DashboardAnalyticsTrafficIndexLazyRoute
-  '/dashboard/contacts/form/': typeof DashboardContactsFormIndexLazyRoute
-  '/dashboard/products/settings/': typeof DashboardProductsSettingsIndexLazyRoute
-  '/dashboard/contacts/form/item/$submissionId': typeof DashboardContactsFormItemSubmissionIdRoute
-}
-
-export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/dashboard'
-    | '/login'
-    | '/dashboard/'
-    | '/dashboard/sales/add'
-    | '/dashboard/contacts/add'
-    | '/dashboard/events/add'
-    | '/dashboard/markets/add'
-    | '/dashboard/products/add'
-    | '/dashboard/analytics'
-    | '/dashboard/contacts'
-    | '/dashboard/events'
-    | '/dashboard/markets'
-    | '/dashboard/newsletter'
-    | '/dashboard/products'
-    | '/dashboard/sales'
-    | '/dashboard/contacts/edit/$contactId'
-    | '/dashboard/events/edit/$eventId'
-    | '/dashboard/events/item/$eventId'
-    | '/dashboard/markets/edit/$marketId'
-    | '/dashboard/products/edit/$productId'
-    | '/dashboard/products/item/$productId'
-    | '/dashboard/sales/edit/$saleId'
-    | '/dashboard/analytics/traffic'
-    | '/dashboard/contacts/form'
-    | '/dashboard/products/settings'
-    | '/dashboard/contacts/form/item/$submissionId'
-  fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/login'
-    | '/dashboard'
-    | '/dashboard/sales/add'
-    | '/dashboard/contacts/add'
-    | '/dashboard/events/add'
-    | '/dashboard/markets/add'
-    | '/dashboard/products/add'
-    | '/dashboard/analytics'
-    | '/dashboard/contacts'
-    | '/dashboard/events'
-    | '/dashboard/markets'
-    | '/dashboard/newsletter'
-    | '/dashboard/products'
-    | '/dashboard/sales'
-    | '/dashboard/contacts/edit/$contactId'
-    | '/dashboard/events/edit/$eventId'
-    | '/dashboard/events/item/$eventId'
-    | '/dashboard/markets/edit/$marketId'
-    | '/dashboard/products/edit/$productId'
-    | '/dashboard/products/item/$productId'
-    | '/dashboard/sales/edit/$saleId'
-    | '/dashboard/analytics/traffic'
-    | '/dashboard/contacts/form'
-    | '/dashboard/products/settings'
-    | '/dashboard/contacts/form/item/$submissionId'
-  id:
-    | '__root__'
-    | '/'
-    | '/dashboard'
-    | '/login'
-    | '/dashboard/'
-    | '/dashboard/sales/add'
-    | '/dashboard/contacts/add'
-    | '/dashboard/events/add'
-    | '/dashboard/markets/add'
-    | '/dashboard/products/add'
-    | '/dashboard/analytics/'
-    | '/dashboard/contacts/'
-    | '/dashboard/events/'
-    | '/dashboard/markets/'
-    | '/dashboard/newsletter/'
-    | '/dashboard/products/'
-    | '/dashboard/sales/'
-    | '/dashboard/contacts/edit/$contactId'
-    | '/dashboard/events/edit/$eventId'
-    | '/dashboard/events/item/$eventId'
-    | '/dashboard/markets/edit/$marketId'
-    | '/dashboard/products/edit/$productId'
-    | '/dashboard/products/item/$productId'
-    | '/dashboard/sales/edit/$saleId'
-    | '/dashboard/analytics/traffic/'
-    | '/dashboard/contacts/form/'
-    | '/dashboard/products/settings/'
-    | '/dashboard/contacts/form/item/$submissionId'
-  fileRoutesById: FileRoutesById
-}
-
-export interface RootRouteChildren {
-  IndexLazyRoute: typeof IndexLazyRoute
-  DashboardLayoutRoute: typeof DashboardLayoutRouteWithChildren
-  LoginLazyRoute: typeof LoginLazyRoute
-}
-
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
   DashboardLayoutRoute: DashboardLayoutRouteWithChildren,
-  LoginLazyRoute: LoginLazyRoute,
+  LoginRoute: LoginRoute,
 }
-
-export const routeTree = rootRoute
+export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-/* ROUTE_MANIFEST_START
-{
-  "routes": {
-    "__root__": {
-      "filePath": "__root.tsx",
-      "children": [
-        "/",
-        "/dashboard",
-        "/login"
-      ]
-    },
-    "/": {
-      "filePath": "index.lazy.tsx"
-    },
-    "/dashboard": {
-      "filePath": "dashboard/_layout.tsx",
-      "children": [
-        "/dashboard/",
-        "/dashboard/sales/add",
-        "/dashboard/contacts/add",
-        "/dashboard/events/add",
-        "/dashboard/markets/add",
-        "/dashboard/products/add",
-        "/dashboard/analytics/",
-        "/dashboard/contacts/",
-        "/dashboard/events/",
-        "/dashboard/markets/",
-        "/dashboard/newsletter/",
-        "/dashboard/products/",
-        "/dashboard/sales/",
-        "/dashboard/contacts/edit/$contactId",
-        "/dashboard/events/edit/$eventId",
-        "/dashboard/events/item/$eventId",
-        "/dashboard/markets/edit/$marketId",
-        "/dashboard/products/edit/$productId",
-        "/dashboard/products/item/$productId",
-        "/dashboard/sales/edit/$saleId",
-        "/dashboard/analytics/traffic/",
-        "/dashboard/contacts/form/",
-        "/dashboard/products/settings/",
-        "/dashboard/contacts/form/item/$submissionId"
-      ]
-    },
-    "/login": {
-      "filePath": "login.lazy.tsx"
-    },
-    "/dashboard/": {
-      "filePath": "dashboard/index.lazy.tsx",
-      "parent": "/dashboard"
-    },
-    "/dashboard/sales/add": {
-      "filePath": "dashboard/sales/add.tsx",
-      "parent": "/dashboard"
-    },
-    "/dashboard/contacts/add": {
-      "filePath": "dashboard/contacts/add.lazy.tsx",
-      "parent": "/dashboard"
-    },
-    "/dashboard/events/add": {
-      "filePath": "dashboard/events/add.lazy.tsx",
-      "parent": "/dashboard"
-    },
-    "/dashboard/markets/add": {
-      "filePath": "dashboard/markets/add.lazy.tsx",
-      "parent": "/dashboard"
-    },
-    "/dashboard/products/add": {
-      "filePath": "dashboard/products/add.lazy.tsx",
-      "parent": "/dashboard"
-    },
-    "/dashboard/analytics/": {
-      "filePath": "dashboard/analytics/index.lazy.tsx",
-      "parent": "/dashboard"
-    },
-    "/dashboard/contacts/": {
-      "filePath": "dashboard/contacts/index.lazy.tsx",
-      "parent": "/dashboard"
-    },
-    "/dashboard/events/": {
-      "filePath": "dashboard/events/index.lazy.tsx",
-      "parent": "/dashboard"
-    },
-    "/dashboard/markets/": {
-      "filePath": "dashboard/markets/index.lazy.tsx",
-      "parent": "/dashboard"
-    },
-    "/dashboard/newsletter/": {
-      "filePath": "dashboard/newsletter/index.lazy.tsx",
-      "parent": "/dashboard"
-    },
-    "/dashboard/products/": {
-      "filePath": "dashboard/products/index.lazy.tsx",
-      "parent": "/dashboard"
-    },
-    "/dashboard/sales/": {
-      "filePath": "dashboard/sales/index.lazy.tsx",
-      "parent": "/dashboard"
-    },
-    "/dashboard/contacts/edit/$contactId": {
-      "filePath": "dashboard/contacts/edit.$contactId.tsx",
-      "parent": "/dashboard"
-    },
-    "/dashboard/events/edit/$eventId": {
-      "filePath": "dashboard/events/edit.$eventId.tsx",
-      "parent": "/dashboard"
-    },
-    "/dashboard/events/item/$eventId": {
-      "filePath": "dashboard/events/item.$eventId.tsx",
-      "parent": "/dashboard"
-    },
-    "/dashboard/markets/edit/$marketId": {
-      "filePath": "dashboard/markets/edit.$marketId.tsx",
-      "parent": "/dashboard"
-    },
-    "/dashboard/products/edit/$productId": {
-      "filePath": "dashboard/products/edit.$productId.tsx",
-      "parent": "/dashboard"
-    },
-    "/dashboard/products/item/$productId": {
-      "filePath": "dashboard/products/item.$productId.tsx",
-      "parent": "/dashboard"
-    },
-    "/dashboard/sales/edit/$saleId": {
-      "filePath": "dashboard/sales/edit.$saleId.tsx",
-      "parent": "/dashboard"
-    },
-    "/dashboard/analytics/traffic/": {
-      "filePath": "dashboard/analytics/traffic/index.lazy.tsx",
-      "parent": "/dashboard"
-    },
-    "/dashboard/contacts/form/": {
-      "filePath": "dashboard/contacts/form/index.lazy.tsx",
-      "parent": "/dashboard"
-    },
-    "/dashboard/products/settings/": {
-      "filePath": "dashboard/products/settings/index.lazy.tsx",
-      "parent": "/dashboard"
-    },
-    "/dashboard/contacts/form/item/$submissionId": {
-      "filePath": "dashboard/contacts/form/item.$submissionId.tsx",
-      "parent": "/dashboard"
-    }
-  }
-}
-ROUTE_MANIFEST_END */

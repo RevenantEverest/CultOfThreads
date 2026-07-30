@@ -1,17 +1,14 @@
 import { useEffect, useState } from 'react';
 import { createLazyFileRoute } from '@tanstack/react-router';
-import { useQuery } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
-import { BeatLoader } from 'react-spinners';
 
 import { ToastError } from '@repo/ui';
 import { Layout, Breadcrumb } from '@@admin/components/Common';
-import { EventsList, AddEvent } from '@@admin/components/Events';
+import { AddEvent, EventsTable } from '@@admin/components/Events';
 import Search from '@@admin/components/Search';
 
-import { useThemeStore } from '@@admin/store/theme';
-
-import { eventsApi } from '@repo/supabase';
+import { useAuthStore } from '@@admin/store/auth';
+import { events } from '@repo/queries';
 
 export const Route = createLazyFileRoute('/dashboard/events/')({
     component: Events,
@@ -19,10 +16,13 @@ export const Route = createLazyFileRoute('/dashboard/events/')({
 
 function Events() {
 
-    const theme = useThemeStore((state) => state.theme);
-    const query = useQuery({
-        queryKey: ["events"],
-        queryFn: eventsApi.fetchAll
+    const auth = useAuthStore((state) => state.auth);
+
+    const query = events.hooks.useIndex({
+        authToken: auth.session?.accessToken ?? "",
+        pagination: {
+            limit: 10
+        }
     });
 
     const [search, setSearch] = useState("");
@@ -35,6 +35,12 @@ function Events() {
             <ToastError toast={t} message={"Error fetching markets"} />
         ));
     }, [query.isError, query.error]);
+
+    const nextPage = () => {
+        if(!query.hasNextPage) return;
+
+        query.fetchNextPage();
+    };
 
     return(
         <Layout className="pb-20">
@@ -56,16 +62,15 @@ function Events() {
                         <AddEvent />
                     </div>
                 </div>
-                {
-                    query.isLoading ?
-                    <BeatLoader
-                        className="flex flex-1 items-center justify-center mt-10"
-                        size={15}
-                        color={theme.colors.primary}
-                    />
-                    :
-                    <EventsList search={search} events={query.data ?? []} />
-                }
+                <EventsTable
+                    events={
+                        query.data?.pages.flatMap((page) => page.results) ?? []
+                    } 
+                    dataAmount={query.data?.pages[0] && query.data.pages[0].count}
+                    search={search} 
+                    isLoading={query.isLoading || query.isFetching || !query.data}
+                    nextPage={nextPage}
+                />
             </div>
         </Layout>
     );

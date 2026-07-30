@@ -7,7 +7,7 @@ function AddMarket() {
 
     return(
         <Link to="/dashboard/markets/add">
-            <Button className="!font-semibold !text-sm text-white bg-card-light hover:bg-card-light">
+            <Button className="font-semibold! text-sm! text-white bg-card-light hover:bg-card-light">
                 <FaPlus />
                 Add Market
             </Button>

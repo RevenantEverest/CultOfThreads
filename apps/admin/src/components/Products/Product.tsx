@@ -1,4 +1,4 @@
-import type { ProductListing } from '@repo/supabase';
+import type { Product as ProductEntity } from '@repo/entities';
 
 import { Link } from '@tanstack/react-router';
 import { FaCashRegister } from 'react-icons/fa6';
@@ -10,7 +10,7 @@ import ProductDetails from './ProductDetails';
 import ProductImages from './ProductImages';
 
 interface ProductProps {
-    product: ProductListing
+    product: ProductEntity
 };
 
 function Product({ product }: ProductProps) {

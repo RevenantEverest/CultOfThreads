@@ -21,7 +21,8 @@ interface Auth {
 
 interface AuthState {
     auth: Auth,
-    login: (auth: Auth) => void
+    login: (auth: Auth) => void,
+    signout: () => void
 };
 
 const initialState: Auth = {
@@ -32,7 +33,13 @@ export const useAuthStore = create<AuthState>() (
     persist(
         (set) => ({
             auth: initialState,
-            login: (auth: Auth) => set(() => ({ auth }))
+            login: (auth: Auth) => set(() => ({ auth })),
+            signout: () => set(() => ({
+                auth: {
+                    user: undefined,
+                    session: undefined
+                }
+            }))
         }),
         {
             name: 'auth-storage',

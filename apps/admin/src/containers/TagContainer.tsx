@@ -1,24 +1,23 @@
 import { useState, useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { BeatLoader } from 'react-spinners';
 import toast from 'react-hot-toast';
 
 import { ToastError } from '@repo/ui';
-import { AddTag, TagList } from '@@admin/components/Tags';
+import { AddTag, TagsTable } from '@@admin/components/Tags';
 import Search from '@@admin/components/Search';
 
-import { useThemeStore } from '@@admin/store/theme';
-
-import { tagApi } from '@repo/supabase';
+import { useAuthStore } from '@@admin/store/auth';
+import { tags } from '@repo/queries';
 
 function TagContainer() {
 
-    const theme = useThemeStore((state) => state.theme);
+    const auth = useAuthStore((state) => state.auth);
     
     const [search, setSearch] = useState("");
-    const query = useQuery({ 
-        queryKey: ["tags"], 
-        queryFn: tagApi.fetchAll
+    const query = tags.hooks.useIndex({
+        authToken: auth.session?.accessToken ?? "",
+        pagination: {
+            limit: 10
+        }
     });
 
     useEffect(() => {
@@ -29,6 +28,12 @@ function TagContainer() {
             <ToastError toast={t} message={"Error fetching Categories"} />
         ));
     }, [query.isError, query.error]);
+
+    const nextPage = () => {
+        if(!query.hasNextPage) return;
+
+        query.fetchNextPage();
+    };
 
     return(
         <div className="mt-20 pb-20 flex flex-col items-center justify-center gap-5">
@@ -41,16 +46,15 @@ function TagContainer() {
                 </div>
             </div>
             <div className="w-full">
-                {
-                    query.isLoading ?
-                    <BeatLoader
-                        className="flex flex-1 items-center justify-center mt-10"
-                        size={15}
-                        color={theme.colors.primary}
-                    />
-                    :
-                    <TagList search={search} tags={query.data ?? []} />
-                }
+                <TagsTable
+                    tags={
+                        query.data?.pages.flatMap((page) => page.results) ?? []
+                    } 
+                    dataAmount={query.data?.pages[0] && query.data.pages[0].count}
+                    search={search} 
+                    isLoading={query.isLoading || query.isFetching || !query.data}
+                    nextPage={nextPage}
+                />
             </div>
         </div>
     );
