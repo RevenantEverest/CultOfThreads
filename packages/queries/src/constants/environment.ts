@@ -1,13 +1,17 @@
-export function getEnvVar(key: string) {
-    if(typeof process !== "undefined" && process.env) {
-        if(process.env[key]) return process.env[key];
-    }
+export function getApiUrl(): string | undefined {
+  if (typeof process !== "undefined" && process.env && process.env.NEXT_PUBLIC_API_URL) {
+    return process.env.NEXT_PUBLIC_API_URL;
+  }
 
-    if(typeof import.meta !== "undefined" && (import.meta as any).env) { //eslint-disable-line
-        return (import.meta as any).env[key] as string; //eslint-disable-line
-    }
+  if (typeof import.meta !== "undefined" && (import.meta as any).env && (import.meta as any).env.VITE_API_URL) { //eslint-disable-line
+    return (import.meta as any).env.VITE_API_URL; //eslint-disable-line
+  }
 
-    return undefined;
-};
+  if (typeof process !== "undefined" && process.env && process.env.API_URL) {
+    return process.env.API_URL;
+  }
 
-export const API_URL: string = getEnvVar("NEXT_PUBLIC_API_URL") || getEnvVar("VITE_API_URL") || getEnvVar("API_URL") || "http://localhost:3001";
+  return undefined;
+}
+
+export const API_URL: string = getApiUrl() || "http://localhost:3001";

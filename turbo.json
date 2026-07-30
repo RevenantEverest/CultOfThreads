@@ -2,13 +2,13 @@
     "$schema": "https://v2-10-4.turborepo.dev/schema.json",
     "ui": "tui",
     "globalDependencies": [".env"],
-    "globalEnv": ["NEXT_PUBLIC_*", "SUPABASE_*", "DB_*", "API_URL"],
+    "globalEnv": ["NEXT_PUBLIC_*", "SUPABASE_*", "DB_*", "API_*"],
     "tasks": {
         "build": {
             "dependsOn": ["^build"],
             "inputs": ["$TURBO_DEFAULT$", ".env*"],
             "outputs": ["dist/**", ".next/**", "!.next/cache/**"],
-            "env": ["NEXT_PUBLIC_*", "VITE_*", "NODE_ENV", "SUPABASE_*", "DB_*"]
+            "env": ["NEXT_PUBLIC_*", "VITE_*", "NODE_ENV", "SUPABASE_*", "DB_*", "API_*"]
         },
         "lint": {
             "dependsOn": ["^lint"]
