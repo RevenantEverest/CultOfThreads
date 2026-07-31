@@ -12,6 +12,8 @@ import { productRoutes } from '~/modules/products';
 import { tagRoutes } from '~/modules/tag';
 import { trafficAnalyticRoutes } from '~/modules/trafficAnalytics';
 
+import { healthRoutes } from '~/modules/health';
+
 function initializeApp(): Application {
 
     const app = express();
@@ -33,6 +35,8 @@ function initializeApp(): Application {
     app.use("/products", productRoutes);
     app.use("/tags", tagRoutes);
     app.use("/analytics/traffic", trafficAnalyticRoutes);
+
+    app.use("/health", healthRoutes);
 
     return app;
 };
