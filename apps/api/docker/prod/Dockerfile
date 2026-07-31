@@ -1,5 +1,10 @@
 FROM oven/bun:1-alpine AS base
 
+ARG GIT_COMMIT_SHA
+ARG BUILD_TIME
+ENV GIT_COMMIT_SHA=$GIT_COMMIT_SHA
+ENV BUILD_TIME=$BUILD_TIME
+
 # 1. Prune the monorepo to just what api needs
 FROM base AS pruner
 WORKDIR /app
