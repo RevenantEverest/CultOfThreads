@@ -6,6 +6,8 @@ import { FaClock, FaEnvelope } from 'react-icons/fa6';
 import dayjs from 'dayjs';
 import { FaLongArrowAltLeft } from 'react-icons/fa';
 import SubmissionStatusBadge from './SubmissionStatusBadge';
+import MarkResolved from './MarkResolved';
+import MarkPending from './MarkPending';
 
 interface SubmissionProps {
     submission: ContactForm
@@ -17,12 +19,18 @@ function Submission({ submission }: SubmissionProps) {
 
     return(
         <div className="flex flex-col gap-5">
-            <Link to="/dashboard/contacts/form">
-                <Button colorScheme={"cardLight"}>
-                    <FaLongArrowAltLeft />
-                    Back To Contact Form List
-                </Button>
-            </Link>
+            <div className="flex flex-row">
+                <Link to="/dashboard/contacts/form">
+                    <Button colorScheme={"cardLight"}>
+                        <FaLongArrowAltLeft />
+                        Back To Contact Form List
+                    </Button>
+                </Link>
+                <div className="flex flex-1 justify-end">
+                    {submission.status !== "RESOLVED" && <MarkResolved submission={submission} title="Mark Resolved" />}
+                    {submission.status !== "PENDING" && <MarkPending submission={submission} title="Mark Pending" />}
+                </div>
+            </div>
             <Card>
                 <CardContent className="flex flex-col md:flex-row items-start md:items-center gap-5 pb-0 py-5">
                     <div className="flex flex-col gap-2 order-2 md:order-1">
