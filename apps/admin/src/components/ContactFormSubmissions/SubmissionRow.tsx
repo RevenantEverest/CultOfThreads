@@ -5,6 +5,9 @@ import dayjs from 'dayjs';
 
 import { TableCell, TableRow } from '@repo/ui';
 import SubmissionStatusBadge from './SubmissionStatusBadge';
+import MarkResolved from './MarkResolved';
+import RemoveSubmission from './RemoveSubmission';
+import MarkPending from './MarkPending';
 
 interface SubmissionRowProps {
     submission: ContactForm
@@ -37,6 +40,9 @@ function SubmissionRow({ submission }: SubmissionRowProps) {
             </TableCell>
             <TableCell className={`${cellClass}`}>
                 <div className="h-full w-full flex items-center justify-end gap-2">
+                    {submission.status !== "RESOLVED" && <MarkResolved submission={submission} />}
+                    {submission.status !== "PENDING" && <MarkPending submission={submission} />}
+                    <RemoveSubmission submission={submission} />
                 </div>
             </TableCell>
         </TableRow>

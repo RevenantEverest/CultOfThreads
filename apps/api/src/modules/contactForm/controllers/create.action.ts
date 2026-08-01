@@ -23,6 +23,11 @@ export default async function create(req: Request<Body>, res: Response) {
         });
     }
 
+    // check honeypot value
+    if(validatedBody.data.website && validatedBody.data.website.length > 0) {
+        return res.status(StatusCodes.OK);
+    }
+
     const [submission, err] = await entities.insert<ContactForm>(ContactForm, {
         firstName: req.body.firstName,
         lastName: req.body.lastName,

@@ -7,7 +7,8 @@ export interface SubmissionPayload {
     firstName: string,
     lastName: string,
     email: string,
-    message: string
+    message: string,
+    website?: string // honeypot value
 };
 
 export type CreateSubmissionOptions = HookOptions<"payload", SubmissionPayload>;

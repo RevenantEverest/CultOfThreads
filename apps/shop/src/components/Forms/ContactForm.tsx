@@ -1,11 +1,9 @@
 "use client"
 
-import {
-    Card,
-    CardContent
-} from '@repo/ui';
-
+import { useRef } from 'react';
 import { FaUser, FaEnvelope, FaPencil } from 'react-icons/fa6';
+
+import { Card, CardContent } from '@repo/ui';
 
 import { useAppForm } from '@repo/ui/hooks';
 import { useThemeStore } from '@@shop/store/theme';
@@ -14,7 +12,8 @@ export interface ContactFormValues {
     firstName: string,
     lastName: string,
     email: string,
-    message: string
+    message: string,
+    website: string // honeypot value
 };
 
 interface ContactFormProps {
@@ -24,19 +23,26 @@ interface ContactFormProps {
 function ContactForm({ onSubmit }: ContactFormProps) {
 
     const theme = useThemeStore((state) => state.theme);
+    const formLoadedAt = useRef<number>(Date.now());
 
     const initialValues: ContactFormValues = {
         firstName: "",
         lastName: "",
         email: "",
-        message: ""
+        message: "",
+        website: ""
     };
 
     const form = useAppForm({
         defaultValues: initialValues,
         onSubmit: async ({ value }) => {
+
             try {
-                await onSubmit(value);
+                const timeOnPage = Date.now() - formLoadedAt.current;
+                if(timeOnPage > 3000) {
+                    await onSubmit(value);
+                }
+
                 form.reset();
             }
             catch(error) {
@@ -119,6 +125,22 @@ function ContactForm({ onSubmit }: ContactFormProps) {
                                     )}
                                 />
                             </div>
+                        </div>
+                        {/* Honeypot field */}
+                        <div className="absolute -left-249999.75 opacity-0">
+                            <form.AppField
+                                name="website"
+                                children={(field) => (
+                                    <field.TextField 
+                                        placeholder="Website" 
+                                        type="text" 
+                                        theme={theme}
+                                        aria-hidden="true"
+                                        tabIndex={-1}
+                                        autoComplete="off"
+                                    />
+                                )}
+                            />
                         </div>
                         <form.SubscribeField theme={theme} label="Send" className="w-full text-card!" />
                     </form.AppForm>
