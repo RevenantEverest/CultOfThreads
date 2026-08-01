@@ -57,7 +57,7 @@ export default async function create(req: Request<Body>, res: Response) {
     const [_, contactErr] = await entities.findOrSave<Contact>(Contact, findOptions, {
         firstName: submission.firstName,
         lastName: submission.lastName,
-        email: submission.lastName.toLocaleLowerCase()
+        email: submission.email.toLocaleLowerCase()
     });
 
     if(contactErr) {
