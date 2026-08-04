@@ -19,7 +19,8 @@ export interface PaginationOptions {
 interface Options<T = unknown> {
     pagination: PaginationOptions,
     authToken: string,
-    payload: T
+    payload: T,
+    headers?: Record<string, string>
 };
 
 export type HookOptions<K extends keyof Options<unknown>, T = unknown> = Pick<Options<T>, K>;
