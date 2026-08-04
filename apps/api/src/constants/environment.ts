@@ -5,6 +5,7 @@ dotenv.config();
 export const API_URL = process.env.API_URL as string;
 
 export const API_PORT = process.env.API_PORT as string;
+export const API_INTERNAL_ACCESS_SECRET = process.env.API_INTERNAL_ACCESS_SECRET as string;
 export const TOKEN_SECRET = process.env.TOKEN_SECRET as string;
 
 export const SUPABASE_URL = process.env.SUPABASE_URL as string;
