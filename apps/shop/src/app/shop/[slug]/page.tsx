@@ -5,7 +5,7 @@ import { Product } from '@@shop/components/Products';
 import { Layout } from '@@shop/components/Common';
 import Newsletter from '@@shop/components/Newsletter';
 
-import { URLS } from '@@shop/constants';
+import { ENV, URLS } from '@@shop/constants';
 import { json, text } from '@@shop/utils';
 import { products } from '@repo/queries';
 
@@ -28,7 +28,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
         const queryClient = new QueryClient();
         const { results } = await products.hooks.useFetchGetOnePublic(queryClient, {
-            id: slug
+            id: slug,
+            headers: {
+                'x-internal-secret': ENV.API_INTERNAL_ACCESS_SECRET
+            }
         });
 
         const description = json.richTextToString(results.description as string);
