@@ -50,13 +50,13 @@ function ProductsRow({ product }: ProductsRowProps) {
             <TableCell className={`${cellClass}`}>
                 <div className="flex items-center gap-1 justify-center">
                     <FaDollarSign className="text-primary" />
-                    <p>{product?.details?.onlinePrice ?? 0}</p>
+                    <p>{(product?.details?.onlinePrice ?? 0).toLocaleString()}</p>
                 </div>
             </TableCell>
             <TableCell className={`${cellClass}`}>
                 <div className="flex items-center gap-1 justify-center">
                     <FaDollarSign className="text-primary" />
-                    <p>{product?.details?.marketPrice ?? 0}</p>
+                    <p>{(product?.details?.marketPrice ?? 0).toLocaleString()}</p>
                 </div>
             </TableCell>
             <TableCell className={`${cellClass}`}>

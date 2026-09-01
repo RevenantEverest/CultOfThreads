@@ -18,7 +18,6 @@ import {
     H2Element,
     H3Element,
 } from '@repo/ui';
-import StatusBadge from './StatusBadge';
 
 interface ProductDetailsProps {
     name: string,
@@ -46,7 +45,7 @@ function ProductDetails({ name, description, details }: ProductDetailsProps) {
     return(
         <div className="flex flex-col gap-10 pb-20 md:pb-0">
             <h1 className="text-4xl font-bold text-center md:text-left flex flex-col md:flex-row items-center gap-5">
-                {name} <StatusBadge status={details.status} size="md" />
+                {name}
             </h1>
             <div className="flex gap-0 md:gap-10">
                 <div className="flex flex-col md:flex-row items-center pb-2 font-bold text-lg gap-3 md:gap-2 flex-1">
