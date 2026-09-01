@@ -1,4 +1,5 @@
 export * as categories from './categories';
+export * as checkout from './checkout';
 export * as contacts from './contacts';
 export * as contactForm from './contactForm';
 export * as events from './events';
