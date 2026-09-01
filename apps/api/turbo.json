@@ -1,0 +1,25 @@
+{
+  "extends": ["//"],
+  "tasks": {
+        "build": {
+            "env": [
+                "DB_*",
+                "API_*",
+                "SUPABASE_*", 
+                "STRIPE_*", 
+                "SQUARE_*",
+                "FRONTEND_URL"
+            ]
+        },
+        "dev": {
+            "env": [
+                "DB_*",
+                "API_*",
+                "SUPABASE_*", 
+                "STRIPE_*", 
+                "SQUARE_*",
+                "FRONTEND_URL"
+            ]
+        }
+    }
+}

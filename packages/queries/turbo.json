@@ -7,10 +7,18 @@
         },
         "build:queries": {
             "dependsOn": ["^build"],
-            "outputs": ["dist/**"]
+            "outputs": ["dist/**"],
+            "env": [
+                "API_*",
+                "NEXT_PUBLIC_*"
+            ]
         },
         "dev": {
-            "with": ["dev:queries"]
+            "with": ["dev:queries"],
+            "env": [
+                "API_*",
+                "NEXT_PUBLIC_*"
+            ]
         },
         "dev:queries": {
             "cache": false,

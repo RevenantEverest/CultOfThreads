@@ -1,0 +1,17 @@
+{
+  "extends": ["//"],
+  "tasks": {
+    "build": { 
+        "env": [
+            "NEXT_PUBLIC_*",
+            "API_INTERNAL_ACCESS_SECRET"
+        ]
+    },
+    "dev": { 
+        "env": [
+            "NEXT_PUBLIC_*",
+            "API_INTERNAL_ACCESS_SECRET"
+        ] 
+    }
+  }
+}
