@@ -1,20 +1,26 @@
 import chalk, { ChalkInstance } from 'chalk';
 import dayjs from 'dayjs';
+import fs from 'fs/promises';
+import { join } from 'path';
 
 import * as colors from './colors';
 
 type LogLevel = "SUCCESS" | "WARNING" | "ERROR";
+type LogType = "HTTP" | "DB" | "Utility";
 
 interface LogOptions {
     color?: number,
-    type?: "HTTP" | "DB",
+    type?: LogType,
     level?: LogLevel,
-    message?: string
+    message?: string,
+    toFile?: boolean
 };
 
 interface ErrorLogOptions extends LogOptions {
     err: Error
 };
+
+const LOG_FILE_PATH = join(__dirname, "../../", "logs.txt");
 
 function getLogLevelColor(logLevel: LogLevel): string {
     switch(logLevel) {
@@ -25,6 +31,19 @@ function getLogLevelColor(logLevel: LogLevel): string {
         case "ERROR":
             return `#${colors.error.toString(16)}`;
     };
+};
+
+async function writeLogToFile(message: string) {
+    try {
+        await fs.appendFile(LOG_FILE_PATH, message, { encoding: "utf-8" });
+    }
+    catch(err) {
+        error({ 
+            err: err as Error, 
+            type: "Utility", 
+            message: `Failed to write to log file with message: ${message}`
+        });
+    }
 };
 
 export function getBaseLogOptions({ color, level="SUCCESS" }: LogOptions): { logColor: ChalkInstance, timestamp: string } {
@@ -38,9 +57,15 @@ export function getBaseLogOptions({ color, level="SUCCESS" }: LogOptions): { log
     };
 };
 
-export async function log({ color, level="SUCCESS", type, message="" }: LogOptions) {
+export async function log({ color, level="SUCCESS", type, message="", toFile }: LogOptions) {
     const { logColor, timestamp } = getBaseLogOptions({ color, level });
-    return console.log(timestamp + logColor(`[LOG]${type ? ` [${type}]` : ""}`) + " " + message);
+    const logType = `[LOG]${type ? ` [${type}]` : ""}`;
+    
+    if(toFile) {
+        writeLogToFile(timestamp + logType + " " + message);
+    }
+
+    return console.log(timestamp + logColor(logType) + " " + message);
 };
 
 export async function error({ color, level="ERROR", type, message="", err }: ErrorLogOptions) {
