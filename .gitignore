@@ -9,6 +9,7 @@
 **/server/dist/
 **/public/dist/
 **/.tanstack/
+**/_archive/
 
 # Files
 *.DS_Store
@@ -21,6 +22,7 @@
 *.local
 *.cache
 **/signing_keys.json
+logs.txt
 
 # Supabase
 .branches
