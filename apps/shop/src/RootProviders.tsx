@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-function Providers({ children }: React.PropsWithChildren) {
+function RootProviders({ children }: React.PropsWithChildren) {
     const [queryClient] = useState(() => (
         new QueryClient({
             defaultOptions: {
@@ -14,7 +14,7 @@ function Providers({ children }: React.PropsWithChildren) {
             }
         })
     ));
-    
+
     return(
         <QueryClientProvider client={queryClient}>
             {children}
@@ -22,4 +22,4 @@ function Providers({ children }: React.PropsWithChildren) {
     );
 };
 
-export default Providers;
+export default RootProviders;

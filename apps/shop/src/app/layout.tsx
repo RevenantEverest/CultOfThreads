@@ -13,7 +13,7 @@ import Navbar from '@@shop/navigation/Navbar';
 import Footer from '@@shop/navigation/Footer';
 
 import ThemeHandler from '@@shop/components/ThemeHandler';
-import Providers from '@@shop/Providers';
+import RootProviders from '@@shop/RootProviders';
 import UtmParser from '@@shop/components/UtmParser';
 import ScrollToTopOnNavigate from '@@shop/components/ScrollToTopOnNavigate';
 import { Cart } from '@@shop/components/Cart';
@@ -30,7 +30,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
     title: "Cult of Threads",
-    description: "Discover unique handmade crochet goods and creepy plush horror characters. Explore our collection for spooky décor, and one-of-a-kind creations",
+    description: `
+        Discover unique handmade crochet goods and creepy 
+        plush horror characters. Explore our collection for spooky décor, 
+        and one-of-a-kind creations
+    `,
 };
 
 export default function RootLayout({ children, }: Readonly<{
@@ -39,15 +43,15 @@ export default function RootLayout({ children, }: Readonly<{
     return (
         <html lang="en">
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-                <Providers>
-                <div className="min-h-[100vh] text-text bg-background overflow-x-hidden">
+                <RootProviders>
+                <div className="min-h-screen text-text bg-background overflow-x-hidden">
                     <Suspense>
                         <UtmParser />
                     </Suspense>
                     <ScrollToTopOnNavigate />
                     <ThemeHandler />
                     <Navbar />
-                    <div className="w-[100dvw] h-[100dvh] fixed">
+                    <div className="w-dvw h-dvh fixed">
                         <Sparkle
                             count={100}
                             minSize={5}
@@ -74,7 +78,7 @@ export default function RootLayout({ children, }: Readonly<{
                         }}    
                     />
                 </div>
-                </Providers>
+                </RootProviders>
             </body>
         </html>
     );
