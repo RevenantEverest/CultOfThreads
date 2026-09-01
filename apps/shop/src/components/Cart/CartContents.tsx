@@ -1,13 +1,14 @@
 "use client"
 
 import type { Product } from '@repo/entities';
+import type { ApiResponse } from '@repo/queries';
 
 import { useQueryClient } from '@tanstack/react-query';
 
 import { useCartStore } from '@@shop/store/cart';
 import CartItem from './CartItem';
 
-import { ApiResponse, products } from '@repo/queries';
+import { products } from '@repo/queries';
 
 function CartContents() {
 
