@@ -1,6 +1,7 @@
+"use client"
+
 import type { Product } from '@repo/entities';
 
-import { FaLongArrowAltRight } from 'react-icons/fa';
 import { FaDollarSign } from 'react-icons/fa6';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -9,16 +10,16 @@ import {
     CardContent,
     CardHeader,
     CardTitle,
-    CardFooter,
-    Button
+    CardFooter
 } from '@repo/ui';
 import { useCartStore } from '@@shop/store/cart';
 import { ApiResponse, products } from '@repo/queries';
-
+import CheckoutButton from './CheckoutButton';
 
 function CartSummary() {
 
-    const cartItems = useCartStore((state) => state.cart.items);
+    const cart = useCartStore((state) => state);
+    const cartItems = cart.cart.items;
     const productIds = cartItems.map((item) => item.productId);
     
     const queryClient = useQueryClient();
@@ -56,9 +57,7 @@ function CartSummary() {
                 </div>
             </CardContent>
             <CardFooter>
-                <Button>
-                    Proceed to checkout <FaLongArrowAltRight />
-                </Button>
+                <CheckoutButton />
             </CardFooter>
         </Card>
     );
