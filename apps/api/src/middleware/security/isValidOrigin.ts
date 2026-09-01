@@ -41,6 +41,5 @@ export default async function isValidRequestUrl(req: Request, res: Response, nex
         return res.status(StatusCodes.UNAUTHORIZED).json({ error: true, message: 'Unauthorized' });
     }
 
-    logs.log({ type: "HTTP", level: "SUCCESS", message: `${origin || referer} IS allowed!` });
     next();
 };
