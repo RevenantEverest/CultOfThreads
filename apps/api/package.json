@@ -26,6 +26,8 @@
         "multer": "^2.1.1",
         "pg": "^8.20.0",
         "reflect-metadata": "^0.2.2",
+        "square": "^45.0.1",
+        "stripe": "^22.5.0",
         "typeorm": "^0.3.28",
         "typeorm-naming-strategies": "^4.1.0",
         "zod": "^4.3.6"
