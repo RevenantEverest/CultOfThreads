@@ -17,6 +17,7 @@ export default async function getOne(req: Request, res: Response<["auth", "param
         },
         relations: {
             details: true,
+            providerDetails: true,
             media: true,
             tags: {
                 tag: true
