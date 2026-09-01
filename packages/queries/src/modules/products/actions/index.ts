@@ -1,3 +1,4 @@
+export * from './addPaymentProvider.action';
 export * from './create.action';
 export * from './destroy.action';
 export * from './fetchAll.action';
