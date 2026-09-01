@@ -8,6 +8,8 @@ import { Button } from '@repo/ui';
 
 import ProductDetails from './ProductDetails';
 import ProductImages from './ProductImages';
+import AddPaymentProvider from './AddPaymentProvider';
+import StatusBadge from './StatusBadge';
 
 interface ProductProps {
     product: ProductEntity
@@ -48,7 +50,14 @@ function Product({ product }: ProductProps) {
                         <ProductImages images={product.media} />
                     }
                 </div>
-                <div className="flex-1">
+                <div className="flex-1 flex flex-col gap-5">
+                    <div className="flex gap-5">
+                        {!product.providerDetails?.squareProductId && <AddPaymentProvider product={product} provider="SQUARE" />}
+                        {!product.providerDetails?.stripeProductId && <AddPaymentProvider product={product} provider="STRIPE" />}
+                        <div className="flex flex-1 justify-end">
+                            <StatusBadge status={product.details.status} size="md" />
+                        </div>
+                    </div>
                     {
                         product.details &&
                         <ProductDetails name={product.name} description={product.description?.toString()} details={product.details} />

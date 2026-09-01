@@ -1,3 +1,4 @@
+export { default as AddPaymentProvider } from './AddPaymentProvider';
 export { default as AddProduct } from './AddProduct';
 export { default as Product } from './Product';
 export { default as ProductsTable } from './ProductsTable';
