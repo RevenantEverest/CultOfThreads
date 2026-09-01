@@ -80,6 +80,20 @@ export default async function indexPublic(req: Request, res: Response<["paginati
         limit,
         offset,
         ...findOptions,
+        select: {
+            id: true,
+            name: true,
+            details: {
+                onlinePrice: true
+            },
+            media: true,
+            tags: {
+                tag: true
+            },
+            categories: {
+                category: true
+            }
+        },
         relations: {
             details: true,
             media: true,

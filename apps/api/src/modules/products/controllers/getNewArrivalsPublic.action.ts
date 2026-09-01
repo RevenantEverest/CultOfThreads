@@ -18,6 +18,24 @@ export default async function getNewArrivalsPublic(req: Request, res: Response) 
                 status: "ACTIVE"
             }
         },
+        select: {
+            id: true,
+            name: true,
+            description: true,
+            details: {
+                marketPrice: true,
+                onlinePrice: true,
+                weightGrams: true,
+                etsyListing: true
+            },
+            media: true,
+            tags: {
+                tag: true,
+            },
+            categories: {
+                category: true
+            }
+        },
         order: {
             createdAt: "DESC"
         },
