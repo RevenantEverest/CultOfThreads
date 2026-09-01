@@ -4,6 +4,7 @@ import cors from 'cors';
 import { rateLimit } from 'express-rate-limit';
 
 import { categoryRoutes } from '~/modules/category';
+import { checkoutRoutes } from '~/modules/checkout';
 import { contactRoutes } from '~/modules/contact';
 import { contactFormRoutes } from '~/modules/contactForm';
 import { eventRoutes } from '~/modules/event';
@@ -36,6 +37,7 @@ function initializeApp(): Application {
     app.set("trust proxy", "loopback");
 
     app.use("/categories", categoryRoutes);
+    app.use("/checkout", checkoutRoutes);
     app.use("/contacts", contactRoutes);
     app.use("/contact-form", contactFormRoutes);
     app.use("/events", eventRoutes);
