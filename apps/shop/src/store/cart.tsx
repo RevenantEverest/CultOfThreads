@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 
-interface CartItem {
+export interface CartItem {
     productId: string,
     quantity: number
 };
@@ -12,21 +12,24 @@ interface CartActions {
     reduceItemQuantity: (productId: string) => void,
     removeItem: (productId: string) => void,
     updateCart: (items: CartItem[]) => void,
-    emptyCart: () => void
+    emptyCart: () => void,
+    setHasHydrated: (value: boolean) => void
 };
 
 interface CartState {
     cart: {
         items: CartItem[]
     },
-    isOpen: boolean
+    isOpen: boolean,
+    hasHydrated: boolean
 };
 
 const initialState: CartState = {
     cart: {
         items: []
     },
-    isOpen: false
+    isOpen: false,
+    hasHydrated: false
 };
 
 export const useCartStore = create<CartState & CartActions>()(
@@ -113,11 +116,17 @@ export const useCartStore = create<CartState & CartActions>()(
                 cart: {
                     items: []
                 }
-            }))
+            })),
+            setHasHydrated: (value: boolean) => {
+                set(() => ({ hasHydrated: value }));
+            }
         }),
         {
             name: 'cart-storage', // name of the item in the storage (must be unique)
             storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
+            onRehydrateStorage: () => (state) => {
+                state?.setHasHydrated(true);
+            }
         },
     ),
 );
