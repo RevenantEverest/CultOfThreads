@@ -43,11 +43,6 @@ function ProductItem() {
                 />
             </div>
             <div className="mt-15 flex flex-col gap-5">
-                <div className="flex">
-                    <div className="flex w-full justify-end">
-                        {/* <AddSale /> */}
-                    </div>
-                </div>
                 {
                     isLoading || !data?.results ?
                     <Spinner /> :
