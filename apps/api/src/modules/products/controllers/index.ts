@@ -1,3 +1,4 @@
+export { default as addPaymentProvider } from './addPaymentProcessor.action';
 export { default as create } from './create.action';
 export { default as destroy } from './destroy.action';
 export { default as getBestSellersPublic } from './getBestSellersPublic.action';

@@ -12,6 +12,7 @@ import ProductMedia from './ProductMedia';
 import Sale from './Sale';
 import ProductTag from './ProductTag';
 import ProductCategory from './ProductCategory';
+import ProductProviderDetails from './ProductProviderDetails';
 
 @Entity("products")
 export default class Product extends BaseEntity {
@@ -30,6 +31,9 @@ export default class Product extends BaseEntity {
     /* Relations */
     @OneToOne(() => ProductDetails, (details) => details.product, { cascade: true })
     details: ProductDetails;
+
+    @OneToOne(() => ProductProviderDetails, (providerDetails) => providerDetails.product, { cascade: true })
+    providerDetails: ProductProviderDetails;
 
     @OneToMany(() => ProductMedia, (media) => media.product, { cascade: true })
     media: ProductMedia[];
