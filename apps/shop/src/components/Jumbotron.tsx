@@ -98,7 +98,7 @@ function Jumbotron() {
 
     return(
         <div className="relative h-screen w-screen bg-primary">
-            <div className="absolute z-10 h-screen top-0 w-screen bg-gradient-to-br from-card/80 to-card-light/60">
+            <div className="absolute z-10 h-screen top-0 w-screen bg-linear-to-br from-card/80 to-card-light/60">
                 <Sparkle
                     count={200}
                     minSize={5}
