@@ -1,0 +1,1 @@
+export { default as checkoutSessionCompleted } from './checkoutSessionCompleted';
