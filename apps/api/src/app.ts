@@ -13,6 +13,7 @@ import { newsletterRoutes } from '~/modules/newsletter';
 import { productRoutes } from '~/modules/products';
 import { tagRoutes } from '~/modules/tag';
 import { trafficAnalyticRoutes } from '~/modules/trafficAnalytics';
+import { webhookRoutes } from './modules/webhooks';
 
 import { healthRoutes } from '~/modules/health';
 
@@ -26,9 +27,18 @@ function initializeApp(): Application {
         legacyHeaders: false,
         ipv6Subnet: 60
     });
+    const excludedJsonParsePaths: string[] = [
+        "/webhooks/stripe"
+    ];
 
     app.use(morgan("dev"));
-    app.use(express.json());
+    app.use((req, res, next) => {
+        if(excludedJsonParsePaths.includes(req.originalUrl)) {
+            return next();
+        }
+
+        express.json()(req, res, next);
+    });
     app.use(express.urlencoded({ extended: false }));
     app.use(cors());
     app.use(limiter);
@@ -46,6 +56,7 @@ function initializeApp(): Application {
     app.use("/products", productRoutes);
     app.use("/tags", tagRoutes);
     app.use("/analytics/traffic", trafficAnalyticRoutes);
+    app.use("/webhooks", webhookRoutes);
 
     app.use("/health", healthRoutes);
 
