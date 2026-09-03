@@ -34,7 +34,8 @@ export default async function getNewArrivalsPublic(req: Request, res: Response) 
             },
             categories: {
                 category: true
-            }
+            },
+            createdAt: true
         },
         order: {
             createdAt: "DESC"

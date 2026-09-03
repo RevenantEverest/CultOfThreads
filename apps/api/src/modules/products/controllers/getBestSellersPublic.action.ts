@@ -34,7 +34,8 @@ export default async function getBestSellersPublic(req: Request, res: Response) 
             },
             categories: {
                 category: true
-            }
+            },
+            createdAt: true
         },
         order: {
             createdAt: "DESC"
