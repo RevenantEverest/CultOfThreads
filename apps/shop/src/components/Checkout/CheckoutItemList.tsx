@@ -7,7 +7,6 @@ import { Spinner } from '@@shop/components/Common';
 
 import CheckoutItem from './CheckoutItem';
 import { useCartStore } from '@@shop/store/cart';
-import { PaymentElement } from '@stripe/react-stripe-js/checkout';
 
 interface CheckoutItemListProps {
     products?: Product[],
@@ -37,7 +36,6 @@ function CheckoutItemList({ products, isLoading }: CheckoutItemListProps) {
                     isLoading={isLoading}
                 />
             </CardContent>
-            <PaymentElement />
         </Card>
     );
 };
