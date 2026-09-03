@@ -13,7 +13,8 @@
     "supabase:link": "dotenv -e .env -- sh -c 'supabase link --project-ref $SUPABASE_PROJECT_ID'",
     "supabase:pull": "dotenv -e .env -- sh -c 'supabase db pull'",
     "migration:generate": "dotenv -e .env -- bun --filter ./apps/api migration:generate",
-    "migration:run": "dotenv -e .env -- bun --filter ./apps/api migration:run"
+    "migration:run": "dotenv -e .env -- bun --filter ./apps/api migration:run",
+    "email:preview": "turbo run preview --filter=@repo/email-templates"
   },
   "workspaces": [
     "apps/*",

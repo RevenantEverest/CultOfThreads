@@ -8,6 +8,7 @@
                 "SUPABASE_*", 
                 "STRIPE_*", 
                 "SQUARE_*",
+                "ZOHO_*",
                 "FRONTEND_URL"
             ]
         },
@@ -18,6 +19,7 @@
                 "SUPABASE_*", 
                 "STRIPE_*", 
                 "SQUARE_*",
+                "ZOHO_*",
                 "FRONTEND_URL"
             ]
         }
