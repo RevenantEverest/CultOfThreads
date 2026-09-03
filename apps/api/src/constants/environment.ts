@@ -19,9 +19,16 @@ export const SUPABASE_AUTH_URL = `${SUPABASE_URL}/auth/v1`;
 export const SUPABASE_STORAGE_URL = `${SUPABASE_URL}/storage/v1/object/public/`;
 
 export const STRIPE_TOKEN = process.env.STRIPE_TOKEN as string;
+export const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET as string;
 
 export const SQUARE_APP_ID = process.env.SQUARE_APP_ID as string;
 export const SQUARE_TOKEN = process.env.SQUARE_TOKEN as string;
+
+export const ZOHO_CLIENT_ID = process.env.ZOHO_CLIENT_ID as string;
+export const ZOHO_CLIENT_SECRET = process.env.ZOHO_CLIENT_SECRET as string;
+export const ZOHO_ACCOUNT_ID = process.env.ZOHO_ACCOUNT_ID as string;
+export const ZOHO_REFRESH_TOKEN = process.env.ZOHO_REFRESH_TOKEN as string;
+export const ZOHO_EMAIL = process.env.ZOHO_EMAIL as string;
 
 export const DATABASE = {
     HOST: process.env.DB_HOST as string,
