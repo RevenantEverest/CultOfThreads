@@ -8,7 +8,7 @@ import {
 } from '@repo/ui';
 import GroupItem from '../GroupItem';
 
-import { FaBoxesPacking, FaCashRegister } from 'react-icons/fa6';
+import { FaBoxesPacking, FaCashRegister, FaBoxOpen } from 'react-icons/fa6';
 
 // Menu items.
 const items: SidebarGroupItem[] = [
@@ -16,6 +16,11 @@ const items: SidebarGroupItem[] = [
       title: "Products",
       url: "/dashboard/products",
       icon: FaBoxesPacking,
+    },
+    {
+        title: "Orders",
+        url: "/dashboard/orders",
+        icon: FaBoxOpen
     },
     {
         title: "Sales",
