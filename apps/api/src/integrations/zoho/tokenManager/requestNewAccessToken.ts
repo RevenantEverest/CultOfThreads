@@ -12,7 +12,6 @@ interface ZohoTokenResponse {
 const REFRESH_URL = "https://accounts.zoho.com/oauth/v2/token";
 
 export default async function requestNewAccessToken(): Promise<CachedToken> {
-    console.log("Requesting new access token");
     const response = await fetch(REFRESH_URL, {
         method: "POST",
         headers: {
