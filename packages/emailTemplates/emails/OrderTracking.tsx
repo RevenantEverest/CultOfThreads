@@ -19,6 +19,8 @@ interface OrderItem {
 }
 
 export interface OrderConfirmationProps {
+    trackingNumber: string,
+    trackingUrl: string,
     customerName: string,
     orderNumber: string,
     items: OrderItem[],
@@ -27,7 +29,9 @@ export interface OrderConfirmationProps {
 }
 
 export default function OrderConfirmation({
-    customerName="fellow Cultist",
+    trackingNumber="1ZA3B4C501483927518",
+    trackingUrl="https://www.ups.com/track?loc=en_US&requester=QUIC&tracknum=1ZA3B4C501483927518/trackdetails",
+    customerName="Fellow Cultist",
     orderNumber="dd99ce72-ad6d-4401-8168-6dec42042ffe",
     items=[
         { name: "Ribbon Ghost", quantity: 2, price: "60" },
@@ -37,15 +41,40 @@ export default function OrderConfirmation({
     orderUrl="https://cultofthreads.com/order/dd99ce72-ad6d-4401-8168-6dec42042ffe",
 }: OrderConfirmationProps) {
     return (
-        <Layout previewText={`Your order #${orderNumber} is confirmed`}>
+        <Layout previewText={`Your oder #${orderNumber} has shipped`}>
             <Heading className="text-xl font-bold text-gray-900">
-                Thanks for your order, {customerName}!
+                {customerName} get excited, your order has shipped!
             </Heading>
-            <Text className="text-gray-600">
-                Your order <span className="text-white font-bold">#{orderNumber}</span> has been confirmed and is being processed.
-            </Text>
+            <Section>
+                <Text className="text-gray-600">
+                    Tracking number is <span className="text-white font-bold">{trackingNumber}</span>
+                </Text>
+                <Text className="text-gray-600">
+                    Order Number is <span className="text-white font-bold">#{orderNumber}</span>
+                </Text>
+            </Section>
+
+            <Section className="text-center mt-8">
+                <Button
+                    href={trackingUrl}
+                    style={{ 
+                        backgroundColor: themes.cute.colors.primary,
+                        borderRadius: "8px",
+                        color: "white",
+                        fontWeight: "600",
+                        fontSize: "14px", // text-sm equivalent,
+                        padding: "12px 24px 12px 24px"
+                    }}
+                >
+                    View Tracking
+                </Button>
+            </Section>
 
             <Hr className="border-gray-200 my-6" />
+
+            <Text className="font-bold text-white text-xl">
+                Items in shipment:
+            </Text>
 
             {items.map((item) => (
                 <Row key={item.name} className="mb-3">
@@ -72,7 +101,7 @@ export default function OrderConfirmation({
             ))}
 
             <Hr className="border-gray-200 my-6" />
-
+            
             <Row>
                 <Column>
                     <Text className="font-bold text-white">Total</Text>
@@ -108,7 +137,7 @@ export default function OrderConfirmation({
                     View your order
                 </Button>
             </Section>
-
+            
             <Footer />
         </Layout>
     );
