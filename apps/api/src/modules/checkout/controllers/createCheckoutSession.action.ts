@@ -4,11 +4,13 @@ import { StatusCodes } from 'http-status-codes';
 import { Any } from 'typeorm';
 import { z } from 'zod';
 
-import { createCheckoutSchema } from '~/modules/checkout/schemas';
-
 import { stripeClient } from '~/integrations/stripe';
+
+import { Order, Product } from '@repo/entities';
+import { createCheckoutSchema } from '~/modules/checkout/schemas';
+import addOrderLineItems from '~/modules/checkout/helpers/addOrderLineItems.helper';
+
 import { entities, logs } from '~/utils';
-import { Product } from '@repo/entities';
 import { ENV } from '~/constants';
 
 type Body = z.infer<typeof createCheckoutSchema>;
@@ -16,6 +18,11 @@ type Body = z.infer<typeof createCheckoutSchema>;
 interface StripeLineItem {
     quantity: number,
     price: string // stripe price id
+};
+
+interface CartProduct extends StripeLineItem {
+    productId: string,
+    name: string
 };
 
 interface StripeShippingOption {
@@ -52,12 +59,17 @@ export default async function createCheckoutSession(req: Request<Body>, res: Res
     const [products, findErr] = await entities.find<Product>(Product, {
         select: {
             id: true,
+            name: true,
+            details: {
+                onlinePrice: true
+            },
             providerDetails: true
         },
         where: {
             id: Any(validatedBody.data.items.map((item) => item.productId))
         },
         relations: {
+            details: true,
             providerDetails: true
         }
     });
@@ -75,6 +87,24 @@ export default async function createCheckoutSession(req: Request<Body>, res: Res
         });
     }
 
+    const [order, orderErr] = await entities.insert<Order>(Order, {
+        status: "PENDING",
+        ...(validatedBody.data.notes && { customerNotes: validatedBody.data.notes })
+    });
+
+    if(orderErr) {
+        logs.error({ err: orderErr, message: "Error creating internal order" });
+        return res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            error: true, message: "Error creating internal order"
+        });
+    }
+
+    if(!order) {
+        return res.status(StatusCodes.NOT_FOUND).json({
+            error: true, message: "Unable to create internal order"
+        });
+    }
+
     const requestedProductIds = validatedBody.data.items.map((item) => item.productId);
 
     if(products.length !== requestedProductIds.length) {
@@ -88,6 +118,7 @@ export default async function createCheckoutSession(req: Request<Body>, res: Res
     }
 
     const lineItems: StripeLineItem[] = [];
+    const cartProducts: CartProduct[] = [];
     const missingPriceProductIds: string[] = [];
 
     for(const item of validatedBody.data.items) {
@@ -102,8 +133,26 @@ export default async function createCheckoutSession(req: Request<Body>, res: Res
         lineItems.push({
             quantity: item.quantity,
             price: stripePriceId
-        })
+        });
+
+        cartProducts.push({
+            productId: cartProduct.id,
+            name: cartProduct.name,
+            quantity: item.quantity,
+            price: (cartProduct.details.onlinePrice * item.quantity).toLocaleString(),
+        });
     }
+
+    await addOrderLineItems(
+        order, 
+        cartProducts.map((item) => {
+            return { 
+                productId: item.productId, 
+                price: Number(item.price), 
+                quantity: item.quantity 
+            }
+        })
+    );
 
     if(missingPriceProductIds.length > 0) {
         logs.log({ message: `Some cart products are missing a Stripe price ID:\n ${missingPriceProductIds.join(" ")}` })
@@ -147,9 +196,30 @@ export default async function createCheckoutSession(req: Request<Body>, res: Res
                 enabled: true
             },
             success_url: `${ENV.FRONTEND_URL}/shop/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: `${ENV.FRONTEND_URL}/shop/checkout/cancel`,
-            metadata: {} // data used for webhook from stripe on payment complete
+            cancel_url: `${ENV.FRONTEND_URL}/shop`,
+            metadata: {
+                cartProducts: JSON.stringify(cartProducts),
+                internalOrderId: order.id
+            }, // data used for webhook from stripe on payment complete
+            expires_at: Math.floor(Date.now() / 1000) + 30 * 60 // 30 min after creation (can't be lower than 30)
         });
+
+        const [_, updateErr] = await entities.update<Order>(Order, {
+            ...order,
+            stripeCheckoutSessionId: session.id
+        });
+
+        if(updateErr) {
+            logs.error({ 
+                err: updateErr, 
+                message: (
+                    `Error adding session id to order\n` +
+                    `Order ID: ${order.id}\n` +
+                    `Session ID: ${session.id}`
+                ),
+                toFile: true
+            });
+        }
 
         return res.json({ 
             results: {
