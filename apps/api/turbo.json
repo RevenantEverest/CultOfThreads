@@ -22,6 +22,21 @@
                 "ZOHO_*",
                 "FRONTEND_URL"
             ]
+        },
+        "migration:generate": {
+            "dependsOn": ["@repo/entities#build"],
+            "env": [
+                "DB_*",
+                "SUPABASE_*"
+            ],
+            "cache": false
+        },
+        "migration:run": {
+            "env": [
+                "DB_*",
+                "SUPABASE_*"
+            ],
+            "cache": false
         }
     }
 }

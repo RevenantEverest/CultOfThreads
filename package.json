@@ -12,8 +12,8 @@
     "gen:supabase": "dotenv -e .env -- sh -c 'supabase gen types typescript --project-id $SUPABASE_PROJECT_ID > packages/supabase/src/database.types.ts'",
     "supabase:link": "dotenv -e .env -- sh -c 'supabase link --project-ref $SUPABASE_PROJECT_ID'",
     "supabase:pull": "dotenv -e .env -- sh -c 'supabase db pull'",
-    "migration:generate": "dotenv -e .env -- bun --filter ./apps/api migration:generate",
-    "migration:run": "dotenv -e .env -- bun --filter ./apps/api migration:run",
+    "migration:generate": "dotenv -e .env -- turbo run migration:generate --filter=api",
+    "migration:run": "dotenv -e .env -- turbo run migration:run --filter=api",
     "email:preview": "turbo run preview --filter=@repo/email-templates"
   },
   "workspaces": [
