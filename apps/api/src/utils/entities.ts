@@ -112,7 +112,7 @@ export async function findAndSaveOrUpdate<T extends BaseEntity>(entity: Target<T
         return await insert(entity, data);
     }
 
-    return await save(entity, res as Data<T>);
+    return await save(entity, { ...res, ...data } as Data<T>);
 };
 
 export async function findAndUpdate<T extends BaseEntity>(entity: Target<T>, findOptions: FindOneOptions<T>, data: Data<T>): PromiseTuple<T> {
