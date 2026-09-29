@@ -1,30 +1,40 @@
 import type { ExtraValues, SaleFormValues } from '@@admin/components/Forms/SaleForm';
-
+import type { Product, Sale } from '@repo/entities';
 
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import { useMutation, useQueryClient, useSuspenseQueries } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 
 import { ToastSuccess, ToastError } from '@repo/ui';
-import { Layout, Breadcrumb } from '@@admin/components/Common';
+import { Layout, Breadcrumb, Spinner } from '@@admin/components/Common';
 import SaleForm from '@@admin/components/Forms/SaleForm';
 
-import { saleApi, productApi, eventsApi, Sale } from '@repo/supabase';
+import { useAuthStore } from '@@admin/store/auth';
+import { events, products, sales } from '@repo/queries';
 
 export const Route = createFileRoute('/dashboard/sales/edit/$saleId')({
     loader: ({ context, params }) => {
-        context.queryClient.prefetchQuery({
-            queryKey: ["sales", params.saleId],
-            queryFn: () => saleApi.fetchById(params.saleId)
-        });
-        context.queryClient.prefetchQuery({
-            queryKey: ["products"],
-            queryFn: productApi.fetchListings
+        const authToken = useAuthStore.getState().auth.session;
+        
+        if(!authToken?.accessToken) return;
+
+        sales.hooks.usePrefetchGetOne(context.queryClient, {
+            id: params.saleId,
+            authToken: authToken.accessToken
         });
 
-        context.queryClient.prefetchQuery({
-            queryKey: ["events"],
-            queryFn: eventsApi.fetchAll
+        products.hooks.usePrefetchIndex(context.queryClient, {
+            authToken: authToken.accessToken,
+            pagination: {
+                limit: 10
+            }
+        });
+
+        events.hooks.usePrefetchIndex(context.queryClient, {
+            authToken: authToken.accessToken,
+            pagination: {
+                limit: 10
+            }
         });
     },
     component: EditSale,
@@ -32,64 +42,97 @@ export const Route = createFileRoute('/dashboard/sales/edit/$saleId')({
 
 function EditSale() {
 
+    const auth = useAuthStore((state) => state.auth);
+
     const params = Route.useParams();
     const navigate = useNavigate();
 
-    const [sale, products, events] = useSuspenseQueries({ 
-        queries: [
-            { queryKey: ["sales", params.saleId], queryFn: () => saleApi.fetchById(params.saleId) },
-            { queryKey: ["products"], queryFn: productApi.fetchAll },
-            { queryKey: ["events"], queryFn: eventsApi.fetchAll },
-        ]
+    const queryClient = useQueryClient();
+    const salesQuery = sales.hooks.useGetOne({
+        id: params.saleId,
+        authToken: auth.session?.accessToken ?? ""
     });
 
-    const queryClient = useQueryClient();
-    const mutation = useMutation({
-        mutationFn: saleApi.update,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["sales"] });
+    const productsQuery = products.hooks.useIndex({
+        authToken: auth.session?.accessToken ?? "",
+        pagination: {
+            limit: 10
         }
     });
 
-    const initialValues: SaleFormValues & Partial<ExtraValues> = {
-        product_id: sale.data.product_id ?? "",
-        sale_type: sale.data.sale_type,
-        event_id: sale.data.event_id ?? "",
-        sale_price: sale.data.sale_price.toString(),
-        notes: sale.data.notes as string ?? "",
-        purchase_date: sale.data.purchase_date,
-        market_name: sale.data.market_name ?? "",
-        product_name: sale.data.product_name
+    const eventsQuery = events.hooks.useIndex({
+        authToken: auth.session?.accessToken ?? "",
+        pagination: {
+            limit: 10
+        }
+    });
+
+    const mutation = sales.hooks.useUpdate(queryClient);
+
+    const setInitialValues = (sale: Sale): SaleFormValues & Partial<ExtraValues> => {
+        return {
+            product: sale.product?.id ?? "",
+            saleType: sale.saleType ?? "",
+            event: sale.event?.id ?? "",
+            salePrice: sale.salePrice.toString() ?? "",
+            notes: sale.notes ?? "",
+            purchaseDate: sale.purchaseDate.toString() ?? "",
+            marketName: sale.marketName ?? "",
+            productName: sale.productName
+        };
+    };
+
+    const getProductPrice = (saleType: Sale["saleType"], product?: Product) => {
+
+        if(!product) {
+            return;
+        }
+
+        switch(saleType) {
+            case "EVENT":
+                return product.details.marketPrice.toString();
+            case "ONLINE":
+                return product.details.onlinePrice.toString();
+            default:
+                return product.details.onlinePrice.toString();
+        }
     };
 
     const onSubmit = async (values: SaleFormValues & Partial<ExtraValues>) => {
 
-        const eventData = events.data.filter((e) => e.id === values.event_id);
-        const productData = products.data.filter((p) => p.id === values.product_id);
+        if(!salesQuery.data?.results) {
+            return;
+        }
+
+        const events = eventsQuery.data?.pages.flatMap((page) => page.results) ?? [];
+        const products = productsQuery.data?.pages.flatMap((page) => page.results) ?? [];
+
+        const saleEvent = events.find((event) => event.id === values.event);
+        const saleProduct = products.find((product) => product.id === values.product);
+        const sale = salesQuery.data.results;
 
         try {
-
-            if((!productData[0] && !values.product_name) || (!eventData[0] && !values.market_name)) {
+            if((!saleProduct && !values.productName)) {
                 throw new Error("Missing required elements");
             }
 
-            // const originalPrice = getProductPrice(productData[0], values.sale_type as SaleType);
+            const originalPrice = getProductPrice(values.saleType as Sale["saleType"], saleProduct);
 
-            const saleData: Sale = {
-                id: sale.data.id,
-                created_at: sale.data.created_at,
-                product_id: values.product_id === "" ? null : values.product_id,
-                event_id: values.event_id === "" ? null : values.event_id,
-                market_name: eventData[0] ? eventData[0].market.name : (values.market_name ?? null),
-                product_name: productData[0] ? productData[0].name : values.product_name as string,
-                original_product_price: 10,
-                sale_price: Number(values.sale_price),
-                sale_type: values.sale_type,
-                purchase_date: values.purchase_date,
-                notes: values.notes
-            };
-
-            await mutation.mutateAsync(saleData);
+            await mutation.mutateAsync({
+                id: sale.id,
+                authToken: auth.session?.accessToken ?? "",
+                payload: {
+                    productId: values.product === "" ? undefined : values.product,
+                    eventId: values.event === "" ? undefined : values.event,
+                    marketName: saleEvent ? saleEvent.market.name : (values.marketName ?? undefined),
+                    productName: saleProduct ? saleProduct.name : values.productName as string,
+                    originalProductPrice: originalPrice ?? values.originalProductPrice ?? "0",
+                    salePrice: values.salePrice,
+                    saleType: values.saleType as Sale["saleType"],
+                    purchaseDate: values.purchaseDate,
+                    notes: values.notes
+                }
+            });
 
             toast((t) => (
                 <ToastSuccess toast={t} message={"Sale Updated!"} />
@@ -103,6 +146,18 @@ function EditSale() {
                 <ToastError toast={t} message={"Error Updating Sale"} />
             ))
         }
+    };
+
+    const nextProductsPage = () => {
+        if(!productsQuery.hasNextPage) return;
+
+        productsQuery.fetchNextPage();
+    };
+
+    const nextEventsPage = () => {
+        if(!eventsQuery.hasNextPage) return;
+
+        eventsQuery.fetchNextPage();
     };
 
     return(
@@ -122,13 +177,27 @@ function EditSale() {
                 />
             </div>
             <div className="my-20">
-                <SaleForm
-                    type="update"
-                    products={products.data}
-                    events={events.data}
-                    initialValues={initialValues}
-                    onSubmit={onSubmit}
-                />
+                {
+                    !salesQuery.data?.results || salesQuery.isLoading ?
+                    <Spinner />
+                    :
+                    <SaleForm
+                        type="update"
+                        products={
+                            productsQuery.data?.pages.flatMap((page) => page.results) ?? []
+                        }
+                        events={
+                            eventsQuery.data?.pages.flatMap((page) => page.results) ?? []
+                        }
+                        initialValues={setInitialValues(salesQuery.data.results)}
+                        onSubmit={onSubmit}
+                        nextProductsPage={nextProductsPage}
+                        nextEventsPage={nextEventsPage}
+                        isEventsLoading={eventsQuery.isLoading || eventsQuery.isFetching || !eventsQuery.data}
+                        isProductsLoading={productsQuery.isLoading || productsQuery.isFetching || !productsQuery.data}
+                    />
+                }
+                
             </div>
         </Layout>
     );

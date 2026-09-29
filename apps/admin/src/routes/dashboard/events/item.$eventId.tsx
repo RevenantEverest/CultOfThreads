@@ -10,8 +10,7 @@ import { Button } from '@repo/ui';
 import { Layout, Breadcrumb } from '@@admin/components/Common';
 import { Event } from '@@admin/components/Events';
 import { 
-    SalesBreakdownList, 
-    SalesList, 
+    SalesBreakdownList,
     TotalProductsCard, 
     TotalRevenueCard 
 } from '@@admin/components/Sales';
@@ -108,7 +107,7 @@ function EventItem() {
                         <TotalRevenueCard sales={sales.data} />
                     </div>
                     <SalesBreakdownList breakdownData={createSaleBreakdownByProduct(sales.data)} />
-                    <SalesList sales={sales.data} />
+                    {/* <SalesList sales={sales.data} /> */}
                 </div>
             </div>
         </Layout>

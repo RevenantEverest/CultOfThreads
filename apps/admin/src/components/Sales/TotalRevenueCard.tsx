@@ -1,12 +1,11 @@
-import type { SaleFull } from '@repo/supabase';
 import { Card, CardContent } from '@repo/ui';
 import { FaDollarSign } from 'react-icons/fa6';
 
 interface TotalRevenueCardProps {
-    sales: SaleFull[]
+    total: number
 };
 
-function TotalRevenueCard({ sales }: TotalRevenueCardProps) {
+function TotalRevenueCard({ total }: TotalRevenueCardProps) {
 
     return(
         <Card className="flex-1">
@@ -16,7 +15,7 @@ function TotalRevenueCard({ sales }: TotalRevenueCardProps) {
                 </div>
                 <div className="flex gap-2 items-center text-4xl font-semibold">
                     <FaDollarSign className="text-primary" />
-                    <p className="text-bold">{sales.reduce((acc, item) => acc + item.sale_price, 0).toLocaleString()}</p>
+                    <p className="text-bold">{total.toLocaleString()}</p>
                 </div>
             </CardContent>
         </Card>

@@ -1,4 +1,4 @@
-import type { SaleFull } from '@repo/supabase';
+import type { Sale } from '@repo/entities';
 
 import { Link } from '@tanstack/react-router';
 import { FaDollarSign, FaPencil } from 'react-icons/fa6';
@@ -16,44 +16,32 @@ import RemoveSale from './RemoveSale';
 dayjs.extend(advancedFormat);
 dayjs.extend(timezone);
 
-interface SalesListItemProps {
-    sale: SaleFull
+interface SalesRowProps {
+    sale: Sale
 };
 
-function SalesListItem({ sale }: SalesListItemProps) {
-
+export default function SalesRow({ sale }: SalesRowProps) {
     const cellClass = "py-4";
-    const purchaseDate = dayjs(sale.purchase_date).tz(dayjs.tz.guess()).format("M/DD/YY [-] h:mm A");
+    const purchaseDate = dayjs(sale.purchaseDate).tz(dayjs.tz.guess()).format("M/DD/YY [-] h:mm A");
 
     return(
         <TableRow className="border-b-muted font-semibold">
-            <TableCell className={`${cellClass}`}>
-                {/* <div className="w-24 h-24 flex overflow-hidden">
-                {
-                    event.market.details?.logo_url &&
-                    <img 
-                        className="shrink-0 relative object-cover w-full h-full rounded-lg"
-                        src={`${URLS.SUPABASE_STORAGE}/${event.flyer_url}`} 
-                        alt={event.market.name}
-                    />
-                }
-                </div> */}
-            </TableCell>
+            <TableCell className={`${cellClass}`} />
             <TableCell className={`${cellClass}`}>
                 <Link to="/dashboard/sales/edit/$saleId" params={{ saleId: sale.id.toString() }}>
-                    <p className="hover:cursor-pointer hover:underline">{sale?.product?.name ?? sale.product_name}</p>
+                    <p className="hover:cursor-pointer hover:underline">{sale?.product?.name ?? sale.productName}</p>
                 </Link>
             </TableCell>
             <TableCell className={`${cellClass}`}>
                 <div className="flex items-center gap-1 justify-center text-muted">
                     <FaDollarSign />
-                    <p>{sale.original_product_price.toLocaleString()}</p>
+                    <p>{sale.originalProductPrice.toLocaleString()}</p>
                 </div>
             </TableCell>
             <TableCell className={`${cellClass}`}>
                 <div className="flex items-center gap-1 justify-center">
                     <FaDollarSign className="text-primary" />
-                    <p>{sale.sale_price.toLocaleString()}</p>
+                    <p>{sale.salePrice.toLocaleString()}</p>
                 </div>
             </TableCell>
             <TableCell className={`${cellClass}`}>
@@ -63,7 +51,7 @@ function SalesListItem({ sale }: SalesListItemProps) {
             </TableCell>
             <TableCell className={`${cellClass}`}>
                 <div className="flex items-center gap-1 justify-center">
-                    <p>{sale.sale_type}</p>
+                    <p>{sale.saleType}</p>
                 </div>
             </TableCell>
             <TableCell className={`${cellClass}`}>
@@ -74,7 +62,7 @@ function SalesListItem({ sale }: SalesListItemProps) {
                             {sale.event.market.name}
                         </Link>
                         :
-                        <p className="text-muted">{sale.market_name}</p>
+                        <p className="text-muted">{sale.marketName}</p>
                     }
                 </div>
             </TableCell>
@@ -91,5 +79,3 @@ function SalesListItem({ sale }: SalesListItemProps) {
         </TableRow>
     );
 };
-
-export default SalesListItem;
