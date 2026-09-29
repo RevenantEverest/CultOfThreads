@@ -9,7 +9,8 @@ export interface CheckoutItem {
 };
 
 export interface CheckoutPayload {
-    items: CheckoutItem[]
+    items: CheckoutItem[],
+    notes?: string
 };
 
 export type CreateCheckoutSessionOptions = HookOptions<"payload", CheckoutPayload>;
