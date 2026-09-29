@@ -16,11 +16,15 @@ export default async function uploadProductMedia(productId: string, files?: Expr
                 file
             });
 
-            const [media] = await entities.insert<ProductMedia>(ProductMedia, {
+            const [media, err] = await entities.insert<ProductMedia>(ProductMedia, {
                 product: { id: productId },
                 type: file.mimetype,
                 mediaUrl
             });
+
+            if(err) {
+                throw err;
+            }
 
             return media;
         })

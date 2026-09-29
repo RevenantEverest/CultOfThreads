@@ -7,12 +7,13 @@ import * as stripe from '~/integrations/stripe';
 import * as square from '~/integrations/square';
 
 import { logs } from '~/utils';
+import { randomUUID } from 'crypto';
 
 type Options = SyncPaymentProviderOptions;
 
 async function createStripeProviderItem(product: Product, images?: string[], options?: Options): Promise<Partial<CreatedStripeProduct>> {
     const [stripeProduct, stripeErr] = await stripe.actions.createProduct({
-        id: product.id,
+        id: randomUUID(),
         name: product.name,
         active: product.details.status === "ACTIVE",
         defaultPriceInCents: product.details.onlinePrice * 100,
