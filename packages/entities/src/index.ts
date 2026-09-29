@@ -5,6 +5,8 @@ export { default as Event } from './Event';
 export { default as Market } from './Market';
 export { default as MarketDetails } from './MarketDetails';
 export { default as Newsletter } from './Newsletter';
+export { default as Order } from './Order';
+export { default as OrderLineItem } from './OrderLineItem';
 export { default as Product } from './Product';
 export { default as ProductCategory } from './ProductCategory';
 export { default as ProductDetails } from './ProductDetails';

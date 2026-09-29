@@ -5,13 +5,15 @@ import {
     CreateDateColumn,
     ManyToOne,
     JoinColumn,
-    type Relation
+    type Relation,
+    BaseEntity
 } from 'typeorm';
 import Product from './Product';
 import Event from './Event';
+import Order from './Order';
 
 @Entity("sales")
-export default class Sale {
+export default class Sale extends BaseEntity {
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
@@ -51,4 +53,7 @@ export default class Sale {
         foreignKeyConstraintName: "sales_event_id_fkey"
     })
     event: Relation<Event>;
+
+    @ManyToOne(() => Order, (order) => order.sales, { onDelete: "SET NULL" })
+    order: Relation<Order>;
 };
