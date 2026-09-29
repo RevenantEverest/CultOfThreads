@@ -1,3 +1,3 @@
 export { default as ContactContainer } from './ContactContainer';
 export { default as ProductsContainer } from './ProductsContainer';
-export { default as CheckoutContainer } from './CheckoutContainer';
+export { default as CartContainer } from './CartContainer';
