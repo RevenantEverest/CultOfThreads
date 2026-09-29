@@ -1,10 +1,11 @@
 import type { ContactForm } from '@repo/entities';
 
-import { Link } from '@tanstack/react-router';
-import { Card, CardContent, Button } from '@repo/ui';
+import { Card, CardContent } from '@repo/ui';
 import { FaClock, FaEnvelope } from 'react-icons/fa6';
 import dayjs from 'dayjs';
-import { FaLongArrowAltLeft } from 'react-icons/fa';
+
+import { GoBackButton } from '@@admin/components/Common';
+
 import SubmissionStatusBadge from './SubmissionStatusBadge';
 import MarkResolved from './MarkResolved';
 import MarkPending from './MarkPending';
@@ -20,12 +21,7 @@ function Submission({ submission }: SubmissionProps) {
     return(
         <div className="flex flex-col gap-5">
             <div className="flex flex-row">
-                <Link to="/dashboard/contacts/form">
-                    <Button colorScheme={"cardLight"}>
-                        <FaLongArrowAltLeft />
-                        Back To Contact Form List
-                    </Button>
-                </Link>
+                <GoBackButton />
                 <div className="flex flex-1 justify-end">
                     {submission.status !== "RESOLVED" && <MarkResolved submission={submission} title="Mark Resolved" />}
                     {submission.status !== "PENDING" && <MarkPending submission={submission} title="Mark Pending" />}
