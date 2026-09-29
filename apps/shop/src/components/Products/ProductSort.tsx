@@ -21,7 +21,6 @@ function ProductSort({ dataAmount=0 }: ProductSortProps) {
     const searchParams = useSearchParams();
 
     const handleSortChange = (value: SortType) => {
-        console.log("Changed");
         const params = new URLSearchParams(searchParams.toString());
 
         if(value === "price:ASC" || value === "price:DESC") {
