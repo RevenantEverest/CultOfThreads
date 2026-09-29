@@ -6,5 +6,6 @@ const checkoutProductSchema = z.object({
 });
 
 export const createCheckoutSchema = z.object({
-    items: z.array(checkoutProductSchema)
+    items: z.array(checkoutProductSchema),
+    notes: z.string().optional()
 });
