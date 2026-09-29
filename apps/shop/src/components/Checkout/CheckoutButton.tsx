@@ -6,7 +6,11 @@ import { Button, ToastError } from '@repo/ui';
 import { checkout } from '@repo/queries';
 import { useCartStore } from '@@shop/store/cart';
 
-export default function CheckoutButton() {
+interface CheckoutButtonProps {
+    className?: React.HTMLAttributes<HTMLButtonElement>["className"]
+};
+
+export default function CheckoutButton({ className }: CheckoutButtonProps) {
 
     const cart = useCartStore((state) => state);
     const mutation = checkout.hooks.useCreateCheckoutSession();
@@ -15,11 +19,13 @@ export default function CheckoutButton() {
         try {
             const response = await mutation.mutateAsync({
                 payload: {
-                    items: cart.cart.items
+                    items: cart.cart.items,
+                    ...((cart.customerNote && cart.customerNote !== "") && { notes: cart.customerNote }) 
                 }
             });
 
-            cart.toggleCart();
+            cart.setCustomerNote("");
+
             window.location.href = response.results.url;
         }
         catch(err) {
@@ -31,7 +37,7 @@ export default function CheckoutButton() {
     };
 
     return(
-        <Button onClick={handleCheckout}>
+        <Button className={className} onClick={handleCheckout}>
             Proceed to checkout <FaLongArrowAltRight />
         </Button>
     );

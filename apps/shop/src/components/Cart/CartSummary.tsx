@@ -1,64 +1,60 @@
-"use client"
-
 import type { Product } from '@repo/entities';
-
+import { Card, CardContent } from '@repo/ui';
+import { CheckoutButton } from '@@shop/components/Checkout';
 import { FaDollarSign } from 'react-icons/fa6';
-import { useQueryClient } from '@tanstack/react-query';
-
-import { 
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle,
-    CardFooter
-} from '@repo/ui';
 import { useCartStore } from '@@shop/store/cart';
-import { ApiResponse, products } from '@repo/queries';
-import CheckoutButton from './CheckoutButton';
+import CustomerNote from './CustomerNote';
 
-function CartSummary() {
+interface CartSummaryProps {
+    products?: Product[],
+    isLoading?: boolean
+};
 
-    const cart = useCartStore((state) => state);
-    const cartItems = cart.cart.items;
-    const productIds = cartItems.map((item) => item.productId);
-    
-    const queryClient = useQueryClient();
-    const cartProducts = queryClient.getQueryData<ApiResponse<Product[]>>(
-        products.PRODUCT_KEYS.cart(productIds)
-    );
+function CartSummary({ products, isLoading }: CartSummaryProps) {
 
-    const getSubtotal = () => {
-        let subtotal = 0;
+    const cartItems = useCartStore((state) => state.cart.items);
+    const getTotalCartQuantities = useCartStore((state) => state.getTotalQuantities);
 
-        for(let i = 0; i < cartItems.length; i++) {
-            const current = cartItems[i];
-            const product = cartProducts?.results.find((item) => item.id === current?.productId);
-
-            subtotal += ((product?.details?.onlinePrice ?? 0) * (current?.quantity ?? 0));
+    const renderSubtotal = () => {
+        if(!products) {
+            return;
         }
 
-        return subtotal;
+        let subtotal = 0;
+        for(let i = 0; i < cartItems.length; i++) {
+            const current = cartItems[i];
+
+            if(current) {
+                const product = products.find((item) => item.id === current.productId);
+                const price = product?.details.onlinePrice ?? 0;
+
+                subtotal += (price * current.quantity);
+            }
+        }
+
+        return(
+            <div className="flex items-center">
+                <FaDollarSign className="text-primary" />
+                <p>{subtotal.toLocaleString()}</p>
+            </div>
+        );
     };
 
     return(
-        <Card>
-            <CardHeader>
-                <CardTitle>
-                    <h1 className="font-bold text-xl">Totals</h1>
-                </CardTitle>
-            </CardHeader>
-            <CardContent className="flex flex-col gap-3">
-                <div className="flex gap-5">
-                    <p className="font-semibold">SubTotal: </p>
-                    <div className="flex items-center">
-                        <FaDollarSign className="text-primary mt-0.5" />
-                        <p>{getSubtotal().toLocaleString()}</p>
+        <Card className="h-full">
+            <CardContent className="pt-10 flex flex-col gap-10 h-full">
+                <div className="flex flex-col gap-5 flex-1">
+                    <p className="font-bold text-xl">Order Summary</p>
+                    <div className="flex">
+                        <p className="text-md items-center flex font-semibold text-muted flex-1">Items ({getTotalCartQuantities().toLocaleString()})</p>
+                        {!isLoading && renderSubtotal()}
                     </div>
                 </div>
+                <div className="w-full flex flex-col gap-5">
+                    <CustomerNote />
+                    <CheckoutButton className="w-full" />
+                </div>
             </CardContent>
-            <CardFooter>
-                <CheckoutButton />
-            </CardFooter>
         </Card>
     );
 };
