@@ -1,12 +1,11 @@
-import type { SaleFull } from '@repo/supabase';
 import { Card, CardContent } from '@repo/ui';
 import { FaDollarSign } from 'react-icons/fa6';
 
 interface OtherSalesCardProps {
-    sales: SaleFull[]
+    total: number
 };
 
-function OtherSalesCard({ sales }: OtherSalesCardProps) {
+function OtherSalesCard({ total }: OtherSalesCardProps) {
 
     return(
         <Card className="flex-1">
@@ -14,7 +13,7 @@ function OtherSalesCard({ sales }: OtherSalesCardProps) {
                 <h1 className="font-bold">Uncategorized Sales</h1>
                 <div className="flex gap-2 items-center text-4xl font-semibold">
                     <FaDollarSign className="text-primary" />
-                    <p className="text-bold">{sales.reduce((acc, item) => acc + item.sale_price, 0).toLocaleString()}</p>
+                    <p className="text-bold">{total.toLocaleString()}</p>
                 </div>
             </CardContent>
         </Card>

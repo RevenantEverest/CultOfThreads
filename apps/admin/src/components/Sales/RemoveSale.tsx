@@ -1,4 +1,4 @@
-import type { SaleFull } from '@repo/supabase';
+import type { Sale } from '@repo/entities';
 
 import { 
     Button,
@@ -17,27 +17,28 @@ import { FaTrashCan } from 'react-icons/fa6';
 import { FaTimes } from 'react-icons/fa';
 import { AnimatePresence, motion } from 'motion/react';
 
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 
-import { saleApi } from '@repo/supabase';
+import { sales } from '@repo/queries';
+import { useAuthStore } from '@@admin/store/auth';
 
 interface RemoveSaleProps {
-    sale: SaleFull
+    sale: Sale
 };
 
 function RemoveSale({ sale }: RemoveSaleProps) {
 
+    const auth = useAuthStore((state) => state.auth);
+
     const queryClient = useQueryClient();
-    const mutation = useMutation({
-        mutationFn: saleApi.destroy,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["sales"] });
-        }
-    });
+    const mutation = sales.hooks.useDestroy(queryClient);
 
     const removeSale = async () => {
         try {
-            await mutation.mutateAsync(sale.id);
+            await mutation.mutateAsync({
+                id: sale.id,
+                authToken: auth.session?.accessToken ?? ""
+            });
 
             toast((t) => (
                 <ToastSuccess toast={t} message={"Sale removed!"} />
@@ -79,7 +80,7 @@ function RemoveSale({ sale }: RemoveSaleProps) {
                                     <DialogTitle className="text-center text-xl">
                                         Are you sure you want to delete the sale for
                                         <br />
-                                        <span className="text-primary font-bold ml-1">{sale.product_name}</span>?
+                                        <span className="text-primary font-bold ml-1">{sale.productName}</span>?
                                     </DialogTitle>
                                     <div className="flex gap-2 items-center justify-center">
                                         <Button onClick={removeSale}>
