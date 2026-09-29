@@ -7,7 +7,9 @@ export interface CartItem {
 };
 
 interface CartActions {
+    getTotalQuantities: () => number,
     toggleCart: () => void,
+    setCustomerNote: (note: string) => void,
     addItem: (item: CartItem) => void,
     reduceItemQuantity: (productId: string) => void,
     removeItem: (productId: string) => void,
@@ -20,6 +22,7 @@ interface CartState {
     cart: {
         items: CartItem[]
     },
+    customerNote: string,
     isOpen: boolean,
     hasHydrated: boolean
 };
@@ -28,6 +31,7 @@ const initialState: CartState = {
     cart: {
         items: []
     },
+    customerNote: "",
     isOpen: false,
     hasHydrated: false
 };
@@ -36,6 +40,17 @@ export const useCartStore = create<CartState & CartActions>()(
     persist(
         (set, get) => ({
             ...initialState,
+            getTotalQuantities: (): number => {
+                const cartItems = get().cart.items;
+                const quantities = cartItems.map((item) => item.quantity);
+
+                if(quantities.length >= 1) {
+                    return quantities.reduce((acc, curr) => acc += curr);
+                }
+
+                return 0;
+            },
+            setCustomerNote: (note: string) => set(() => ({ customerNote: note })),
             addItem: (item: CartItem) => {
                 const cartItems = get().cart.items;
                 
@@ -123,7 +138,7 @@ export const useCartStore = create<CartState & CartActions>()(
         }),
         {
             name: 'cart-storage', // name of the item in the storage (must be unique)
-            storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
+            storage: createJSONStorage(() => localStorage), // (optional) by default, 'localStorage' is used
             onRehydrateStorage: () => (state) => {
                 state?.setHasHydrated(true);
             }
