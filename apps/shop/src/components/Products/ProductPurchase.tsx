@@ -32,7 +32,7 @@ function ProductPurchase({ productId }: ProductPurchaseProps) {
                 <MotionHover>
                     <button 
                         className={`
-                            bg-primary h-7 w-7 text-center rounded-md flex items-center justify-center text-sm 
+                            bg-primary h-10 w-10 text-center rounded-md flex items-center justify-center text-sm 
                             hover:cursor-pointer
                         `}
                         onClick={decreaseAmount}
@@ -40,11 +40,11 @@ function ProductPurchase({ productId }: ProductPurchaseProps) {
                         <FaMinus />
                     </button>
                 </MotionHover>
-                <p className="font-semibold text-lg">{quantity}</p>
+                <p className="font-semibold text-2xl text-center h-10 w-10">{quantity}</p>
                 <MotionHover>
                     <button 
                         className={`
-                            bg-primary h-7 w-7 text-center rounded-md flex items-center justify-center text-sm 
+                            bg-primary h-10 w-10 text-center rounded-md flex items-center justify-center text-sm 
                             hover:cursor-pointer
                         `}
                         onClick={increaseAmount}
@@ -55,7 +55,8 @@ function ProductPurchase({ productId }: ProductPurchaseProps) {
             </div>
             <div>
                 <Button 
-                    size="md" 
+                    className="w-full"
+                    size="lg" 
                     onClick={() => {
                         cart.addItem({ productId, quantity });
                         cart.toggleCart();

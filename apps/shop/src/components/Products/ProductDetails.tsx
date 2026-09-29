@@ -52,10 +52,7 @@ function ProductDetails({ id, name, description, details, tags }: ProductDetails
                 <h1 className="text-4xl font-bold text-center md:text-left">{name}</h1>
                 {tags && <ProductTags tags={tags} />}
             </div>
-            <ProductPrice 
-                marketPrice={details.marketPrice ?? 0}
-                onlinePrice={details.onlinePrice ?? 0}
-            />
+            <ProductPrice onlinePrice={details.onlinePrice ?? 0} />
             <ProductPurchase productId={id} />
             <PlateStatic editor={editor} />
         </div>
