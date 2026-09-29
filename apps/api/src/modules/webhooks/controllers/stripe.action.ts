@@ -30,13 +30,17 @@ export default async function stripe(req: Request, res: Response) {
     }
 
     res.status(StatusCodes.OK).json({ received: true });
-
     
     try {
         switch(event.type) {
             case "checkout.session.completed": {
                 const session = event.data.object as Stripe.Checkout.Session;
                 await stripeWebhooks.checkoutSessionCompleted(session);
+                break;
+            }
+            case "checkout.session.expired": {
+                const session = event.data.object as Stripe.Checkout.Session;
+                await stripeWebhooks.checkoutSessionExpired(session);
                 break;
             }
             default: {
