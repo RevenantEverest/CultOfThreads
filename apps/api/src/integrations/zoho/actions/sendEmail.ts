@@ -22,7 +22,7 @@ export default async function sendEmail(payload: SendEmailPayload) {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                fromAddress: ENV.ZOHO_EMAIL,
+                fromAddress: `Cult of Threads <${ENV.ZOHO_EMAIL}>`,
                 toAddress: payload.to,
                 subject: payload.subject,
                 content: payload.htmlContent,
@@ -41,5 +41,7 @@ export default async function sendEmail(payload: SendEmailPayload) {
         throw new Error(`Zoho send failed (${response.status}): ${errBody}`);
     }
 
-    return response.json();
+    const responseBody = response.json();
+
+    return responseBody;
 };
