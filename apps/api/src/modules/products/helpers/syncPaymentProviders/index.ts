@@ -41,15 +41,24 @@ async function updateInternalProduct(payload: UpdateInternalProductPayload) {
             }
         }
     };
-    const [_, updateErr] = await entities.findAndSaveOrUpdate<ProductProviderDetails>(ProductProviderDetails, findOptions, {
+    const [updatedProviderDetails, updateErr] = await entities.findAndSaveOrUpdate<ProductProviderDetails>(ProductProviderDetails, findOptions, {
+        ...product.providerDetails,
+        ...providerDetails,
         product: {
             id: product.id
-        },
-        ...providerDetails
+        }
     });
 
     if(updateErr) {
         logs.error({ err: updateErr, message: "Failed to assign Stripe/Square product id to product entity" });
+        logFailedAssignment();
+    }
+
+    if(!updatedProviderDetails) {
+        logFailedAssignment();
+    }
+
+    function logFailedAssignment() {
         logs.log({
             toFile: true,
             message: 
@@ -59,7 +68,7 @@ async function updateInternalProduct(payload: UpdateInternalProductPayload) {
                 `- Square product id: ${providerDetails.squareProductId}\n` +
                 `- Stripe product id: ${providerDetails.stripeProductId}\n`
         });
-    }
+    };
 };
 
 export default async function syncPaymentProviders(product: Product, options: Options) {
