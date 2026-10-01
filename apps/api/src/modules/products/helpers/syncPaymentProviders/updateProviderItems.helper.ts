@@ -22,9 +22,9 @@ interface UpdatedStripeProduct {
 
 async function updateStripeProviderItem(product: Product, images: string[], options?: Options): Promise<UpdatedStripeProduct> {
     const responseData: UpdatedStripeProduct = {};
-
+    
     const [_, stripeErr] = await stripe.actions.updateProduct({
-        productId: product.id,
+        productId: product.providerDetails.stripeProductId as string,
         name: product.name,
         active: product.details.status === "ACTIVE",
         images
