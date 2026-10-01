@@ -1,5 +1,6 @@
 import type { CartProduct } from '~/types/checkout';
 import Stripe from 'stripe';
+import { SHIPPING_OPTIONS } from '../../constants';
 
 interface ValidatedOrderData {
     email: string,
@@ -10,6 +11,10 @@ interface ValidatedOrderData {
     stripeTransactionId: string,
     amountSubtotalInCents: number,
     amountTotalInCents: number,
+    shippingAmountInCents: number,
+    shippingOptionName: string,
+    shippingOptionId: string,
+    taxCollectedInCents: number,
     cartProducts: CartProduct[]
 };
 
@@ -37,10 +42,29 @@ export default function validateCheckoutSession(session: Stripe.Checkout.Session
 
     if(session.amount_subtotal == null) issues.push("amount_subtotal");
     if(session.amount_total == null) issues.push("amount_total");
+    if(session.total_details?.amount_tax == null) issues.push("amount_tax");
+    if(session.shipping_cost?.amount_total == null) issues.push("shipping_total");
+
+    const shippingRateId = typeof session.shipping_cost?.shipping_rate === "string"
+        ? session.shipping_cost.shipping_rate
+        : session.shipping_cost?.shipping_rate?.id
+
+    const shippingOption = [SHIPPING_OPTIONS.STANDARD, SHIPPING_OPTIONS.EXPRESS].find(
+        (option) => option.id === shippingRateId
+    );
+
+    if(!shippingRateId) {
+        issues.push("shipping_cost.shipping_rate");
+    }
+    else if(!shippingOption) {
+        issues.push(`shipping_cost.shipping_rate (unrecognized rate id: ${shippingRateId})`);
+    }
 
     let cartProducts: CartProduct[] = [];
     try {
-        cartProducts = JSON.parse(session.metadata?.cartProducts ?? "[]");
+        const parsed = JSON.parse(session.metadata?.cartProducts ?? "[]");
+        if(!Array.isArray(parsed)) throw new Error("Not an array");
+        cartProducts = parsed;
     }
     catch {
         issues.push("metadata.cartProducts (invalid JSON)");
@@ -59,6 +83,10 @@ export default function validateCheckoutSession(session: Stripe.Checkout.Session
         stripeTransactionId: stripeTransactionId as string,
         amountSubtotalInCents: session.amount_subtotal!,
         amountTotalInCents: session.amount_total!,
+        shippingAmountInCents: session.shipping_cost!.amount_total!,
+        shippingOptionName: shippingOption!.name,
+        shippingOptionId: shippingRateId!,
+        taxCollectedInCents: session.total_details!.amount_tax!,
         cartProducts
     };
 

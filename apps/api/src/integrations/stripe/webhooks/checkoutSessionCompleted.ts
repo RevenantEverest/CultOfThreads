@@ -1,26 +1,18 @@
 import type Stripe from 'stripe';
 import type { FindOneOptions } from 'typeorm';
 
-import { Order, OrderLineItem } from '@repo/entities';
+import { Order } from '@repo/entities';
 
 import { render, OrderConfirmation } from '@repo/email-templates';
 import { sendEmail } from '~/integrations/zoho/actions';
 
-import { validateCheckoutSession, addLineItemsToSales } from '~/integrations/stripe/webhooks/helpers';
+import { validateCheckoutSession, addLineItemsToSales, sendInternalEmails } from '~/integrations/stripe/webhooks/helpers';
 
 import { entities, logs } from '~/utils';
-import { ENV } from '~/constants';
+import { generateOrderUrl } from '~/modules/orders/helpers';
 
 export default async function checkoutSessionCompleted(session: Stripe.Checkout.Session) {
     const [validated, issues] = validateCheckoutSession(session);
-
-    console.log({
-        shippingAddress: session.collected_information?.shipping_details?.address,
-        shippingRecipientName: session.collected_information?.shipping_details?.name,
-        shippingOptionChosen: session.shipping_cost?.shipping_rate,
-        shippingAmountCents: session.shipping_cost?.amount_total,
-        ...validated
-    });
     
     if(!validated) {
         logs.log({
@@ -53,7 +45,11 @@ export default async function checkoutSessionCompleted(session: Stripe.Checkout.
         shippingAddress: validated.shippingAddress,
         stripeTransactionId: validated.stripeTransactionId,
         amountSubtotalInCents: validated.amountSubtotalInCents,
-        amountTotalInCents: validated.amountTotalInCents
+        amountTotalInCents: validated.amountTotalInCents,
+        taxCollectedInCents: validated.taxCollectedInCents,
+        shippingAmountInCents: validated.shippingAmountInCents,
+        shippingOptionName: validated.shippingOptionName as Order["shippingOptionName"],
+        shippingOptionId: validated.shippingOptionId
     });
 
     if(err) {
@@ -71,18 +67,21 @@ export default async function checkoutSessionCompleted(session: Stripe.Checkout.
     await addLineItemsToSales(order);
 
     try {
+        const orderUrl = generateOrderUrl(order);
         const emailTemplate = await render(OrderConfirmation({
             customerName: validated.name?.split(" ")[0] ?? "fellow Cultist",
             orderNumber: order.id,
             items: validated.cartProducts,
             total: `${((session.amount_total ?? 0) / 100).toLocaleString()}`,
-            orderUrl: `${ENV.FRONTEND_URL}/orders?view=${order?.id}&token=${"some token"}`
+            orderUrl
         }));
         await sendEmail({
             to: validated.email,
             subject: `Order confirmation ${order.id}`,
             htmlContent: emailTemplate
         });
+
+        sendInternalEmails(order);
     }
     catch(err) {
         logs.error({ 
