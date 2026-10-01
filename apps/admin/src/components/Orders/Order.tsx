@@ -39,6 +39,7 @@ export default function Order({ order }: OrderProps) {
 
     const createdAt = dayjs(order.createdAt).format("MMMM D, YYYY h:mma");
     const updatedAt = dayjs(order.updatedAt).format("MMMM D, YYYY h:mma");
+    const tokensValidBefore = dayjs(order.tokensValidBefore).format("MMMM D, YYYY h:mma");
 
     const headClass = "bg-card-light font-semibold";
 
@@ -79,6 +80,16 @@ export default function Order({ order }: OrderProps) {
                             content={((order.amountSubtotalInCents ?? 0) / 100).toLocaleString()}
                         />
                         <OrderInfoBox 
+                            title="Shipping Total" 
+                            icon={FaDollarSign} 
+                            content={((order.shippingAmountInCents ?? 0) / 100).toLocaleString()}
+                        />
+                        <OrderInfoBox 
+                            title="Tax Collected" 
+                            icon={FaDollarSign} 
+                            content={((order.taxCollectedInCents ?? 0) / 100).toLocaleString()}
+                        />
+                        <OrderInfoBox 
                             title="Amount Total" 
                             icon={FaDollarSign} 
                             content={((order.amountTotalInCents ?? 0) / 100).toLocaleString()}
@@ -99,6 +110,10 @@ export default function Order({ order }: OrderProps) {
                         <p className="font-bold text-lg">Shipping Details</p>
                         <SendTrackingEmailButton orderId={order.id} />
                     </div>
+                    <div className="flex flex-col lg:flex-row gap-5 w-full">
+                        <OrderInfoBox title="Shipping Option" content={order.shippingOptionName} />
+                        <OrderInfoBox title="Shipping Option ID" content={order.shippingOptionId} canCopy />
+                    </div>
                     <OrderInfoBox title="Shipping Address" icon={FaLocationDot} content={order.shippingAddress} canCopy />
                     <OrderInfoBox title="Tracking Number" icon={FaShippingFast} content={order.trackingNumber} canCopy />
                 </CardContent>
@@ -110,6 +125,8 @@ export default function Order({ order }: OrderProps) {
                         <p className="font-bold text-lg">Additional Information</p>
                     </div>
                     <OrderInfoBox title="Customer Note" icon={FaNoteSticky} content={order.customerNotes} canCopy />
+                    <OrderInfoBox title="Viewing Tokens Valid Before" icon={FaClock} content={tokensValidBefore} />
+
                 </CardContent>
             </Card>
 

@@ -8,12 +8,13 @@ interface OrderStatusBadgeProps {
 };
 
 export const statusColor: Record<Order["status"], string> = {
+    "FAILED": "bg-red-600",
     "PENDING": "bg-amber-700",
     "PAID": "bg-green-700",
     "SHIPPED": "bg-teal-700",
     "COMPLETE": "bg-primary",
     "CANCELLED": "bg-gray-600",
-    "REFUNDED": "bg-red-600"
+    "REFUNDED": "bg-red-800"
 };
 
 export default function OrderStatusBadge({ status, size="sm" }: OrderStatusBadgeProps) {
