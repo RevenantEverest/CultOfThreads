@@ -104,7 +104,7 @@ function EventItem() {
                 <div className="flex flex-col gap-10">
                     <div className="flex flex-col lg:flex-row gap-5">
                         <TotalProductsCard sales={sales.data} />
-                        <TotalRevenueCard sales={sales.data} />
+                        <TotalRevenueCard total={sales.data.map((item) => item.sale_price).reduce((acc, curr) => acc += curr)} />
                     </div>
                     <SalesBreakdownList breakdownData={createSaleBreakdownByProduct(sales.data)} />
                     {/* <SalesList sales={sales.data} /> */}

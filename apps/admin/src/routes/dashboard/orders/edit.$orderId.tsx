@@ -105,7 +105,6 @@ function EditOrder() {
                             amountTotalInCents: (data.results.amountTotalInCents ?? 0).toString(),
                             billingAddress: data.results.billingAddress,
                             shippingAddress: data.results.shippingAddress,
-                            shippingOption: data.results.shippingOption,
                             trackingNumber: data.results.trackingNumber,
                             status: data.results.status,
                             stripeCheckoutSessionId: data.results.stripeCheckoutSessionId,

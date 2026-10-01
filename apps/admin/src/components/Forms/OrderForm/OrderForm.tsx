@@ -15,7 +15,6 @@ type OrderValues = Record<keyof Pick<Order, (
     "amountTotalInCents" |
     "billingAddress" |
     "shippingAddress" |
-    "shippingOption" |
     "trackingNumber" |
     "status" |
     "stripeCheckoutSessionId" |
