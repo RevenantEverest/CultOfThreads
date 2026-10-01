@@ -12,6 +12,7 @@ import addOrderLineItems from '~/modules/checkout/helpers/addOrderLineItems.help
 
 import { entities, logs } from '~/utils';
 import { ENV } from '~/constants';
+import { SHIPPING_OPTIONS } from '~/integrations/stripe/constants';
 
 type Body = z.infer<typeof createCheckoutSchema>;
 
@@ -23,25 +24,6 @@ interface StripeLineItem {
 interface CartProduct extends StripeLineItem {
     productId: string,
     name: string
-};
-
-interface StripeShippingOption {
-    shipping_rate_data: {
-        type: "fixed_amount",
-        fixed_amount: {
-            amount: number,
-            currency: string
-        },
-        display_name: string,
-        delivery_estimate: {
-            minimum: {
-                unit: string, value: number
-            },
-            maximum: {
-                unit: string, value: number
-            }
-        }
-    }
 };
 
 export default async function createCheckoutSession(req: Request<Body>, res: Response) {
@@ -89,6 +71,7 @@ export default async function createCheckoutSession(req: Request<Body>, res: Res
 
     const [order, orderErr] = await entities.insert<Order>(Order, {
         status: "PENDING",
+        tokensValidBefore: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000), // 90 days from now
         ...(validatedBody.data.notes && { customerNotes: validatedBody.data.notes })
     });
 
@@ -158,31 +141,6 @@ export default async function createCheckoutSession(req: Request<Body>, res: Res
         logs.log({ message: `Some cart products are missing a Stripe price ID:\n ${missingPriceProductIds.join(" ")}` })
     }
 
-    const shippingRates: StripeShippingOption[] = [
-        {
-            shipping_rate_data: {
-                type: "fixed_amount",
-                fixed_amount: { amount: 0, currency: "usd" },
-                display_name: "Standard Shipping",
-                delivery_estimate: {
-                    minimum: { unit: "business_day", value: 7 },
-                    maximum: { unit: "business_day", value: 14 }
-                }
-            }
-        },
-        {
-            shipping_rate_data: {
-                type: "fixed_amount",
-                fixed_amount: { amount: 50  * 100, currency: "usd" },
-                display_name: "Express Shipping",
-                delivery_estimate: {
-                    minimum: { unit: "business_day", value: 1 },
-                    maximum: { unit: "business_day", value: 7 }
-                }
-            }
-        }
-    ];
-
     try {
         const session = await stripeClient.checkout.sessions.create({
             mode: "payment",
@@ -190,7 +148,10 @@ export default async function createCheckoutSession(req: Request<Body>, res: Res
             shipping_address_collection: {
                 allowed_countries: ["US", "CA"]
             },
-            shipping_options: shippingRates,
+            shipping_options: [
+                { shipping_rate: SHIPPING_OPTIONS.STANDARD.id },
+                { shipping_rate: SHIPPING_OPTIONS.EXPRESS.id }
+            ],
             billing_address_collection: "required",
             automatic_tax: {
                 enabled: true
@@ -228,7 +189,13 @@ export default async function createCheckoutSession(req: Request<Body>, res: Res
         });
     }
     catch(err) {
-        logs.error({ err: err as Error, message: "Failed to create checkout session" });
+        
+        await entities.update<Order>(Order, {
+            ...order,
+            status: "FAILED"
+        });
+
+        logs.error({ err: err as Error, message: `Failed to create checkout session for order ${order.id}`, toFile: true });
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             error: true, message: "Failed to create checkout session"
         });
