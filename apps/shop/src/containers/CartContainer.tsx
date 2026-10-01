@@ -20,11 +20,11 @@ function CartContainer() {
     });
 
     return(
-        <div className="w-full flex gap-5">
-            <div className="w-8/12">
+        <div className="w-full flex flex-col lg:flex-row gap-5">
+            <div className="w-full lg:w-8/12">
                 <CartTable products={query.data?.results} isLoading={query.isLoading} />
             </div>
-            <div className="w-4/12">
+            <div className="w-full lg:w-4/12">
             <CartSummary products={query.data?.results} isLoading={query.isLoading} />
             </div>
         </div>
