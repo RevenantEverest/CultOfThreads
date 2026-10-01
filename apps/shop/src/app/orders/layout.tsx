@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function CartLayout({ children, }: Readonly<{
+export default function OrdersLayout({ children, }: Readonly<{
   children: React.ReactNode;
 }>) {
     return(
