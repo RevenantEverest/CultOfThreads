@@ -10,8 +10,8 @@ export interface UpdatePayload {
     customerName?: Order["customerName"],
     billingAddress?: Order["billingAddress"],
     shippingAddress?: Order["shippingAddress"],
-    shippingOption?: Order["shippingOption"],
-    trackingNumber?: Order["trackingNumber"]
+    trackingNumber?: Order["trackingNumber"],
+    tokensValidBefore?: string
 };
 
 export interface UpdateOptions extends HookOptions<"authToken" | "payload", UpdatePayload> {
