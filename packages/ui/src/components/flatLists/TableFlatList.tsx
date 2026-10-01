@@ -11,6 +11,7 @@ interface TableFlatListRenderItemParams<T> {
 
 export interface TableFlatListProps<T> {
     className?: React.HTMLAttributes<HTMLDivElement>["className"],
+    tableClassName?: React.HTMLAttributes<HTMLDivElement>["className"],
     data: T[],
     renderItem: (params: TableFlatListRenderItemParams<T>) => React.ReactNode,
     keyExtractor: (item: T) => string | number,
@@ -62,7 +63,7 @@ function TableFlatList<T>(props: TableFlatListProps<T>) {
 
     return(
         <>
-            <Table>
+            <Table className={props.tableClassName}>
                 {renderHeader && renderHeader()}
                 <TableBody>
                     {renderList()}
