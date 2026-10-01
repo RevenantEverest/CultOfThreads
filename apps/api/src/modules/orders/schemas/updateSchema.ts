@@ -13,9 +13,6 @@ export const updateSchema = z.object({
     customerName: z.string().optional(),
     billingAddress: z.string().optional(),
     shippingAddress: z.string().optional(),
-    shippingOption: z.union([
-        z.literal("STANDARD"),
-        z.literal("EXPRESS")
-    ]).optional(),
-    trackingNumber: z.string().optional()
+    trackingNumber: z.string().optional(),
+    tokenValidBefore: z.string().optional()
 });
