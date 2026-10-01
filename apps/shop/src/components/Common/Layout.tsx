@@ -19,7 +19,7 @@ function Layout({ className, main, transparent, children, ...rest }: React.Props
                 relative 
                 px-5!
                 lg:px-10!
-                xl:px-64!
+                xl:px-48!
                 pt-20 
                 pointer-events-auto 
                 items-center
