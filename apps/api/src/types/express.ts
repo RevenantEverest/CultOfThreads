@@ -3,7 +3,7 @@ import type {
     Response as ExpressResponse, 
     NextFunction as ExpressNextFunction 
 } from 'express';
-import type { AuthPayload } from './auth';
+import type { AuthPayload, OrderAuthPayload } from './auth';
 
 export interface LocalsPagination {
     page: number,
@@ -26,6 +26,7 @@ export interface LocalsQueryContext {
 export interface Locals<T> {
     pagination: LocalsPagination, 
     auth: AuthPayload,
+    orderAuth: OrderAuthPayload,
     queryContext: LocalsQueryContext,
     params: T
 };

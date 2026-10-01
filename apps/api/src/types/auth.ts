@@ -29,3 +29,7 @@ export interface AuthPayload {
     is_anonymous: boolean,
     accessToken: string
 };
+
+export interface OrderAuthPayload {
+    orderId: string
+};
