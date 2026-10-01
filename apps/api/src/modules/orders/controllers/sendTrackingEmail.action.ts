@@ -6,8 +6,8 @@ import { render, OrderTracking } from '@repo/email-templates';
 
 import { sendEmail } from '~/integrations/zoho/actions';
 
-import { ENV } from '~/constants';
 import { entities, logs } from '~/utils';
+import { generateOrderUrl } from '~/modules/orders/helpers';
 
 interface Params {
     id: string
@@ -48,6 +48,7 @@ export default async function sendTrackingEmail(req: Request, res: Response<["au
     });
 
     try {
+        const orderUrl = generateOrderUrl(order);
         const trackingUrl = `https://www.ups.com/track?loc=en_US&requester=QUIC&tracknum=${order.trackingNumber}/trackdetails`;
         const html = await render(OrderTracking({
             trackingNumber: order.trackingNumber,
@@ -56,7 +57,7 @@ export default async function sendTrackingEmail(req: Request, res: Response<["au
             orderNumber: order.id,
             items: lineItems,
             total: `${((order.amountTotalInCents ?? 0) / 100).toLocaleString()}`,
-            orderUrl: `${ENV.FRONTEND_URL}/orders?view=${order?.id}&token=${"some token"}`
+            orderUrl
         }));
         await sendEmail({
             to: order.customerEmail,

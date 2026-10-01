@@ -30,6 +30,13 @@ router.route("/id/:id")
     controllers.update
 )
 
+router.route("/view")
+.get(
+    auth.verifyOrderToken,
+    security.isValidOrigin,
+    controllers.getByOrderToken
+)
+
 router.route("/id/:id/email/confirmation")
 .post(
     auth.verifyToken,

@@ -8,6 +8,7 @@ import { sendEmail } from '~/integrations/zoho/actions';
 
 import { ENV } from '~/constants';
 import { entities, logs } from '~/utils';
+import { generateOrderUrl } from '~/modules/orders/helpers';
 
 interface Params {
     id: string
@@ -48,12 +49,13 @@ export default async function sendConfirmationEmail(req: Request, res: Response<
     });
 
     try {
+        const orderUrl = generateOrderUrl(order);
         const html = await render(OrderConfirmation({
             customerName: order.customerName.split(" ")[0] ?? "fellow Cultist",
             orderNumber: order.id,
             items: lineItems,
             total: `${((order.amountTotalInCents ?? 0) / 100).toLocaleString()}`,
-            orderUrl: `${ENV.FRONTEND_URL}/orders?view=${order?.id}&token=${"some token"}`
+            orderUrl: orderUrl
         }));
         await sendEmail({
             to: order.customerEmail,
