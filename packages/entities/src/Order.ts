@@ -11,6 +11,7 @@ import OrderLineItem from './OrderLineItem';
 import Sale from './Sale';
 
 type OrderStatus = (
+    "FAILED" |
     "PENDING" |
     "PAID" | 
     "SHIPPED" | 
@@ -45,7 +46,13 @@ export default class Order extends BaseEntity {
     shippingAddress: string;
 
     @Column({ type: "varchar", nullable: true })
-    shippingOption: ShippingOption;
+    shippingOptionName: ShippingOption;
+
+    @Column({ type: "varchar", nullable: true })
+    shippingOptionId: string;
+
+    @Column({ type: "int", nullable: true })
+    shippingAmountInCents: number;
 
     @Column({ type: "varchar", nullable: true })
     trackingNumber: string;
@@ -67,6 +74,9 @@ export default class Order extends BaseEntity {
 
     @Column({ type: "text", nullable: true })
     customerNotes: string;
+
+    @Column({ type: "timestamptz" })
+    tokensValidBefore: Date;
 
     @CreateDateColumn({ type: "timestamptz" })
     createdAt: Date;
