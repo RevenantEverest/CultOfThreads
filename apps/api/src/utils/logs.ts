@@ -35,7 +35,7 @@ function getLogLevelColor(logLevel: LogLevel): string {
 
 async function writeLogToFile(message: string) {
     try {
-        await fs.appendFile(LOG_FILE_PATH, message, { encoding: "utf-8" });
+        await fs.appendFile(LOG_FILE_PATH, `\n${message}\n`, { encoding: "utf-8" });
     }
     catch(err) {
         error({ 
@@ -50,7 +50,7 @@ export function getBaseLogOptions({ color, level="SUCCESS" }: LogOptions): { log
     const logColor = chalk.hex(color ? color.toString(16) : getLogLevelColor(level));
 
     const now = dayjs();
-    const timestamp = chalk.hex(`#8c8c8c`)(`[${now.format("H:MM:ss A")}]`);
+    const timestamp = `[${now.format("M/D/YY H:MM:ss A")}]`;
 
     return {
         logColor, timestamp
@@ -62,13 +62,18 @@ export async function log({ color, level="SUCCESS", type, message="", toFile }: 
     const logType = `[LOG]${type ? ` [${type}]` : ""}`;
     
     if(toFile) {
-        writeLogToFile(timestamp + logType + " " + message);
+        writeLogToFile(timestamp + " " + `[${logType}]` + " " + message);
     }
 
-    return console.log(timestamp + logColor(logType) + " " + message);
+    return console.log(chalk.hex(`#8c8c8c`)(timestamp) + logColor(logType) + " " + message);
 };
 
-export async function error({ color, level="ERROR", type, message="", err }: ErrorLogOptions) {
+export async function error({ color, level="ERROR", type, message="", err, toFile }: ErrorLogOptions) {
     const { logColor, timestamp } = getBaseLogOptions({ color, level });
-    return console.error(timestamp + logColor(`[ERROR]${type ? ` [${type}]` : ""}`) + " " + message, err);
+
+    if(toFile) {
+        writeLogToFile(timestamp + " " + `[${level}]` + " " + message + " " + err.message);
+    }
+
+    return console.error(chalk.hex(`#8c8c8c`)(timestamp) + logColor(`[ERROR]${type ? ` [${type}]` : ""}`) + " " + message, err);
 };
