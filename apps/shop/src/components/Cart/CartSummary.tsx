@@ -51,6 +51,7 @@ function CartSummary({ products, isLoading }: CartSummaryProps) {
                     </div>
                 </div>
                 <div className="w-full flex flex-col gap-5">
+                    <p className="text-muted font-semibold">Taxes will be calculated at checkout</p>
                     <CustomerNote />
                     <CheckoutButton className="w-full" />
                 </div>

@@ -81,7 +81,7 @@ export default function CustomerNote() {
                                         <div className="text-center">
                                             <h1 className="text-2xl font-bold">Personalization Note</h1>
                                             <p className="font-semibold text-accent">
-                                                Let us know if you want a specific color scheme for your oder, or just a friendly message!
+                                                Let us know if you want a specific color scheme for your order, or just a friendly message!
                                             </p>
                                             <p className="font-semibold text-muted italic mt-5">Not all requests can be guaranteed.</p>
                                         </div>

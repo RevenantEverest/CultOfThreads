@@ -19,19 +19,21 @@ export default function CartTableRow({ product, cartItem }: CartTableRowProps) {
 
     return(
         <TableRow className="border-b-muted font-semibold">
-            <TableCell className={`${cellClass} flex items-center gap-3`}>
-                <div>
-                    <Image 
-                        className="rounded-xl border-muted border-4 h-30 w-30"
-                        height={100}
-                        width={100}
-                        loading="eager"
-                        src={URLS.SUPABASE_STORAGE + (product?.media && product.media[0]?.mediaUrl)} 
-                        alt={`featured`}
-                    />
-                </div>
-                <div className="flex flex-col gap-4">
-                    <p className="font-bold">{product?.name}</p>
+            <TableCell className={`${cellClass} whitespace-normal`}>
+                <div className="flex items-center gap-3 w-full">
+                    <div className="shrink-0">
+                        <Image 
+                            className="rounded-xl border-muted border-4 h-18 w-18 lg:h-30 lg:w-30"
+                            height={100}
+                            width={100}
+                            loading="eager"
+                            src={URLS.SUPABASE_STORAGE + (product?.media && product.media[0]?.mediaUrl)} 
+                            alt={`featured`}
+                        />
+                    </div>
+                    <div className="flex-1 min-w-0 w-full flex">
+                        <p className="font-bold wrap-anywhere text-xs lg:text-md">{product?.name}</p>
+                    </div>
                 </div>
             </TableCell>
             <TableCell className={`${cellClass}`}>

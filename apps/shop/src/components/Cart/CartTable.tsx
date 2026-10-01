@@ -29,6 +29,7 @@ function CartTable({ products, isLoading }: CartTableProps) {
                     <p>{getTotalCartQuantities().toLocaleString()} Items</p>
                 </div>
                 <TableFlatList
+                    tableClassName="table-fixed"
                     keyExtractor={(item: Product) => item.id}
                     data={products ?? []}
                     renderHeader={() => (<CartTableHeader />)}
