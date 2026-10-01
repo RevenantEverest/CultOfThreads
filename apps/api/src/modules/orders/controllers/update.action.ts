@@ -50,7 +50,6 @@ export default async function update(req: Request<Body>, res: Response<["auth", 
         customerName, 
         billingAddress, 
         shippingAddress, 
-        shippingOption, 
         trackingNumber
     } = validatedBody.data;
     const [updatedOrder, updateErr] = await entities.update<Order>(Order, {
@@ -60,7 +59,6 @@ export default async function update(req: Request<Body>, res: Response<["auth", 
         customerName: customerName ?? order.customerName,
         billingAddress: billingAddress ?? order.billingAddress,
         shippingAddress: shippingAddress ?? order.shippingAddress,
-        shippingOption: shippingOption ?? order.shippingOption,
         trackingNumber: trackingNumber ?? order.trackingNumber
     });
 
