@@ -172,7 +172,6 @@ function SaleForm(props: SaleFormProps) {
                                                     nextPage={nextEventsPage}
                                                     isLoading={isEventsLoading}
                                                     onChange={(value) => {
-                                                        console.log("changing...");
                                                         const eventDate = events.filter((item) => item.id === value)[0];
                                                         if(eventDate) {
                                                             form.setFieldValue("purchaseDate", eventDate.dateFrom.toString());
