@@ -9,7 +9,7 @@ interface OrderLineItemProps {
     lineItem: OrderLineItemType
 };
 
-function OrderLineItem({ lineItem, index }: OrderLineItemProps) {
+function OrderLineItem({ lineItem }: OrderLineItemProps) {
 
     const cellClass = "py-4";
 
