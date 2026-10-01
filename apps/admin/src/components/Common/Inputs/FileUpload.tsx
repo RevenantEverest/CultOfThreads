@@ -87,13 +87,15 @@ function FileUpload({ limit=0, onChange }: FileUploadProps) {
                     <RiUploadCloudFill color={theme.colors.primary} className="text-7xl" />
                     <p className="text-xl font-semibold">Drag files to upload</p>
                     <p className="text-lg">or</p>
-                    <Button
-                        type="button"
-                        className="mt-1 bg-transparent border-3 border-primary text-primary hover:text-white" 
-                        onClick={openFileBrowser}
-                    >
-                        Browse Files
-                    </Button>
+                    <div>
+                        <Button
+                            type="button"
+                            className="mt-1 bg-transparent border-3 border-primary text-primary hover:text-white" 
+                            onClick={openFileBrowser}
+                        >
+                            Browse Files
+                        </Button>
+                    </div>
                 </div>
             </div>
             <div className="flex flex-col md:flex-row gap-5 items-center justify-center">
