@@ -8,6 +8,7 @@ export const API_URL = process.env.API_URL as string;
 export const API_PORT = process.env.API_PORT as string;
 export const API_INTERNAL_ACCESS_SECRET = process.env.API_INTERNAL_ACCESS_SECRET as string;
 export const TOKEN_SECRET = process.env.TOKEN_SECRET as string;
+export const ORDER_TOKEN_SECRET = process.env.API_ORDER_TOKEN_SECRET as string;
 export const FRONTEND_URL = process.env.FRONTEND_URL as string; // used for stripe checkout redirects
 
 export const SUPABASE_URL = process.env.SUPABASE_URL as string;
@@ -20,6 +21,8 @@ export const SUPABASE_STORAGE_URL = `${SUPABASE_URL}/storage/v1/object/public/`;
 
 export const STRIPE_TOKEN = process.env.STRIPE_TOKEN as string;
 export const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET as string;
+export const STRIPE_SHIPPING_ID_STANDARD = process.env.STRIPE_SHIPPING_ID_STANDARD as string;
+export const STRIPE_SHIPPING_ID_EXPRESS = process.env.STRIPE_SHIPPING_ID_EXPRESS as string;
 
 export const SQUARE_APP_ID = process.env.SQUARE_APP_ID as string;
 export const SQUARE_TOKEN = process.env.SQUARE_TOKEN as string;
