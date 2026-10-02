@@ -48,9 +48,9 @@ async function createSquareProviderItem(product: Product, options?: Options): Pr
 export default async function createPaymentProviderItem(product: Product, images?: string[], options?: Options): Promise<ProviderDetails> {
 
     const providerDetails: ProviderDetails = {
-        stripeProductId: product.providerDetails.stripeProductId ?? null,
-        stripePriceId: product.providerDetails.stripePriceId ?? null,
-        squareProductId: product.providerDetails.squareProductId ?? null
+        stripeProductId: product?.providerDetails?.stripeProductId ?? null,
+        stripePriceId: product?.providerDetails?.stripePriceId ?? null,
+        squareProductId: product?.providerDetails?.squareProductId ?? null
     };
 
     if(options?.providerTargets && options.providerTargets.includes("STRIPE")) {
