@@ -73,8 +73,6 @@ function EventItem() {
     };
 
     const getSalesTotal = () => {
-        console.log(salesQuery.data?.results);
-
         if(!salesQuery.data?.results || salesQuery.data.results.length === 0) {
             return 0;
         }

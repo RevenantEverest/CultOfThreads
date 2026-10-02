@@ -41,7 +41,5 @@ export default async function getByEventId(req: Request, res: Response<["auth", 
         });
     }
 
-    console.log(sales)
-
     return res.json({ results: sales });
 };
