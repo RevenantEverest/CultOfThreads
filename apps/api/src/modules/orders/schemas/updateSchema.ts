@@ -14,5 +14,5 @@ export const updateSchema = z.object({
     billingAddress: z.string().optional(),
     shippingAddress: z.string().optional(),
     trackingNumber: z.string().optional(),
-    tokenValidBefore: z.string().optional()
+    tokensValidBefore: z.string().optional()
 });

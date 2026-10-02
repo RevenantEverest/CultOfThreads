@@ -18,7 +18,8 @@ type OrderValues = Record<keyof Pick<Order, (
     "trackingNumber" |
     "status" |
     "stripeCheckoutSessionId" |
-    "stripeTransactionId"
+    "stripeTransactionId" |
+    "tokensValidBefore"
 )>, string>;
 
 export type OrderFormValues = OrderValues;

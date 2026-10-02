@@ -55,7 +55,8 @@ function EditOrder() {
                     ...(values.customerName && { customerName: values.customerName}),
                     ...(values.billingAddress && { billingAddress: values.billingAddress }),
                     ...(values.shippingAddress && { shippingAddress: values.shippingAddress }),
-                    ...(values.trackingNumber && { trackingNumber: values.trackingNumber })
+                    ...(values.trackingNumber && { trackingNumber: values.trackingNumber }),
+                    ...(values.tokensValidBefore && { tokensValidBefore: values.tokensValidBefore })
                 }
             });
 
@@ -109,6 +110,7 @@ function EditOrder() {
                             status: data.results.status,
                             stripeCheckoutSessionId: data.results.stripeCheckoutSessionId,
                             stripeTransactionId: data.results.stripeTransactionId,
+                            tokensValidBefore: (data.results.tokensValidBefore as unknown) as string
                         }}
                         onSubmit={onSubmit}
                         orderLineItems={data.results.orderLineItems}
