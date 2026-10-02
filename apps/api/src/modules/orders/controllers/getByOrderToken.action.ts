@@ -40,7 +40,8 @@ export default async function getByOrderToken(req: Request, res: Response<["orde
                     description: true,
                     media: true
                 }
-            }
+            },
+            tokensValidBefore: true
         },
         relations: {
             orderLineItems: {
@@ -69,7 +70,7 @@ export default async function getByOrderToken(req: Request, res: Response<["orde
     if(!isTokenStillValid) {
         logs.log({ message: `Order attempted to be viewed when token no longer valid, for order ${order.id}` });
         return res.status(StatusCodes.UNAUTHORIZED).json({
-            error: true, message: "Unauthorized"
+            error: true, message: "Gone"
         });
     }
 

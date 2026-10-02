@@ -27,7 +27,7 @@ export default function verifyOrderToken(req: Request, res: Response, next: Next
     }
     catch(err) {
         if(err instanceof jwt.TokenExpiredError) {
-            return res.status(StatusCodes.UNAUTHORIZED).json({ message: "Token has expired" });
+            return res.status(StatusCodes.GONE).json({ message: "Token has expired" });
         }
 
         if(err instanceof jwt.JsonWebTokenError) {
