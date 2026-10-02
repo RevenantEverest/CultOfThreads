@@ -6,7 +6,8 @@ import {
     TableCell,
     TableRow
 } from '@repo/ui';
-import { FaDollarSign, FaPencil } from 'react-icons/fa6';
+import { FaDollarSign, FaPencil, FaStripeS } from 'react-icons/fa6';
+import { SiSquare } from 'react-icons/si';
 import RemoveProduct from './RemoveProduct';
 import StatusBadge from './StatusBadge';
 
@@ -44,6 +45,18 @@ function ProductsRow({ product }: ProductsRowProps) {
                     {
                         product?.details?.status && 
                         <StatusBadge status={product.details.status as Product["details"]["status"]} />
+                    }
+                </div>
+            </TableCell>
+            <TableCell className={`${cellClass}`}>
+                <div className="flex items-center gap-1 justify-center text-accent">
+                    {
+                        product?.providerDetails.stripeProductId && 
+                        <FaStripeS />
+                    }
+                    {
+                        product?.providerDetails.squareProductId && 
+                        <SiSquare />
                     }
                 </div>
             </TableCell>
