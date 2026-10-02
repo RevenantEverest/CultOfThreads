@@ -51,11 +51,11 @@ function ProductsRow({ product }: ProductsRowProps) {
             <TableCell className={`${cellClass}`}>
                 <div className="flex items-center gap-1 justify-center text-accent">
                     {
-                        product?.providerDetails.stripeProductId && 
+                        product?.providerDetails?.stripeProductId && 
                         <FaStripeS />
                     }
                     {
-                        product?.providerDetails.squareProductId && 
+                        product?.providerDetails?.squareProductId && 
                         <SiSquare />
                     }
                 </div>
