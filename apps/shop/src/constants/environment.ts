@@ -6,3 +6,5 @@ export const API_INTERNAL_ACCESS_SECRET = process.env.API_INTERNAL_ACCESS_SECRET
 
 export const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
 export const SUPABASE_KEY = process.env.NEXT_PUBLIC_SUPABASE_KEY as string;
+
+export const SUPPORT_EMAIL = "contact@cultofthreads.com";
