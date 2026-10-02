@@ -77,6 +77,7 @@ export default async function index(req: Request, res: Response<["auth", "pagina
         ...findOptions,
         relations: {
             details: true,
+            providerDetails: true,
             media: true,
             tags: {
                 tag: true

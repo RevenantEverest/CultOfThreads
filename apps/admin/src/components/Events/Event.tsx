@@ -1,10 +1,10 @@
-import type { EventWithMarket } from '@repo/supabase';
+import type { Event as EventEntity } from '@repo/entities';
 
 import { URLS } from '@@admin/constants';
 import EventDetails from './EventDetails';
 
 interface EventProps {
-    event: EventWithMarket
+    event: EventEntity
 };
 
 function Event({ event }: EventProps) {
@@ -14,7 +14,7 @@ function Event({ event }: EventProps) {
             <div className="flex-1">
                 <img
                     className="rounded-xl border-muted border-4 hover:cursor-zoom-in"
-                    src={URLS.SUPABASE_STORAGE + event.flyer_url} 
+                    src={URLS.SUPABASE_STORAGE + event.flyerUrl} 
                     alt={`featured`}
                 />
             </div>

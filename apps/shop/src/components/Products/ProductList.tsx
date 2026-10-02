@@ -27,7 +27,8 @@ function ProductList({ products, nextPage, isLoading }: ProductListProps) {
 
     const breakpointGrid = useBreakpointGrid({ 
         overrides: {
-            LG: 2, 
+            LG: 2,
+            MD: 3,
             XL: 4
         }
     });

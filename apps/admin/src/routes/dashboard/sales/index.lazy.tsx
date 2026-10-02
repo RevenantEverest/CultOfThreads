@@ -1,7 +1,6 @@
 import { createLazyFileRoute } from '@tanstack/react-router';
 
 import { useEffect, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import { BeatLoader } from 'react-spinners';
 import toast from 'react-hot-toast';
 
@@ -11,16 +10,17 @@ import {
 import { useThemeStore } from '@@admin/store/theme';
 import Search from '@@admin/components/Search';
 
-import { Layout, Breadcrumb } from '@@admin/components/Common';
+import { Layout, Breadcrumb, Spinner } from '@@admin/components/Common';
 import { 
     AddSale, 
     EventSalesCard, 
-    OnlineSalesCard, 
-    SalesList, 
+    OnlineSalesCard,
     TotalRevenueCard, 
-    OtherSalesCard
+    OtherSalesCard,
+    SalesTable
 } from '@@admin/components/Sales';
-import { saleApi, SaleType } from '@repo/supabase';
+import { sales } from '@repo/queries';
+import { useAuthStore } from '@@admin/store/auth';
 
 export const Route = createLazyFileRoute('/dashboard/sales/')({
     component: Sales,
@@ -28,12 +28,19 @@ export const Route = createLazyFileRoute('/dashboard/sales/')({
 
 function Sales() {
 
+    const auth = useAuthStore((state) => state.auth);
     const theme = useThemeStore((state) => state.theme);
     const [search, setSearch] = useState("");
 
-    const query = useQuery({
-        queryKey: ["sales"],
-        queryFn: saleApi.fetchAll
+    const query = sales.hooks.useIndex({
+        authToken: auth.session?.accessToken ?? "",
+        pagination: {
+            limit: 10
+        }
+    });
+
+    const aggregateTotalsQuery = sales.hooks.useAggregatedTotals({
+        authToken: auth.session?.accessToken ?? ""
     });
 
     useEffect(() => {
@@ -44,6 +51,12 @@ function Sales() {
             <ToastError toast={t} message={"Error fetching sales"} />
         ));
     }, [query.isError, query.error]);
+
+    const nextPage = () => {
+        if(!query.hasNextPage) return;
+
+        query.fetchNextPage();
+    };
 
     return(
         <Layout className="pb-20">
@@ -66,10 +79,17 @@ function Sales() {
                     />
                     :
                     <div className="flex flex-col lg:flex-row gap-3">
-                        <TotalRevenueCard sales={query.data} />
-                        <EventSalesCard sales={query.data.filter((sale) => sale.sale_type === ("EVENT" as SaleType))} />
-                        <OnlineSalesCard sales={query.data.filter((sale) => sale.sale_type === ("ONLINE" as SaleType))} />
-                        <OtherSalesCard sales={query.data.filter((sale) => !(["ONLINE", "EVENT"] as SaleType[]).includes(sale.sale_type as SaleType))} />
+                        {
+                            !aggregateTotalsQuery.data?.results || aggregateTotalsQuery.isLoading ?
+                            <Spinner />
+                            :
+                            <>
+                                <TotalRevenueCard total={aggregateTotalsQuery.data.results.revenue.total} />
+                                <EventSalesCard total={aggregateTotalsQuery.data.results.revenue.event} />
+                                <OnlineSalesCard total={aggregateTotalsQuery.data.results.revenue.online} />
+                                <OtherSalesCard total={aggregateTotalsQuery.data.results.revenue.uncategorized} />
+                            </>
+                        }
                     </div>
                 }
                 <div className="flex flex-col gap-5">
@@ -81,16 +101,15 @@ function Sales() {
                             <AddSale />
                         </div>
                     </div>
-                    {
-                        query.isLoading ?
-                        <BeatLoader
-                            className="flex flex-1 items-center justify-center mt-10"
-                            size={15}
-                            color={theme.colors.primary}
-                        />
-                        :
-                        <SalesList search={search} sales={query.data ?? []} />
-                    }
+                    <SalesTable
+                        sales={
+                            query.data?.pages.flatMap((page) => page.results) ?? []
+                        } 
+                        dataAmount={query.data?.pages[0] && query.data.pages[0].count}
+                        search={search} 
+                        isLoading={query.isLoading || query.isFetching || !query.data}
+                        nextPage={nextPage}
+                    />
                 </div>
             </div>
         </Layout>

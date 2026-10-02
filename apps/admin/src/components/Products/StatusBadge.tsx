@@ -1,15 +1,15 @@
-import type { ProductDetailsStatus } from '@repo/supabase';
+import type { ProductDetails } from '@repo/entities';
 
 type StatusBadgeSize = "sm" | "md" | "lg";
 
 interface StatusBadgeProps {
-    status: ProductDetailsStatus,
+    status: ProductDetails["status"],
     size?: StatusBadgeSize
 };
 
 function StatusBadge({ status, size="sm" }: StatusBadgeProps) {
 
-    const statusColor: Record<ProductDetailsStatus, string> = {
+    const statusColor: Record<ProductDetails["status"], string> = {
         "ACTIVE": "bg-green-600",
         "DRAFT": "bg-muted"
     };

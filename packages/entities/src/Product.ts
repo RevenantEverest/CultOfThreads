@@ -12,6 +12,8 @@ import ProductMedia from './ProductMedia';
 import Sale from './Sale';
 import ProductTag from './ProductTag';
 import ProductCategory from './ProductCategory';
+import ProductProviderDetails from './ProductProviderDetails';
+import OrderLineItem from './OrderLineItem';
 
 @Entity("products")
 export default class Product extends BaseEntity {
@@ -31,6 +33,9 @@ export default class Product extends BaseEntity {
     @OneToOne(() => ProductDetails, (details) => details.product, { cascade: true })
     details: ProductDetails;
 
+    @OneToOne(() => ProductProviderDetails, (providerDetails) => providerDetails.product, { cascade: true })
+    providerDetails: ProductProviderDetails;
+
     @OneToMany(() => ProductMedia, (media) => media.product, { cascade: true })
     media: ProductMedia[];
 
@@ -42,4 +47,7 @@ export default class Product extends BaseEntity {
 
     @OneToMany(() => ProductCategory, (categories) => categories.product, { cascade: true })
     categories: ProductCategory[];
+
+    @OneToMany(() => OrderLineItem, (orderLineItem) => orderLineItem.product, { cascade: true })
+    orderLineItems: OrderLineItem[]
 };

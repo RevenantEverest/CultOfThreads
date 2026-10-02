@@ -16,6 +16,7 @@ function ProductsHeader({ dataAmount }: ProductsHeaderProps) {
                     Name <span className="text-xs text-accent font-semibold">({dataAmount})</span>
                 </TableHead>
                 <TableHead className={`${headClass} text-center`}>Status</TableHead>
+                <TableHead className={`${headClass} text-center`}>Providers</TableHead>
                 <TableHead className={`${headClass} text-center`}>Online Price</TableHead>
                 <TableHead className={`${headClass} text-center`}>Market Price</TableHead>
                 <TableHead className={`${headClass} text-right rounded-tr-lg`}>Actions</TableHead>

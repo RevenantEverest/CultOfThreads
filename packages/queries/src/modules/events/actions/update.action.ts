@@ -17,10 +17,33 @@ export interface UpdateOptions extends HookOptions<"authToken" | "payload", Upda
 };
 
 export async function update({ id, authToken, payload }: UpdateOptions): Promise<ApiResponse<Event>> {
+    
+    const formData = new FormData();
+
+    if(payload.marketId) {
+        formData.append("marketId", payload.marketId);
+    }
+
+    if(payload.address) {
+        formData.append("address", payload.address);
+    }
+
+    if(payload.dateFrom) {
+        formData.append("dateFrom", payload.dateFrom);
+    }
+
+    if(payload.dateTo) {
+        formData.append("dateTo", payload.dateTo);
+    }
+
+    if(payload.file) {
+        formData.append("file", payload.file);
+    }
+    
     const { data } = await axios({
         method: "PUT",
         url: `${BASE_URL}/id/${id}`,
-        data: payload,
+        data: formData,
         headers: {
             Authorization: `Bearer ${authToken}`
         }

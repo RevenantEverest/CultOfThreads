@@ -62,7 +62,7 @@ function Button({ className, variant, size, colorScheme, asChild=false, type="bu
     const Comp = asChild ? Slot : "button";
 
     return (
-        <MotionHover disable={props.disabled || props.disableAnimation}>
+        <MotionHover disable={props.disabled || props.disableAnimation} className="w-full">
             <Comp
                 data-slot="button"
                 className={

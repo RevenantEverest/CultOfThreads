@@ -1,0 +1,42 @@
+{
+  "extends": ["//"],
+  "tasks": {
+        "build": {
+            "env": [
+                "DB_*",
+                "API_*",
+                "SUPABASE_*", 
+                "STRIPE_*", 
+                "SQUARE_*",
+                "ZOHO_*",
+                "FRONTEND_URL"
+            ]
+        },
+        "dev": {
+            "env": [
+                "DB_*",
+                "API_*",
+                "SUPABASE_*", 
+                "STRIPE_*", 
+                "SQUARE_*",
+                "ZOHO_*",
+                "FRONTEND_URL"
+            ]
+        },
+        "migration:generate": {
+            "dependsOn": ["@repo/entities#build"],
+            "env": [
+                "DB_*",
+                "SUPABASE_*"
+            ],
+            "cache": false
+        },
+        "migration:run": {
+            "env": [
+                "DB_*",
+                "SUPABASE_*"
+            ],
+            "cache": false
+        }
+    }
+}

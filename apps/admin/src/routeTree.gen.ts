@@ -17,6 +17,8 @@ import { Route as DashboardSalesAddRouteImport } from './routes/dashboard/sales/
 import { Route as DashboardSalesEditSaleIdRouteImport } from './routes/dashboard/sales/edit.$saleId'
 import { Route as DashboardProductsItemProductIdRouteImport } from './routes/dashboard/products/item.$productId'
 import { Route as DashboardProductsEditProductIdRouteImport } from './routes/dashboard/products/edit.$productId'
+import { Route as DashboardOrdersItemOrderIdRouteImport } from './routes/dashboard/orders/item.$orderId'
+import { Route as DashboardOrdersEditOrderIdRouteImport } from './routes/dashboard/orders/edit.$orderId'
 import { Route as DashboardMarketsEditMarketIdRouteImport } from './routes/dashboard/markets/edit.$marketId'
 import { Route as DashboardEventsItemEventIdRouteImport } from './routes/dashboard/events/item.$eventId'
 import { Route as DashboardEventsEditEventIdRouteImport } from './routes/dashboard/events/edit.$eventId'
@@ -30,6 +32,8 @@ const DashboardSalesIndexLazyRouteImport =
 const DashboardProductsIndexLazyRouteImport = createFileRoute(
   '/dashboard/products/',
 )()
+const DashboardOrdersIndexLazyRouteImport =
+  createFileRoute('/dashboard/orders/')()
 const DashboardNewsletterIndexLazyRouteImport = createFileRoute(
   '/dashboard/newsletter/',
 )()
@@ -102,6 +106,14 @@ const DashboardProductsIndexLazyRoute =
     getParentRoute: () => DashboardLayoutRoute,
   } as any).lazy(() =>
     import('./routes/dashboard/products/index.lazy').then((d) => d.Route),
+  )
+const DashboardOrdersIndexLazyRoute =
+  DashboardOrdersIndexLazyRouteImport.update({
+    id: '/orders/',
+    path: '/orders/',
+    getParentRoute: () => DashboardLayoutRoute,
+  } as any).lazy(() =>
+    import('./routes/dashboard/orders/index.lazy').then((d) => d.Route),
   )
 const DashboardNewsletterIndexLazyRoute =
   DashboardNewsletterIndexLazyRouteImport.update({
@@ -224,6 +236,18 @@ const DashboardProductsEditProductIdRoute =
     path: '/products/edit/$productId',
     getParentRoute: () => DashboardLayoutRoute,
   } as any)
+const DashboardOrdersItemOrderIdRoute =
+  DashboardOrdersItemOrderIdRouteImport.update({
+    id: '/orders/item/$orderId',
+    path: '/orders/item/$orderId',
+    getParentRoute: () => DashboardLayoutRoute,
+  } as any)
+const DashboardOrdersEditOrderIdRoute =
+  DashboardOrdersEditOrderIdRouteImport.update({
+    id: '/orders/edit/$orderId',
+    path: '/orders/edit/$orderId',
+    getParentRoute: () => DashboardLayoutRoute,
+  } as any)
 const DashboardMarketsEditMarketIdRoute =
   DashboardMarketsEditMarketIdRouteImport.update({
     id: '/markets/edit/$marketId',
@@ -270,12 +294,15 @@ export interface FileRoutesByFullPath {
   '/dashboard/events/': typeof DashboardEventsIndexLazyRoute
   '/dashboard/markets/': typeof DashboardMarketsIndexLazyRoute
   '/dashboard/newsletter/': typeof DashboardNewsletterIndexLazyRoute
+  '/dashboard/orders/': typeof DashboardOrdersIndexLazyRoute
   '/dashboard/products/': typeof DashboardProductsIndexLazyRoute
   '/dashboard/sales/': typeof DashboardSalesIndexLazyRoute
   '/dashboard/contacts/edit/$contactId': typeof DashboardContactsEditContactIdRoute
   '/dashboard/events/edit/$eventId': typeof DashboardEventsEditEventIdRoute
   '/dashboard/events/item/$eventId': typeof DashboardEventsItemEventIdRoute
   '/dashboard/markets/edit/$marketId': typeof DashboardMarketsEditMarketIdRoute
+  '/dashboard/orders/edit/$orderId': typeof DashboardOrdersEditOrderIdRoute
+  '/dashboard/orders/item/$orderId': typeof DashboardOrdersItemOrderIdRoute
   '/dashboard/products/edit/$productId': typeof DashboardProductsEditProductIdRoute
   '/dashboard/products/item/$productId': typeof DashboardProductsItemProductIdRoute
   '/dashboard/sales/edit/$saleId': typeof DashboardSalesEditSaleIdRoute
@@ -298,12 +325,15 @@ export interface FileRoutesByTo {
   '/dashboard/events': typeof DashboardEventsIndexLazyRoute
   '/dashboard/markets': typeof DashboardMarketsIndexLazyRoute
   '/dashboard/newsletter': typeof DashboardNewsletterIndexLazyRoute
+  '/dashboard/orders': typeof DashboardOrdersIndexLazyRoute
   '/dashboard/products': typeof DashboardProductsIndexLazyRoute
   '/dashboard/sales': typeof DashboardSalesIndexLazyRoute
   '/dashboard/contacts/edit/$contactId': typeof DashboardContactsEditContactIdRoute
   '/dashboard/events/edit/$eventId': typeof DashboardEventsEditEventIdRoute
   '/dashboard/events/item/$eventId': typeof DashboardEventsItemEventIdRoute
   '/dashboard/markets/edit/$marketId': typeof DashboardMarketsEditMarketIdRoute
+  '/dashboard/orders/edit/$orderId': typeof DashboardOrdersEditOrderIdRoute
+  '/dashboard/orders/item/$orderId': typeof DashboardOrdersItemOrderIdRoute
   '/dashboard/products/edit/$productId': typeof DashboardProductsEditProductIdRoute
   '/dashboard/products/item/$productId': typeof DashboardProductsItemProductIdRoute
   '/dashboard/sales/edit/$saleId': typeof DashboardSalesEditSaleIdRoute
@@ -328,12 +358,15 @@ export interface FileRoutesById {
   '/dashboard/events/': typeof DashboardEventsIndexLazyRoute
   '/dashboard/markets/': typeof DashboardMarketsIndexLazyRoute
   '/dashboard/newsletter/': typeof DashboardNewsletterIndexLazyRoute
+  '/dashboard/orders/': typeof DashboardOrdersIndexLazyRoute
   '/dashboard/products/': typeof DashboardProductsIndexLazyRoute
   '/dashboard/sales/': typeof DashboardSalesIndexLazyRoute
   '/dashboard/contacts/edit/$contactId': typeof DashboardContactsEditContactIdRoute
   '/dashboard/events/edit/$eventId': typeof DashboardEventsEditEventIdRoute
   '/dashboard/events/item/$eventId': typeof DashboardEventsItemEventIdRoute
   '/dashboard/markets/edit/$marketId': typeof DashboardMarketsEditMarketIdRoute
+  '/dashboard/orders/edit/$orderId': typeof DashboardOrdersEditOrderIdRoute
+  '/dashboard/orders/item/$orderId': typeof DashboardOrdersItemOrderIdRoute
   '/dashboard/products/edit/$productId': typeof DashboardProductsEditProductIdRoute
   '/dashboard/products/item/$productId': typeof DashboardProductsItemProductIdRoute
   '/dashboard/sales/edit/$saleId': typeof DashboardSalesEditSaleIdRoute
@@ -359,12 +392,15 @@ export interface FileRouteTypes {
     | '/dashboard/events/'
     | '/dashboard/markets/'
     | '/dashboard/newsletter/'
+    | '/dashboard/orders/'
     | '/dashboard/products/'
     | '/dashboard/sales/'
     | '/dashboard/contacts/edit/$contactId'
     | '/dashboard/events/edit/$eventId'
     | '/dashboard/events/item/$eventId'
     | '/dashboard/markets/edit/$marketId'
+    | '/dashboard/orders/edit/$orderId'
+    | '/dashboard/orders/item/$orderId'
     | '/dashboard/products/edit/$productId'
     | '/dashboard/products/item/$productId'
     | '/dashboard/sales/edit/$saleId'
@@ -387,12 +423,15 @@ export interface FileRouteTypes {
     | '/dashboard/events'
     | '/dashboard/markets'
     | '/dashboard/newsletter'
+    | '/dashboard/orders'
     | '/dashboard/products'
     | '/dashboard/sales'
     | '/dashboard/contacts/edit/$contactId'
     | '/dashboard/events/edit/$eventId'
     | '/dashboard/events/item/$eventId'
     | '/dashboard/markets/edit/$marketId'
+    | '/dashboard/orders/edit/$orderId'
+    | '/dashboard/orders/item/$orderId'
     | '/dashboard/products/edit/$productId'
     | '/dashboard/products/item/$productId'
     | '/dashboard/sales/edit/$saleId'
@@ -416,12 +455,15 @@ export interface FileRouteTypes {
     | '/dashboard/events/'
     | '/dashboard/markets/'
     | '/dashboard/newsletter/'
+    | '/dashboard/orders/'
     | '/dashboard/products/'
     | '/dashboard/sales/'
     | '/dashboard/contacts/edit/$contactId'
     | '/dashboard/events/edit/$eventId'
     | '/dashboard/events/item/$eventId'
     | '/dashboard/markets/edit/$marketId'
+    | '/dashboard/orders/edit/$orderId'
+    | '/dashboard/orders/item/$orderId'
     | '/dashboard/products/edit/$productId'
     | '/dashboard/products/item/$productId'
     | '/dashboard/sales/edit/$saleId'
@@ -479,6 +521,13 @@ declare module '@tanstack/react-router' {
       path: '/products'
       fullPath: '/dashboard/products/'
       preLoaderRoute: typeof DashboardProductsIndexLazyRouteImport
+      parentRoute: typeof DashboardLayoutRoute
+    }
+    '/dashboard/orders/': {
+      id: '/dashboard/orders/'
+      path: '/orders'
+      fullPath: '/dashboard/orders/'
+      preLoaderRoute: typeof DashboardOrdersIndexLazyRouteImport
       parentRoute: typeof DashboardLayoutRoute
     }
     '/dashboard/newsletter/': {
@@ -593,6 +642,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardProductsEditProductIdRouteImport
       parentRoute: typeof DashboardLayoutRoute
     }
+    '/dashboard/orders/item/$orderId': {
+      id: '/dashboard/orders/item/$orderId'
+      path: '/orders/item/$orderId'
+      fullPath: '/dashboard/orders/item/$orderId'
+      preLoaderRoute: typeof DashboardOrdersItemOrderIdRouteImport
+      parentRoute: typeof DashboardLayoutRoute
+    }
+    '/dashboard/orders/edit/$orderId': {
+      id: '/dashboard/orders/edit/$orderId'
+      path: '/orders/edit/$orderId'
+      fullPath: '/dashboard/orders/edit/$orderId'
+      preLoaderRoute: typeof DashboardOrdersEditOrderIdRouteImport
+      parentRoute: typeof DashboardLayoutRoute
+    }
     '/dashboard/markets/edit/$marketId': {
       id: '/dashboard/markets/edit/$marketId'
       path: '/markets/edit/$marketId'
@@ -643,12 +706,15 @@ interface DashboardLayoutRouteChildren {
   DashboardEventsIndexLazyRoute: typeof DashboardEventsIndexLazyRoute
   DashboardMarketsIndexLazyRoute: typeof DashboardMarketsIndexLazyRoute
   DashboardNewsletterIndexLazyRoute: typeof DashboardNewsletterIndexLazyRoute
+  DashboardOrdersIndexLazyRoute: typeof DashboardOrdersIndexLazyRoute
   DashboardProductsIndexLazyRoute: typeof DashboardProductsIndexLazyRoute
   DashboardSalesIndexLazyRoute: typeof DashboardSalesIndexLazyRoute
   DashboardContactsEditContactIdRoute: typeof DashboardContactsEditContactIdRoute
   DashboardEventsEditEventIdRoute: typeof DashboardEventsEditEventIdRoute
   DashboardEventsItemEventIdRoute: typeof DashboardEventsItemEventIdRoute
   DashboardMarketsEditMarketIdRoute: typeof DashboardMarketsEditMarketIdRoute
+  DashboardOrdersEditOrderIdRoute: typeof DashboardOrdersEditOrderIdRoute
+  DashboardOrdersItemOrderIdRoute: typeof DashboardOrdersItemOrderIdRoute
   DashboardProductsEditProductIdRoute: typeof DashboardProductsEditProductIdRoute
   DashboardProductsItemProductIdRoute: typeof DashboardProductsItemProductIdRoute
   DashboardSalesEditSaleIdRoute: typeof DashboardSalesEditSaleIdRoute
@@ -670,12 +736,15 @@ const DashboardLayoutRouteChildren: DashboardLayoutRouteChildren = {
   DashboardEventsIndexLazyRoute: DashboardEventsIndexLazyRoute,
   DashboardMarketsIndexLazyRoute: DashboardMarketsIndexLazyRoute,
   DashboardNewsletterIndexLazyRoute: DashboardNewsletterIndexLazyRoute,
+  DashboardOrdersIndexLazyRoute: DashboardOrdersIndexLazyRoute,
   DashboardProductsIndexLazyRoute: DashboardProductsIndexLazyRoute,
   DashboardSalesIndexLazyRoute: DashboardSalesIndexLazyRoute,
   DashboardContactsEditContactIdRoute: DashboardContactsEditContactIdRoute,
   DashboardEventsEditEventIdRoute: DashboardEventsEditEventIdRoute,
   DashboardEventsItemEventIdRoute: DashboardEventsItemEventIdRoute,
   DashboardMarketsEditMarketIdRoute: DashboardMarketsEditMarketIdRoute,
+  DashboardOrdersEditOrderIdRoute: DashboardOrdersEditOrderIdRoute,
+  DashboardOrdersItemOrderIdRoute: DashboardOrdersItemOrderIdRoute,
   DashboardProductsEditProductIdRoute: DashboardProductsEditProductIdRoute,
   DashboardProductsItemProductIdRoute: DashboardProductsItemProductIdRoute,
   DashboardSalesEditSaleIdRoute: DashboardSalesEditSaleIdRoute,

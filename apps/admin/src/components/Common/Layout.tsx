@@ -17,8 +17,10 @@ function Layout({ className, main, transparent, children, ...rest }: React.Props
                 flex-col
                 w-full
                 relative 
-                px-5 
-                lg:px-64
+                px-5
+                lg:px-20
+                xl:px-30
+                2xl:px-64
                 pt-20 
                 pointer-events-auto 
                 items-center

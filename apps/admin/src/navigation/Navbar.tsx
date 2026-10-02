@@ -15,7 +15,7 @@ function Navbar() {
 
     return(
         <div 
-            className="fixed top-0 z-30 bg-card py-4 border-b-1 border-muted transition-all duration-300 ease-in-out"
+            className="fixed top-0 z-30 bg-card py-4 border-b border-muted transition-all duration-300 ease-in-out"
             style={{
                 left: sidebarWidth, // start after the sidebar
                 width: `calc(100% - ${sidebarWidth})`, // fill the rest
@@ -23,9 +23,11 @@ function Navbar() {
         >
             <div className="flex">
                 <div className="flex gap-2 pl-3">
-                    <SidebarTrigger className="hover:bg-muted" />
+                    <div>
+                        <SidebarTrigger className="hover:bg-muted" />
+                    </div>
                     <span className="text-muted">&#124;</span>
-                    <p className="font-semibold">Admin Panel</p>
+                    <p className="font-semibold flex-1">Admin Panel</p>
                 </div>
                 <div className="flex-1 justify-end pr-3 hidden md:flex">
                     <ThemeChanger currentTheme={theme} setTheme={setTheme} />

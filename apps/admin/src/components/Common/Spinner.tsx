@@ -1,14 +1,24 @@
+import type { ThemeColors } from '@repo/ui';
+
 import React from 'react';
 import { BeatLoader } from 'react-spinners';
 import { useThemeStore } from '@@admin/store/theme';
 
 interface SpinnerProps {
-    className?: React.HTMLAttributes<HTMLDivElement>["className"]
+    className?: React.HTMLAttributes<HTMLDivElement>["className"],
+    color?: string | keyof ThemeColors
 };
 
-function Spinner({ className }: SpinnerProps) {
+function isThemeColorKey(value: string, colors: ThemeColors): value is keyof ThemeColors {
+    return value in colors;
+};
+
+function Spinner({ className, color }: SpinnerProps) {
 
     const theme = useThemeStore((state) => state.theme);
+    const colorOverride = color && isThemeColorKey(color, theme.colors)
+        ? theme.colors[color] 
+        : color;
 
     return(
         <BeatLoader
@@ -17,7 +27,7 @@ function Spinner({ className }: SpinnerProps) {
                 ${className}    
             `}
             size={"15px"}
-            color={theme.colors.primary}
+            color={colorOverride ?? theme.colors.primary}
         />
     );
 };

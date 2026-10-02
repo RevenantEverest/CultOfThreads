@@ -1,28 +1,24 @@
-import type { Product } from '@repo/supabase';
+import type { Product } from '@repo/entities';
 
 import { 
     Select, 
     SelectContent, 
     SelectItem, 
     SelectTrigger, 
-    SelectValue 
+    SelectValue,
+    FlatList
 } from '@repo/ui';
+import { Spinner } from '@@admin/components/Common';
 
 interface ProductSelectProps {
     value: string,
     products: Product[],
-    onChange: (value: string) => void
+    onChange: (value: string) => void,
+    nextPage: () => void,
+    isLoading?: boolean
 };
 
-function ProductSelect({ value, products, onChange }: ProductSelectProps) {
-
-    const renderMarkets = () => {
-        return products.sort((a, b) => a.name.localeCompare(b.name)).map((product, index) => (
-            <SelectItem key={`product-select-${product.name}-${index}`} value={product.id}>
-                {product.name}
-            </SelectItem>
-        ));
-    };
+function ProductSelect({ value, products, onChange, nextPage, isLoading }: ProductSelectProps) {
 
     return(
         <div className="flex flex-col">
@@ -35,7 +31,18 @@ function ProductSelect({ value, products, onChange }: ProductSelectProps) {
                     <SelectValue placeholder="Choose A Product" />
                 </SelectTrigger>
                 <SelectContent className="font-semibold">
-                    {renderMarkets()}
+                    <FlatList
+                        keyExtractor={(item: Product) => item.id}
+                        data={products}
+                        renderItem={({ item, key }) => (
+                            <SelectItem key={key} value={item.id}>
+                                {item.name}
+                            </SelectItem>
+                        )}
+                        onEndReached={nextPage}
+                        renderLoading={() => <Spinner />}
+                        isLoading={isLoading}
+                    />
                 </SelectContent>
             </Select>
         </div>

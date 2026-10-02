@@ -66,7 +66,7 @@ async function SingleProduct({ params }: SingleProductProps) {
     return(
         <HydrationBoundary state={dehydrate(queryClient)}>
             <Layout main>
-                <div className="pt-15">
+                <div className="pt-15 w-full">
                     <Product slug={slug} />
                 </div>
             </Layout>

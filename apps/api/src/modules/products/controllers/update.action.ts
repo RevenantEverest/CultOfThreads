@@ -1,13 +1,14 @@
 import type { Request, Response } from '~/types/express';
+import type { SyncPaymentProviderOptions } from '~/modules/products/helpers/syncPaymentProviders';
 
 import { z } from 'zod';
 import { StatusCodes } from 'http-status-codes';
 
-import { Product, ProductCategory, ProductMedia, ProductTag } from '@repo/entities';
+import { Product, ProductCategory, ProductTag } from '@repo/entities';
 import { updateSchema } from '~/modules/products/schemas';
 
-import { entities, logs, supabaseStorage } from '~/utils';
-import { SUPABASE_STORAGE } from '~/constants';
+import { entities, logs } from '~/utils';
+import { destroyProductMedia, insertRelations, syncPaymentProviders, uploadProductMedia } from '~/modules/products/helpers';
 
 type Body = z.infer<typeof updateSchema>;
 type Params = {
@@ -38,7 +39,8 @@ export default async function update(req: Request<Body>, res: Response<["auth", 
             },
             categories: {
                 category: true
-            }
+            },
+            providerDetails: true
         }
     });
 
@@ -92,128 +94,54 @@ export default async function update(req: Request<Body>, res: Response<["auth", 
         });
     }
 
-    if(validatedBody.data.categories) {
-        const incomingIds = validatedBody.data.categories;
-        const existingIds = product.categories.map((item) => item.category.id);
-
-        const idsToAdd = incomingIds.filter(id => !existingIds.includes(id));
-        const idsToRemove = existingIds.filter(id => !incomingIds.includes(id));
-
-        await Promise.all([
-            ...idsToAdd.map(async (id) => {
-                try {
-                    await entities.insert<ProductCategory>(ProductCategory, {
-                        product: { id: product.id },
-                        category: { id }
-                    });
-                } catch (err) {
-                    logs.error({ err: err as Error });
-                }
-            }),
-            ...idsToRemove.map(async (id) => {
-                try {
-                    const productCategory = product.categories.filter((item) => item.category.id === id)[0];
-
-                    if(!productCategory) {
-                        throw new Error("No Product Category");
-                    }
-
-                    await entities.destroy<ProductCategory>(ProductCategory, productCategory);
-                } catch (err) {
-                    logs.error({ err: err as Error });
-                }
-            })
-        ]);
-    }
-
-    if(validatedBody.data.tags) {
-        const incomingIds = validatedBody.data.tags;
-        const existingIds = product.tags.map((item) => item.tag.id);
-
-        const idsToAdd = incomingIds.filter(id => !existingIds.includes(id));
-        const idsToRemove = existingIds.filter(id => !incomingIds.includes(id));
-
-        await Promise.all([
-            ...idsToAdd.map(async (id) => {
-                try {
-                    await entities.insert<ProductTag>(ProductTag, {
-                        product: { id: product.id },
-                        tag: { id }
-                    });
-                } catch (err) {
-                    logs.error({ err: err as Error });
-                }
-            }),
-            ...idsToRemove.map(async (id) => {
-                try {
-                    const productTag = product.tags.filter((item) => item.tag.id === id)[0];
-
-                    if(!productTag) {
-                        throw new Error("No Product Tag");
-                    }
-                    await entities.destroy<ProductTag>(ProductTag, productTag);
-                } catch (err) {
-                    logs.error({ err: err as Error });
-                }
-            })
-        ]);
-    }
+    await Promise.all([
+        insertRelations({
+            targetEntity: ProductCategory,
+            productId: product.id,
+            relationKey: "category",
+            ids: validatedBody.data.categories
+        }),
+        insertRelations({
+            targetEntity: ProductTag,
+            productId: product.id,
+            relationKey: "tag",
+            ids: validatedBody.data.tags
+        })
+    ]);
 
     const files = req.files as Express.Multer.File[] | undefined;
+    const uploadedMedia = await uploadProductMedia(product.id, files);
 
-    if(files) {
-        logs.log({ message: `Uploading ${files.length} files` });
-        for(let i = 0; i < files.length; i++) {
-            const currentFile = files[i];
+    const validatedBodyIds = validatedBody.data.media.map((item) => {
+        return item.id;
+    });
 
-            if(!currentFile) {
-                continue;
-            }
+    const removedMedia = await destroyProductMedia(
+        updatedProduct.media.filter((item) => !validatedBodyIds.includes(item.id))
+    );
+    const removedMediaIds = removedMedia.map((item) => item.id);
 
-            try {
-                const storageResponse = await supabaseStorage.create({
-                    rootSubPath: `${SUPABASE_STORAGE.SUB_BUCKETS.PRODUCTS}/${product.id}`,
-                    file: currentFile
-                });
+    updatedProduct.media = [
+        ...product.media.filter((media) => !removedMediaIds.includes(media.id)),
+        ...uploadedMedia
+    ];
 
-                await entities.insert<ProductMedia>(ProductMedia, {
-                    product: {
-                        id: product.id
-                    },
-                    type: currentFile.mimetype,
-                    mediaUrl: storageResponse
-                });
-            }
-            catch(fileErr) {
-                logs.log({ level: "ERROR", message: `Failed file upload at file ${i}/${files.length}` });
-                logs.error({ err: fileErr as Error });
-            }
-        }
+    const providerTargets: SyncPaymentProviderOptions["providerTargets"] = [];
+
+    if(updatedProduct?.providerDetails && updatedProduct.providerDetails.stripeProductId) {
+        providerTargets.push("STRIPE");
     }
 
-    if(validatedBody.data.media) {
-        const productMedia = product.media;
-
-        const validatedBodyIds = validatedBody.data.media.map((item) => {
-            return item.id;
-        });
-
-        logs.log({ message: `Deleting ${validatedBodyIds.length} files` });
-        for(let i = 0; i < productMedia.length; i++) {
-            const currentMedia = productMedia[i];
-            if(currentMedia && !validatedBodyIds.includes(currentMedia.id)) {
-                try {
-                    await supabaseStorage.destroy({
-                        fullFilePath: currentMedia.mediaUrl
-                    });
-                    await entities.destroy<ProductMedia>(ProductMedia, currentMedia);
-                }
-                catch(deleteErr) {
-                    logs.error({ err: deleteErr as Error });
-                }
-            }
-        }
+    if(updatedProduct?.providerDetails && updatedProduct.providerDetails.squareProductId) {
+        providerTargets.push("SQUARE");
     }
+
+    await syncPaymentProviders(updatedProduct, {
+        actionType: "update",
+        hasOnlinePriceChange: product.details.onlinePrice !== updatedProduct.details.onlinePrice,
+        hasMarketPriceChange: product.details.marketPrice !== updatedProduct.details.marketPrice,
+        providerTargets
+    });
 
     return res.json({ results: updatedProduct });
 };

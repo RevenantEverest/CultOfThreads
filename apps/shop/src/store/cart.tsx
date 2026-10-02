@@ -1,38 +1,56 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 
-interface CartItem {
+export interface CartItem {
     productId: string,
     quantity: number
 };
 
 interface CartActions {
+    getTotalQuantities: () => number,
     toggleCart: () => void,
+    setCustomerNote: (note: string) => void,
     addItem: (item: CartItem) => void,
     reduceItemQuantity: (productId: string) => void,
     removeItem: (productId: string) => void,
     updateCart: (items: CartItem[]) => void,
-    emptyCart: () => void
+    emptyCart: () => void,
+    setHasHydrated: (value: boolean) => void
 };
 
 interface CartState {
     cart: {
         items: CartItem[]
     },
-    isOpen: boolean
+    customerNote: string,
+    isOpen: boolean,
+    hasHydrated: boolean
 };
 
 const initialState: CartState = {
     cart: {
         items: []
     },
-    isOpen: false
+    customerNote: "",
+    isOpen: false,
+    hasHydrated: false
 };
 
 export const useCartStore = create<CartState & CartActions>()(
     persist(
         (set, get) => ({
             ...initialState,
+            getTotalQuantities: (): number => {
+                const cartItems = get().cart.items;
+                const quantities = cartItems.map((item) => item.quantity);
+
+                if(quantities.length >= 1) {
+                    return quantities.reduce((acc, curr) => acc += curr);
+                }
+
+                return 0;
+            },
+            setCustomerNote: (note: string) => set(() => ({ customerNote: note })),
             addItem: (item: CartItem) => {
                 const cartItems = get().cart.items;
                 
@@ -113,11 +131,17 @@ export const useCartStore = create<CartState & CartActions>()(
                 cart: {
                     items: []
                 }
-            }))
+            })),
+            setHasHydrated: (value: boolean) => {
+                set(() => ({ hasHydrated: value }));
+            }
         }),
         {
             name: 'cart-storage', // name of the item in the storage (must be unique)
-            storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
+            storage: createJSONStorage(() => localStorage), // (optional) by default, 'localStorage' is used
+            onRehydrateStorage: () => (state) => {
+                state?.setHasHydrated(true);
+            }
         },
     ),
 );

@@ -13,6 +13,7 @@
         "lint": ""
     },
     "dependencies": {
+        "@repo/email-templates": "workspace:*",
         "@repo/entities": "workspace:*",
         "chalk": "^5.6.2",
         "cors": "^2.8.6",
@@ -26,11 +27,14 @@
         "multer": "^2.1.1",
         "pg": "^8.20.0",
         "reflect-metadata": "^0.2.2",
+        "square": "^45.0.1",
+        "stripe": "^22.5.0",
         "typeorm": "^0.3.28",
         "typeorm-naming-strategies": "^4.1.0",
         "zod": "^4.3.6"
     },
     "devDependencies": {
+        "@repo/types": "workspace:*",
         "@swc/cli": "^0.7.10",
         "@swc/core": "^1.15.24",
         "@types/chalk": "^2.2.4",

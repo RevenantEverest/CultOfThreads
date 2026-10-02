@@ -97,4 +97,13 @@ router.route("/id/:id")
     controllers.destroy
 )
 
+router.route("/id/:id/payment-providers")
+.post(
+    auth.verifyToken,
+    security.isValidOrigin,
+    permissions.isAdmin,
+    validation.id,
+    controllers.addPaymentProvider
+)
+
 export default router;

@@ -7,7 +7,7 @@ function AddProduct() {
 
     return(
         <Link to="/dashboard/products/add">
-            <Button className="!font-semibold !text-sm text-white bg-card-light hover:bg-card-light">
+            <Button className="font-semibold! text-sm! text-white bg-card-light hover:bg-card-light">
                 <FaPlus />
                 Add Product
             </Button>

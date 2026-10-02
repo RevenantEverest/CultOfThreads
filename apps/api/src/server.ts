@@ -9,6 +9,7 @@ import { ENV } from '~/constants';
 import { logs } from '~/utils';
 
 (async function main() {
+    logs.log({ message: "Starting up..." });
     
     await waitForPostgres(AppDataSource);
     logs.log({ type: "DB", message: `Loaded ${Object.keys(Entities).length} entities` });

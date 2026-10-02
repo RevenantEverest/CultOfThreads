@@ -4,14 +4,18 @@ import cors from 'cors';
 import { rateLimit } from 'express-rate-limit';
 
 import { categoryRoutes } from '~/modules/category';
+import { checkoutRoutes } from '~/modules/checkout';
 import { contactRoutes } from '~/modules/contact';
 import { contactFormRoutes } from '~/modules/contactForm';
 import { eventRoutes } from '~/modules/event';
 import { marketRoutes } from './modules/market';
 import { newsletterRoutes } from '~/modules/newsletter';
+import { orderRoutes } from '~/modules/orders';
 import { productRoutes } from '~/modules/products';
+import { salesRoutes } from '~/modules/sales';
 import { tagRoutes } from '~/modules/tag';
 import { trafficAnalyticRoutes } from '~/modules/trafficAnalytics';
+import { webhookRoutes } from './modules/webhooks';
 
 import { healthRoutes } from '~/modules/health';
 
@@ -25,9 +29,18 @@ function initializeApp(): Application {
         legacyHeaders: false,
         ipv6Subnet: 60
     });
+    const excludedJsonParsePaths: string[] = [
+        "/webhooks/stripe"
+    ];
 
     app.use(morgan("dev"));
-    app.use(express.json());
+    app.use((req, res, next) => {
+        if(excludedJsonParsePaths.includes(req.originalUrl)) {
+            return next();
+        }
+
+        express.json()(req, res, next);
+    });
     app.use(express.urlencoded({ extended: false }));
     app.use(cors());
     app.use(limiter);
@@ -36,14 +49,18 @@ function initializeApp(): Application {
     app.set("trust proxy", "loopback");
 
     app.use("/categories", categoryRoutes);
+    app.use("/checkout", checkoutRoutes);
     app.use("/contacts", contactRoutes);
     app.use("/contact-form", contactFormRoutes);
     app.use("/events", eventRoutes);
     app.use("/markets", marketRoutes);
     app.use("/newsletter", newsletterRoutes);
+    app.use("/orders", orderRoutes);
     app.use("/products", productRoutes);
+    app.use("/sales", salesRoutes);
     app.use("/tags", tagRoutes);
     app.use("/analytics/traffic", trafficAnalyticRoutes);
+    app.use("/webhooks", webhookRoutes);
 
     app.use("/health", healthRoutes);
 

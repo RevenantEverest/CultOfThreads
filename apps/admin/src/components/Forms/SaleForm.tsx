@@ -1,9 +1,4 @@
-import type { 
-    EventWithMarket, 
-    ProductWithDetails, 
-    SaleFull, 
-    SaleType 
-} from '@repo/supabase';
+import type { Sale, Product, Event } from '@repo/entities';
 
 import { useState } from 'react';
 import { useThemeStore } from '@@admin/store/theme';
@@ -32,12 +27,12 @@ export type SaleFormValues = (
     Record<
         keyof(
             Pick<
-                SaleFull,
-                "product_id" |
-                "event_id" |
-                "sale_price" |
-                "sale_type" |
-                "purchase_date" |
+                Sale,
+                "product" |
+                "event" |
+                "salePrice" |
+                "saleType" |
+                "purchaseDate" |
                 "notes"
             >
         ),
@@ -47,10 +42,10 @@ export type SaleFormValues = (
 
 export type ExtraValues = (
     Record<
-        keyof Pick<SaleFull, (
-            "market_name" | 
-            "original_product_price" |
-            "product_name"
+        keyof Pick<Sale, (
+            "marketName" | 
+            "originalProductPrice" |
+            "productName"
         )>,
         string
     >
@@ -58,13 +53,29 @@ export type ExtraValues = (
 
 interface SaleFormProps {
     type: SaleFormType,
-    products: ProductWithDetails[],
-    events: EventWithMarket[],
+    products: Product[],
+    events: Event[],
     initialValues: SaleFormValues & Partial<ExtraValues>,
-    onSubmit: (value: SaleFormValues & Partial<ExtraValues>) => Promise<void>
+    onSubmit: (value: SaleFormValues & Partial<ExtraValues>) => Promise<void>,
+    nextProductsPage: () => void,
+    nextEventsPage: () => void,
+    isProductsLoading?: boolean,
+    isEventsLoading?: boolean
 };
 
-function SaleForm({ type, products, events, initialValues, onSubmit }: SaleFormProps) {
+function SaleForm(props: SaleFormProps) {
+
+    const { 
+        type, 
+        products, 
+        events, 
+        initialValues, 
+        onSubmit,
+        nextProductsPage,
+        nextEventsPage,
+        isProductsLoading,
+        isEventsLoading
+    } = props;
 
     const theme = useThemeStore((state) => state.theme);
     const [customProduct, setCustomProduct] = useState(false);
@@ -77,14 +88,14 @@ function SaleForm({ type, products, events, initialValues, onSubmit }: SaleFormP
         }
     });
 
-    const getPriceBySoldType = (product: ProductWithDetails) => {
-        switch(form.state.values.sale_type) {
+    const getPriceBySoldType = (product: Product) => {
+        switch(form.state.values.saleType) {
             case "EVENT":
-                return product.details?.market_price?.toString() ?? "0";
+                return product.details.marketPrice.toString() ?? "0";
             case "ONLINE":
-                return product.details?.online_price?.toString() ?? "0";
+                return product.details.onlinePrice.toString() ?? "0";
             default: 
-                return product.details?.online_price?.toString() ?? "0";
+                return product.details.onlinePrice.toString() ?? "0";
         };
     };
 
@@ -107,7 +118,7 @@ function SaleForm({ type, products, events, initialValues, onSubmit }: SaleFormP
                                     !customProduct ?
                                     <div className="flex-1 flex flex-col">
                                         <form.Field
-                                            name="product_id"
+                                            name="product"
                                             validators={{
                                                 onChange: ({ value }) => (
                                                     value === "" ? "Field is Required" : undefined
@@ -116,7 +127,9 @@ function SaleForm({ type, products, events, initialValues, onSubmit }: SaleFormP
                                             children={(field) => (
                                                 <ProductSelect 
                                                     value={field.state.value} 
-                                                    products={products} 
+                                                    products={products}
+                                                    nextPage={nextProductsPage}
+                                                    isLoading={isProductsLoading} 
                                                     onChange={(value) => {
                                                         field.handleChange(value);
 
@@ -126,7 +139,7 @@ function SaleForm({ type, products, events, initialValues, onSubmit }: SaleFormP
 
                                                         const salePrice = getPriceBySoldType(product);
 
-                                                        form.setFieldValue("sale_price", salePrice);
+                                                        form.setFieldValue("salePrice", salePrice);
                                                     }}
                                                 />
                                             )}
@@ -135,7 +148,7 @@ function SaleForm({ type, products, events, initialValues, onSubmit }: SaleFormP
                                     :
                                     <div className="flex-1">
                                         <form.AppField
-                                            name="product_name"
+                                            name="productName"
                                             children={(field) => (
                                                 <field.TextField label="Product Name" theme={theme} />
                                             )}
@@ -151,15 +164,17 @@ function SaleForm({ type, products, events, initialValues, onSubmit }: SaleFormP
                                     !customEvent ?
                                     <div className="flex-1">
                                         <form.Field
-                                            name="event_id"
+                                            name="event"
                                             children={(field) => (
                                                 <EventSelect 
                                                     value={field.state.value} 
-                                                    events={events} 
+                                                    events={events}
+                                                    nextPage={nextEventsPage}
+                                                    isLoading={isEventsLoading}
                                                     onChange={(value) => {
                                                         const eventDate = events.filter((item) => item.id === value)[0];
                                                         if(eventDate) {
-                                                            form.setFieldValue("purchase_date", eventDate.date_from);
+                                                            form.setFieldValue("purchaseDate", eventDate.dateFrom.toString());
                                                         }
                                                         field.handleChange(value);
                                                     }} />
@@ -169,7 +184,7 @@ function SaleForm({ type, products, events, initialValues, onSubmit }: SaleFormP
                                     :
                                     <div className="flex-1">
                                         <form.AppField
-                                            name="market_name"
+                                            name="marketName"
                                             children={(field) => (
                                                 <field.TextField label="Market Name" theme={theme} />
                                             )}
@@ -182,7 +197,7 @@ function SaleForm({ type, products, events, initialValues, onSubmit }: SaleFormP
                             </div>
                             <div className="flex-1">
                                 <form.Field
-                                    name="sale_type"
+                                    name="saleType"
                                     children={(field) => (
                                         <>
                                         <div className="flex items-center mb-1.5 font-bold text-sm gap-2">
@@ -191,16 +206,16 @@ function SaleForm({ type, products, events, initialValues, onSubmit }: SaleFormP
                                         <Select 
                                             value={field.state.value ?? undefined} 
                                             onValueChange={(value) => {
-                                                field.handleChange(value as SaleType);
+                                                field.handleChange(value as Sale["saleType"]);
 
-                                                const productId = form.state.values.product_id;
+                                                const productId = form.state.values.product;
                                                 const product = products.filter((el) => el.id === productId)[0];
 
                                                 if(!product) return;
 
                                                 const salePrice = getPriceBySoldType(product);
 
-                                                form.setFieldValue("sale_price", salePrice);
+                                                form.setFieldValue("salePrice", salePrice);
                                             }}
                                         >
                                             <SelectTrigger className="bg-card-light px-2.5 py-2.5 rounded-md font-semibold text-sm w-full">
@@ -226,7 +241,7 @@ function SaleForm({ type, products, events, initialValues, onSubmit }: SaleFormP
                         <div className="flex flex-col gap-5">
                             <div className="flex-1">
                                 <form.AppField
-                                    name="sale_price"
+                                    name="salePrice"
                                     validators={{
                                         onChange: ({ value }) =>
                                             validator.isNumeric(value) ? undefined : "Must be a number"
@@ -245,7 +260,7 @@ function SaleForm({ type, products, events, initialValues, onSubmit }: SaleFormP
                                 <p className="font-bold">Purchase Date</p>
                                 <div className="flex flex-col gap-5 bg-card-light px-4 rounded-lg pt-6 pb-3">
                                     <form.Field
-                                        name="purchase_date"
+                                        name="purchaseDate"
                                         validators={{
                                             onChange: ({ value }) => {
                                                 if(value === "") {

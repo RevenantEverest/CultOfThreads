@@ -2,12 +2,15 @@ import type { Product as ProductEntity } from '@repo/entities';
 
 import { Link } from '@tanstack/react-router';
 import { FaCashRegister } from 'react-icons/fa6';
-import { FaEdit, FaLongArrowAltLeft } from 'react-icons/fa';
+import { FaEdit } from 'react-icons/fa';
 
 import { Button } from '@repo/ui';
 
 import ProductDetails from './ProductDetails';
 import ProductImages from './ProductImages';
+import AddPaymentProvider from './AddPaymentProvider';
+import StatusBadge from './StatusBadge';
+import { GoBackButton } from '../Common';
 
 interface ProductProps {
     product: ProductEntity
@@ -19,12 +22,7 @@ function Product({ product }: ProductProps) {
         <div className="flex flex-col gap-10">
             <div className="flex flex-col md:flex-row items-center justify-center gap-5">
                 <div>
-                    <Link to="/dashboard/products">
-                        <Button colorScheme={"cardLight"}>
-                            <FaLongArrowAltLeft />
-                            Back To Products
-                        </Button>
-                    </Link>
+                    <GoBackButton />
                 </div>
                 <div className="flex flex-1 justify-center md:justify-end gap-2">
                     <Link to="/dashboard/sales/add" search={{ productId: product.id }}>
@@ -48,7 +46,14 @@ function Product({ product }: ProductProps) {
                         <ProductImages images={product.media} />
                     }
                 </div>
-                <div className="flex-1">
+                <div className="flex-1 flex flex-col gap-5">
+                    <div className="flex gap-5">
+                        {!product.providerDetails?.squareProductId && <AddPaymentProvider product={product} provider="SQUARE" />}
+                        {!product.providerDetails?.stripeProductId && <AddPaymentProvider product={product} provider="STRIPE" />}
+                        <div className="flex flex-1 justify-end">
+                            <StatusBadge status={product.details.status} size="md" />
+                        </div>
+                    </div>
                     {
                         product.details &&
                         <ProductDetails name={product.name} description={product.description?.toString()} details={product.details} />

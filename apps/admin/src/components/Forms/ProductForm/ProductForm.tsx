@@ -240,11 +240,13 @@ function ProductForm({ type, initialValues, productImages, onSubmit, onRemoveIma
                     </div>
                 </div>
                 <div className="flex justify-end">
-                    <form.SubscribeField
-                        theme={theme}
-                        label={type.charAt(0).toUpperCase() + type.substring(1)} 
-                        className="bg-primary px-10"
-                    />
+                    <div>
+                        <form.SubscribeField
+                            theme={theme}
+                            label={type.charAt(0).toUpperCase() + type.substring(1)} 
+                            className="bg-primary px-10"
+                        />
+                    </div>
                 </div>
             </form.AppForm>
         </form>

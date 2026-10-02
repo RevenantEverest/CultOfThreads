@@ -1,3 +1,4 @@
+export * from './useAddPaymentProvider.hook';
 export * from './useCreate.hook';
 export * from './useDestroy.hook';
 export * from './useGetByBestSellersPublic.hook';

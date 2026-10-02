@@ -1,4 +1,4 @@
-import type { ProductDetailsStatus } from '@repo/supabase';
+import type { ProductDetails } from '@repo/entities';
 
 import {
   Select,
@@ -25,8 +25,8 @@ function ProductStatus({ value, onChange }: ProductStatusProps) {
                 </SelectTrigger>
                 <SelectContent className="font-semibold text-text border-background bg-card">
                     <SelectGroup>
-                        <SelectItem value={("ACTIVE" as ProductDetailsStatus)}>Active</SelectItem>
-                        <SelectItem value={("DRAFT" as ProductDetailsStatus)}>Draft</SelectItem>
+                        <SelectItem value={("ACTIVE" as ProductDetails["status"])}>Active</SelectItem>
+                        <SelectItem value={("DRAFT" as ProductDetails["status"])}>Draft</SelectItem>
                     </SelectGroup>
                 </SelectContent>
             </Select>

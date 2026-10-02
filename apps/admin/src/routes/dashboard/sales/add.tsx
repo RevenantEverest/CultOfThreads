@@ -1,11 +1,10 @@
-import type { CreateSale, ProductWithDetails, SaleType } from '@repo/supabase';
 import type { ExtraValues, SaleFormValues } from '@@admin/components/Forms/SaleForm';
+import type { Product, Sale } from '@repo/entities';
 
 import { createFileRoute, useSearch } from '@tanstack/react-router';
-import { useSuspenseQueries } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from '@tanstack/react-router';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import {
     ToastSuccess,
     ToastError
@@ -14,7 +13,8 @@ import {
 import { Layout, Breadcrumb } from '@@admin/components/Common';
 import SaleForm from '@@admin/components/Forms/SaleForm';
 
-import { eventsApi, productApi, saleApi } from '@repo/supabase';
+import { useAuthStore } from '@@admin/store/auth';
+import { events, products, sales } from '@repo/queries';
 
 export const Route = createFileRoute('/dashboard/sales/add')({
     validateSearch: (search: Record<string, unknown>) => {
@@ -23,14 +23,22 @@ export const Route = createFileRoute('/dashboard/sales/add')({
         }
     },
     loader: ({ context }) => {
-        context.queryClient.prefetchQuery({
-            queryKey: ["products"],
-            queryFn: productApi.fetchListings
+        const authToken = useAuthStore.getState().auth.session;
+
+        if(!authToken?.accessToken) return;
+
+        products.hooks.usePrefetchIndex(context.queryClient, {
+            authToken: authToken.accessToken,
+            pagination: {
+                limit: 10
+            }
         });
 
-        context.queryClient.prefetchQuery({
-            queryKey: ["events"],
-            queryFn: eventsApi.fetchAll
+        events.hooks.usePrefetchIndex(context.queryClient, {
+            authToken: authToken.accessToken,
+            pagination: {
+                limit: 10
+            }
         });
     },
     component: AddSale,
@@ -38,74 +46,94 @@ export const Route = createFileRoute('/dashboard/sales/add')({
 
 function AddSale() {
 
+    const auth = useAuthStore((state) => state.auth);
+
     const navigate = useNavigate();
     const searchParams = useSearch({ from: '/dashboard/sales/add' });
     
     const queryClient = useQueryClient();
-    const mutation = useMutation({
-        mutationFn: saleApi.create,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["sales"] });
+    const mutation = sales.hooks.useCreate(queryClient);
+
+    const productsQuery = products.hooks.useIndex({
+        authToken: auth.session?.accessToken ?? "",
+        pagination: {
+            limit: 10
         }
     });
 
-    const [products, events] = useSuspenseQueries({
-        queries: [
-            { queryKey: ["products"], queryFn: productApi.fetchAll },
-            { queryKey: ["events"], queryFn: eventsApi.fetchAll }
-        ]
+    const eventsQuery = events.hooks.useIndex({
+        authToken: auth.session?.accessToken ?? "",
+        pagination: {
+            limit: 10
+        }
     });
 
     const initialValues: SaleFormValues & Partial<ExtraValues> = {
-        product_id: searchParams.productId,
-        sale_type: "",
-        event_id: "",
-        sale_price: "",
+        product: searchParams.productId,
+        saleType: "",
+        event: "",
+        salePrice: "",
         notes: JSON.stringify([]),
-        purchase_date: ""
+        purchaseDate: ""
     };
 
-    const getProductPrice = (product: ProductWithDetails, saleType: SaleType): number => {
+    const nextProductsPage = () => {
+        if(!productsQuery.hasNextPage) return;
 
-        if(!product.details || !product.details.online_price || !product.details.market_price) {
+        productsQuery.fetchNextPage();
+    };
+
+    const nextEventsPage = () => {
+        if(!eventsQuery.hasNextPage) return;
+
+        eventsQuery.fetchNextPage();
+    };
+
+    const getProductPrice = (product: Product, saleType: Sale["saleType"]): number => {
+
+        if(!product.details || !product.details.onlinePrice || !product.details.marketPrice) {
             throw new Error("Product has no details, cannot determine price");
         }
 
         switch(saleType) {
             case "EVENT":
-                return product.details.market_price;
+                return product.details.marketPrice;
             case "ONLINE":
-                return product.details.online_price;
+                return product.details.onlinePrice;
             default: 
-                return product.details.online_price;
+                return product.details.onlinePrice;
         };
     };
 
     const onSubmit = async (values: SaleFormValues & Partial<ExtraValues>) => {
 
-        const eventData = events.data.filter((e) => e.id === values.event_id);
-        const productData = products.data.filter((p) => p.id === values.product_id);
+        const events = eventsQuery.data?.pages.flatMap((page) => page.results) ?? [];
+        const products = productsQuery.data?.pages.flatMap((page) => page.results) ?? [];
 
-        if(!productData[0] && !values.product_name) {
+        const eventData = events.filter((e) => e.id === values.event);
+        const productData = products.filter((p) => p.id === values.product);
+
+        if(!productData[0] && !values.productName) {
             throw new Error("Either product or product name is required");
         }
 
         try {
-            const originalPrice = productData[0] ? getProductPrice(productData[0], values.sale_type as SaleType) : Number(values.sale_price);
+            const originalPrice = productData[0] ? getProductPrice(productData[0], values.saleType as Sale["saleType"]) : values.salePrice;
 
-            const saleData: CreateSale = {
-                product_id: productData[0] ? values.product_id : null,
-                event_id: eventData[0] ? values.event_id : null,
-                market_name: eventData[0] ? eventData[0].market.name : (values.market_name ? values.market_name : null),
-                product_name: productData[0] ? productData[0].name : values.product_name as string, // type checked in above if statement
-                original_product_price: originalPrice,
-                sale_price: Number(values.sale_price),
-                sale_type: values.sale_type,
-                purchase_date: values.purchase_date,
-                notes: values.notes
-            };
-
-            await mutation.mutateAsync(saleData);
+            await mutation.mutateAsync({
+                authToken: auth.session?.accessToken ?? "",
+                payload: {
+                    productId: productData[0] ? values.product : undefined,
+                    eventId: eventData[0] ? values.event : undefined,
+                    marketName: eventData[0] ? eventData[0].market.name : (values.marketName ? values.marketName : undefined),
+                    productName: productData[0] ? productData[0].name : values.productName as string, // type checked in above if statement
+                    originalProductPrice: originalPrice.toString(),
+                    salePrice: values.salePrice,
+                    saleType: values.saleType as Sale["saleType"],
+                    purchaseDate: values.purchaseDate,
+                    notes: values.notes
+                }
+            });
 
             toast((t) => (
                 <ToastSuccess toast={t} message={"Sale Added!"} />
@@ -136,10 +164,18 @@ function AddSale() {
             <div className="my-20">
                 <SaleForm 
                     type="create" 
-                    products={products.data}
-                    events={events.data}
+                    products={
+                        productsQuery.data?.pages.flatMap((page) => page.results) ?? []
+                    }
+                    events={
+                        eventsQuery.data?.pages.flatMap((page) => page.results) ?? []
+                    }
                     onSubmit={onSubmit} 
                     initialValues={initialValues}
+                    nextProductsPage={nextProductsPage}
+                    nextEventsPage={nextEventsPage}
+                    isEventsLoading={eventsQuery.isLoading || eventsQuery.isFetching || !eventsQuery.data}
+                    isProductsLoading={productsQuery.isLoading || productsQuery.isFetching || !productsQuery.data}
                 />
             </div>
         </Layout>

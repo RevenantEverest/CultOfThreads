@@ -23,13 +23,13 @@ function AppSidebar() {
     const { open } = useSidebar();
 
     return(
-        <Sidebar className="!border-card-light border-none" collapsible="icon">
+        <Sidebar className="border-card-light! border-none" collapsible="icon">
             <Collapsible defaultOpen className="group/collapsible">
                 <SidebarHeader className="bg-card text-center flex items-center justify-center">
                         <SidebarMenuButton
                             className={`
                                 data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground
-                                flex flex-col gap-2 h-26 mt-2 data-[slot="sidebar-menu-button"]:!p-0
+                                flex flex-col gap-2 h-26 mt-2 data-[slot="sidebar-menu-button"]:p-0!
                             `}
                         >
                             <Link to="/">

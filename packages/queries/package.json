@@ -23,6 +23,7 @@
         "@repo/entities": "workspace:*"
     },
     "devDependencies": {
+        "@repo/types": "workspace:*",
         "@repo/eslint-config": "workspace:*",
         "@repo/typescript-config": "workspace:*",
         "@tailwindcss/cli": "^4.2.2",

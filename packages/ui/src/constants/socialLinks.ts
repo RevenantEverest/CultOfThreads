@@ -14,3 +14,7 @@ export const ETSY: SocialLink = {
     url: "https://cultofthreads.etsy.com",
     handle: "@CultOfThreads"
 };
+
+export const DISCORD = {
+    url: "https://discord.com"
+};

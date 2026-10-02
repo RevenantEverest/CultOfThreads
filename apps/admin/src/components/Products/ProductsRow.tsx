@@ -6,7 +6,8 @@ import {
     TableCell,
     TableRow
 } from '@repo/ui';
-import { FaDollarSign, FaPencil } from 'react-icons/fa6';
+import { FaDollarSign, FaPencil, FaStripeS } from 'react-icons/fa6';
+import { SiSquare } from 'react-icons/si';
 import RemoveProduct from './RemoveProduct';
 import StatusBadge from './StatusBadge';
 
@@ -48,15 +49,27 @@ function ProductsRow({ product }: ProductsRowProps) {
                 </div>
             </TableCell>
             <TableCell className={`${cellClass}`}>
-                <div className="flex items-center gap-1 justify-center">
-                    <FaDollarSign className="text-primary" />
-                    <p>{product?.details?.onlinePrice ?? 0}</p>
+                <div className="flex items-center gap-1 justify-center text-accent">
+                    {
+                        product?.providerDetails.stripeProductId && 
+                        <FaStripeS />
+                    }
+                    {
+                        product?.providerDetails.squareProductId && 
+                        <SiSquare />
+                    }
                 </div>
             </TableCell>
             <TableCell className={`${cellClass}`}>
                 <div className="flex items-center gap-1 justify-center">
                     <FaDollarSign className="text-primary" />
-                    <p>{product?.details?.marketPrice ?? 0}</p>
+                    <p>{(product?.details?.onlinePrice ?? 0).toLocaleString()}</p>
+                </div>
+            </TableCell>
+            <TableCell className={`${cellClass}`}>
+                <div className="flex items-center gap-1 justify-center">
+                    <FaDollarSign className="text-primary" />
+                    <p>{(product?.details?.marketPrice ?? 0).toLocaleString()}</p>
                 </div>
             </TableCell>
             <TableCell className={`${cellClass}`}>

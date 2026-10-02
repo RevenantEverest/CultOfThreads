@@ -62,6 +62,7 @@ export async function destroy({
     const { data, error } = await supabase.storage.from(rootBucket).remove([path]);
 
     if(error) {
+        console.log(error);
         throw error;
     }
 
