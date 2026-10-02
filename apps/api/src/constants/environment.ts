@@ -41,4 +41,4 @@ export const DATABASE = {
     PASSWORD: SUPABASE_DB_PASSWORD
 } as const;
 
-export const DATABASE_URL = `postgresql://${DATABASE.USERNAME}:${DATABASE.PASSWORD}@${DATABASE.HOST}:${DATABASE.PORT}/postgres`;
+export const DATABASE_URL = `postgresql://${encodeURIComponent(DATABASE.USERNAME)}:${encodeURIComponent(DATABASE.PASSWORD)}@${DATABASE.HOST}:${DATABASE.PORT}/postgres`;
