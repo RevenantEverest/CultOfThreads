@@ -1,10 +1,10 @@
-import type { SaleFull } from '@repo/supabase';
+import type { Sale } from '@repo/entities';
 
 import { FaClipboardList } from 'react-icons/fa';
 import { Card, CardContent } from '@repo/ui';
 
 interface TotalProductsCardProps {
-    sales: SaleFull[]
+    sales: Sale[]
 };
 
 function TotalProductsCard({ sales }: TotalProductsCardProps) {
@@ -17,7 +17,7 @@ function TotalProductsCard({ sales }: TotalProductsCardProps) {
                 </div>
                 <div className="flex gap-2 items-center text-4xl font-semibold">
                     <FaClipboardList className="text-accent" />
-                    <p className="text-bold">{sales.length.toLocaleString()}</p>
+                    <p className="text-bold">{(sales.length ?? 0).toLocaleString()}</p>
                 </div>
             </CardContent>
         </Card>

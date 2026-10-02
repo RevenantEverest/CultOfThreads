@@ -16,6 +16,13 @@ export default async function index(req: Request, res: Response<["auth", "pagina
     const findOptions: FindManyOptions<Sale> = {
         order: {
             createdAt: "DESC"
+        },
+        relations: {
+            event: {
+                market: true
+            },
+            product: true,
+            order: true
         }
     };
 

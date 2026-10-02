@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import type { SaleFull } from '@repo/supabase';
+import type { Sale } from '@repo/entities';
 
 import {
     Card,
@@ -13,7 +13,7 @@ import {
 import SalesBreakdownListItem from './SalesBreakdownListItem';
 
 interface SalesBreakdownListProps {
-    breakdownData: Record<string, SaleFull[]>
+    breakdownData: Record<string, Sale[]>
 };
 
 function SalesBreakdownList({ breakdownData }: SalesBreakdownListProps) {
@@ -44,7 +44,7 @@ function SalesBreakdownList({ breakdownData }: SalesBreakdownListProps) {
             <CardContent className="py-8">
                 <Table>
                     <TableHeader>
-                        <TableRow className="font-bold border-b-muted hover:!bg-transparent">
+                        <TableRow className="font-bold border-b-muted hover:bg-transparent!">
                             <TableHead className={`${headClass} font-bold w-1/10 rounded-tl-lg`}></TableHead>
                             <TableHead className={`${headClass}`}>
                                 Product Name <span className="text-xs text-accent font-semibold">({Object.keys(breakdownData).length})</span>

@@ -1,4 +1,4 @@
-import type { EventWithMarket } from '@repo/supabase';
+import type { Event } from '@repo/entities';
 
 import { FaClock, FaLocationDot } from 'react-icons/fa6';
 import dayjs from 'dayjs';
@@ -13,17 +13,17 @@ dayjs.extend(advancedFormat);
 dayjs.extend(timezone);
 
 interface EventDetailsProps {
-    event: EventWithMarket
+    event: Event
 };
 
 function EventDetails({ event }: EventDetailsProps) {    
 
-    const dateFromDate = dayjs(event.date_from).tz(dayjs.tz.guess()).format("MMMM Do, YYYY");
-    const dateFromTime = dayjs(event.date_from).tz(dayjs.tz.guess()).format("h:mm A");
-    const dateToTime = dayjs(event.date_to).tz(dayjs.tz.guess()).format("h:mm A");
+    const dateFromDate = dayjs(event.dateFrom).tz(dayjs.tz.guess()).format("MMMM Do, YYYY");
+    const dateFromTime = dayjs(event.dateFrom).tz(dayjs.tz.guess()).format("h:mm A");
+    const dateToTime = dayjs(event.dateTo).tz(dayjs.tz.guess()).format("h:mm A");
 
-    const isPast = dayjs(event.date_to).isBefore(dayjs());
-    const isToday = dayjs(dayjs(event.date_from).format("M/D/YYYY")).isSame(dayjs(dayjs().format("M/D/YYYY")));
+    const isPast = dayjs(event.dateTo).isBefore(dayjs());
+    const isToday = dayjs(dayjs(event.dateFrom).format("M/D/YYYY")).isSame(dayjs(dayjs().format("M/D/YYYY")));
 
     return(
         <div>

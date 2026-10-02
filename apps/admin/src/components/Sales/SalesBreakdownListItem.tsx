@@ -1,4 +1,4 @@
-import type { SaleFull } from '@repo/supabase';
+import type { Sale } from '@repo/entities';
 
 import { FaClipboard, FaDollarSign } from 'react-icons/fa6';
 
@@ -9,7 +9,7 @@ import {
 
 interface SalesBreakdownListItemProps {
     productName: string,
-    sales: SaleFull[]
+    sales: Sale[]
 };
 
 function SalesBreakdownListItem({ productName, sales }: SalesBreakdownListItemProps) {
@@ -26,13 +26,13 @@ function SalesBreakdownListItem({ productName, sales }: SalesBreakdownListItemPr
             <TableCell className={`${cellClass}`}>
                 <div className="flex items-center gap-1 justify-center">
                     <FaClipboard className="text-primary" />
-                    <p className="font-bold">{sales.length.toLocaleString()}</p>
+                    <p className="font-bold">{(sales.length ?? 0).toLocaleString()}</p>
                 </div>
             </TableCell>
             <TableCell className={`${cellClass}`}>
                 <div className="flex items-center gap-1 justify-center">
                     <FaDollarSign className="text-primary" />
-                    <p className="font-bold">{sales.reduce((acc, item) => acc + item.sale_price, 0).toLocaleString()}</p>
+                    <p className="font-bold">{sales.reduce((acc, item) => acc + item.salePrice, 0).toLocaleString()}</p>
                 </div>
             </TableCell>
         </TableRow>

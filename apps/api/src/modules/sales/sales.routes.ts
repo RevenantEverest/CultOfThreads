@@ -51,4 +51,13 @@ router.route("/aggregate/totals")
     controllers.aggregateSales
 )
 
+router.route("/events/:id")
+.get(
+    auth.verifyToken,
+    security.isValidOrigin,
+    permissions.isAdmin,
+    validation.id,
+    controllers.getByEventId
+)
+
 export default router;
